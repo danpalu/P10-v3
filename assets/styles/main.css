@@ -1,0 +1,138 @@
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/Poppins-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/Poppins-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/Poppins-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/Poppins-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/Poppins-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/poppins/Poppins-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/poppins/Poppins-Light.ttf) format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/poppins/Poppins-ExtraLight.ttf) format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(/fonts/poppins/Poppins-Thin.ttf) format("truetype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body,
+html {
+  min-height: 100dvh;
+  background: #fff9f3;
+}
+
+#__nuxt {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  max-width: 70ch;
+  padding: 20px;
+  background: linear-gradient(-20deg in oklch, #3f00b5, #5dabff);
+  background-clip: text;
+  color: transparent;
+  text-align: left;
+}
+
+:root {
+  --color-blue: #1c89ff;
+  --color-purple: #4900d1;
+}
+
+*::selection {
+  background: var(--color-purple);
+  color: chartreuse;
+}
+
+button {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  color: white;
+  margin: 2px;
+  background: linear-gradient(in oklch -45deg, #1c89ff, #4900d1);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+  letter-spacing: 2px;
+
+  &:disabled {
+    background: linear-gradient(in oklch -45deg, #78b9ff, #6760c3);
+    color: #fff;
+    cursor: not-allowed;
+  }
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
