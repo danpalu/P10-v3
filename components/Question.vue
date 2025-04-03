@@ -1,16 +1,15 @@
 <template>
   <div class="question">
     <label :for="`question-${question.id}`">
-      {{ question.id }}.
-      {{ question.title }}
+      {{ question.id }}. {{ question.title }}. Type: {{ question.type }}
       <span v-if="question.answer">✅</span>
       <span v-else>❌</span>
     </label>
 
     <button
-      v-if="question.showChat && !question.answer"
+      v-if="!question.answer.answer && question.type == 'chat'"
       class="button-chat center-content"
-      @click.prevent=""
+      @click.prevent="$emit('openChat', question)"
     >
       Chat
       <svg
@@ -28,7 +27,12 @@
         />
       </svg>
     </button>
-    <input v-if="question.answer" type="text" :id="`question-${question.id}`" />
+    <input
+      v-if="question.type == 'simpleText'"
+      type="text"
+      :id="`question-${question.id}`"
+      @input="$emit('update', question, $event.target)"
+    />
   </div>
 </template>
 

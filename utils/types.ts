@@ -20,18 +20,28 @@ export type ChatMessage = {
 export class Question {
   id: number;
   title: string;
-  answer: string;
-  showChat: boolean;
+  type: "simpleText" | "chat";
+  answer: Answer;
 
   constructor(
     id: number,
     title: string,
-    showChat: boolean = false,
-    answer: string = ""
+    type: "simpleText" | "chat" = "simpleText",
+    answer: Answer = new Answer("", "")
   ) {
     this.id = id;
     this.title = title;
+    this.type = type;
     this.answer = answer;
-    this.showChat = showChat;
+  }
+}
+
+export class Answer {
+  answer: ClientMessage[] | string;
+  summary: string;
+
+  constructor(answer: ClientMessage[] | string, summary: string) {
+    this.answer = answer;
+    this.summary = summary;
   }
 }

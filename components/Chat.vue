@@ -1,29 +1,50 @@
 <template>
-  <div class="messages-container" id="message-scroller">
-    <ul class="messages">
-      <li v-for="message in messages" class="message" :class="message.role">
-        {{ message.content.content }}
-      </li>
-      <li v-if="showIncomingMessage" class="incoming message assistant">
-        {{ cleanIncomingString(incomingString) }}
-      </li>
-    </ul>
-  </div>
-  <div class="form-container">
-    <form @submit.prevent="handleSubmit" class="input">
-      <input v-model="input" />
-      <button type="submit" :disabled="disableSubmit">Send</button>
-    </form>
-  </div>
+  <main class="chat-container">
+    <button
+      class="center-content button-back"
+      @click.prevent="$emit('closeChat')"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="2"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+        />
+      </svg>
+    </button>
+    <div class="messages-container" id="message-scroller">
+      <ul class="messages">
+        <li v-for="message in messages" class="message" :class="message.role">
+          {{ message.content.content }}
+        </li>
+        <li v-if="showIncomingMessage" class="incoming message assistant">
+          {{ cleanIncomingString(incomingString) }}
+        </li>
+      </ul>
+    </div>
+    <div class="form-container">
+      <form @submit.prevent="handleSubmit" class="input">
+        <input v-model="input" />
+        <button type="submit" :disabled="disableSubmit">Send</button>
+      </form>
+    </div>
+  </main>
 </template>
 
 <script lang="ts" setup>
+const props = defineProps<{
+  question: Question | null | undefined;
+}>();
+
 let ws: WebSocket;
 let wsURL: URL;
-let messageScroller: HTMLElement | null;
 onMounted(() => {
-  messageScroller = document.querySelector("#message-scroller");
-
   wsURL = new URL(window.location.href);
   wsURL.protocol = "ws";
   wsURL.pathname = "/api/ws";
@@ -80,16 +101,17 @@ function handleSubmit() {
   addUserMessage(input.value);
   ws.send(JSON.stringify(messages.value));
   input.value = "";
-  scrollToButtom();
+
+  setTimeout(() => {
+    scrollToButtom();
+  }, 100);
 }
 
 function scrollToButtom() {
-  if (messageScroller) {
-    messageScroller.scrollTo({
-      top: messageScroller.scrollHeight,
-      behavior: "smooth",
-    });
-  }
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: "smooth",
+  });
 }
 
 function cleanIncomingString(input: string): string {
@@ -100,8 +122,14 @@ function cleanIncomingString(input: string): string {
 </script>
 
 <style>
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
 .messages-container {
-  margin-bottom: auto;
   width: 100%;
   padding: 0 20px;
   overflow-y: scroll;
@@ -110,12 +138,25 @@ function cleanIncomingString(input: string): string {
   flex-direction: column;
 }
 
+.button-back {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  border-radius: 999px;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  background: none;
+  color: var(--color-blue);
+}
+
 .messages {
   max-width: 100%;
   width: 70ch;
   list-style: none;
   padding-top: 50px;
-  padding-bottom: 100px;
+  padding-bottom: 150px;
   display: flex;
   flex-direction: column;
 }
@@ -146,15 +187,27 @@ function cleanIncomingString(input: string): string {
 }
 
 .form-container {
-  position: absolute;
-  bottom: 25px;
+  position: fixed;
+  bottom: 10px;
   width: 100%;
   padding: 0 10px;
   display: flex;
   justify-content: center;
   bottom: 0;
-  height: 100px;
-  background: linear-gradient(in oklch 0deg, white, transparent);
+  height: 80px;
+  z-index: 2;
+
+  &::after {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 150px;
+    background: linear-gradient(in oklch 0deg, #fff9f3c0 40%, transparent 100%);
+  }
 }
 
 .input {
@@ -162,6 +215,7 @@ function cleanIncomingString(input: string): string {
   height: fit-content;
   max-width: 100%;
   display: flex;
+  flex-direction: row;
   border-radius: 999px;
   border: 1px solid #ccc;
   overflow: hidden;
