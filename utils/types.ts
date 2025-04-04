@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const MessageContent = z.object({
   content: z.string(),
-  type: z.enum(["text", "slider-question", "binary-question"]),
+  type: z.enum(["text", "slider-question", "binary-question", "summary"]),
 });
 
 export type MessageContentType = z.infer<typeof MessageContent>;
@@ -17,31 +17,14 @@ export type ChatMessage = {
   content: string;
 };
 
-export class Question {
+export type Question = {
   id: number;
   title: string;
-  type: "simpleText" | "chat";
+  type: "text" | "chat";
   answer: Answer;
+};
 
-  constructor(
-    id: number,
-    title: string,
-    type: "simpleText" | "chat" = "simpleText",
-    answer: Answer = new Answer("", "")
-  ) {
-    this.id = id;
-    this.title = title;
-    this.type = type;
-    this.answer = answer;
-  }
-}
-
-export class Answer {
+export type Answer = {
   answer: ClientMessage[] | string;
   summary: string;
-
-  constructor(answer: ClientMessage[] | string, summary: string) {
-    this.answer = answer;
-    this.summary = summary;
-  }
-}
+};

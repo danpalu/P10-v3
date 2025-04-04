@@ -1,23 +1,26 @@
 <template>
   <main class="chat-container">
-    <button
-      class="center-content button-back"
-      @click.prevent="$emit('closeChat')"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="2"
-        stroke="currentColor"
+    <div class="button-container">
+      <button
+        class="center-content button-back"
+        @click.prevent="$emit('closeChat')"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-        />
-      </svg>
-    </button>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+          />
+        </svg>
+      </button>
+    </div>
+
     <div class="messages-container" id="message-scroller">
       <ul class="messages">
         <li v-for="message in messages" class="message" :class="message.role">
@@ -39,11 +42,16 @@
 
 <script lang="ts" setup>
 const props = defineProps<{
-  question: Question | null | undefined;
+  question: Question;
 }>();
 
 let ws: WebSocket;
 let wsURL: URL;
+let messages = ref<ClientMessage[]>([]);
+
+let showIncomingMessage = ref(false);
+let incomingString = ref<string>("");
+
 onMounted(() => {
   wsURL = new URL(window.location.href);
   wsURL.protocol = "ws";
@@ -64,17 +72,17 @@ onMounted(() => {
       messages.value.push(newMessage);
       resetIncomingMessage();
       showIncomingMessage.value = false;
+      if (newMessage.content.type == "summary") {
+        props.question.answer.answer = messages.value;
+        props.question.answer.summary = newMessage.content.content;
+      }
+      scrollToButtom();
       return;
     }
     incomingString.value += `${message.data}`;
     scrollToButtom();
   };
 });
-
-let messages = ref<ClientMessage[]>([]);
-
-let showIncomingMessage = ref(false);
-let incomingString = ref<string>("");
 
 function resetIncomingMessage() {
   incomingString.value = "";
@@ -97,9 +105,17 @@ function addUserMessage(userInput: string) {
 
 let input = ref<string>("");
 
+// Get answers from all the other questions
+function getAllAnswers() {}
+
+const data = useDataStore();
+const prevAnswers = data.questions;
+
 function handleSubmit() {
   addUserMessage(input.value);
-  ws.send(JSON.stringify(messages.value));
+  ws.send(
+    JSON.stringify({ messages: messages.value, prevAnswers: prevAnswers })
+  );
   input.value = "";
 
   setTimeout(() => {
@@ -115,9 +131,9 @@ function scrollToButtom() {
 }
 
 function cleanIncomingString(input: string): string {
-  const startLetters: number = 12;
-  const endLetters: number = 20;
-  return input.slice(startLetters, -endLetters);
+  console.log(input);
+
+  return input.replace(/^.*?\{\s*"?[^"]*"?\s*:\s*"?/, "").slice(0, -24);
 }
 </script>
 
@@ -125,8 +141,9 @@ function cleanIncomingString(input: string): string {
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 100%;
+  position: relative;
+  transition: height 0.3s ease;
 }
 
 .messages-container {
@@ -136,12 +153,20 @@ function cleanIncomingString(input: string): string {
   display: flex;
   align-items: center;
   flex-direction: column;
+  border-radius: 20.5px;
+  background: white;
+  box-shadow: inset -5px -5px 5px rgba(0, 0, 0, 0.05),
+    10px 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.button-container {
+  position: absolute;
+  height: fit-content;
+  right: calc(100% + 20px);
 }
 
 .button-back {
-  position: fixed;
-  top: 20px;
-  left: 20px;
+  position: sticky;
   border-radius: 999px;
   padding: 10px;
   border: none;
@@ -155,14 +180,13 @@ function cleanIncomingString(input: string): string {
   max-width: 100%;
   width: 70ch;
   list-style: none;
-  padding-top: 50px;
-  padding-bottom: 150px;
+  padding: 40px 0;
   display: flex;
   flex-direction: column;
 }
 
 .message {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   width: fit-content;
   max-width: 60ch;
   padding: 10px 20px;
@@ -188,11 +212,11 @@ function cleanIncomingString(input: string): string {
 
 .form-container {
   position: fixed;
-  bottom: 10px;
   width: 100%;
-  padding: 0 10px;
   display: flex;
   justify-content: center;
+  left: 0;
+  right: 0;
   bottom: 0;
   height: 80px;
   z-index: 2;
@@ -206,12 +230,16 @@ function cleanIncomingString(input: string): string {
     right: 0;
 
     height: 150px;
-    background: linear-gradient(in oklch 0deg, #fff9f3c0 40%, transparent 100%);
+    background: linear-gradient(
+      in oklch 0deg,
+      var(--color-background) 40%,
+      transparent 100%
+    );
   }
 }
 
 .input {
-  width: 70ch;
+  width: calc(70ch - 40px);
   height: fit-content;
   max-width: 100%;
   display: flex;

@@ -1,15 +1,15 @@
 <template>
   <div class="question">
     <label :for="`question-${question.id}`">
-      {{ question.id }}. {{ question.title }}. Type: {{ question.type }}
-      <span v-if="question.answer">✅</span>
+      {{ question.id }}. {{ question.title }}
+      <span v-if="question.answer.answer">✅</span>
       <span v-else>❌</span>
     </label>
 
     <button
-      v-if="!question.answer.answer && question.type == 'chat'"
+      v-if="!question.answer.answer && question.type == 'chat' && !chatIsOpen"
       class="button-chat center-content"
-      @click.prevent="$emit('openChat', question)"
+      @click.prevent="chatIsOpen = true"
     >
       Chat
       <svg
@@ -27,19 +27,41 @@
         />
       </svg>
     </button>
+    <p v-if="question.type == 'chat' && question.answer.summary && !chatIsOpen">
+      {{ question.answer.summary }}
+    </p>
     <input
-      v-if="question.type == 'simpleText'"
+      v-if="question.type == 'text'"
       type="text"
       :id="`question-${question.id}`"
-      @input="$emit('update', question, $event.target)"
+      @input="saveAnswer($event)"
     />
+    <Chat
+      v-if="chatIsOpen"
+      :question="question"
+      @closeChat="chatIsOpen = false"
+    ></Chat>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { convertToParsedChatCompletionResponse } from "@mistralai/mistralai/extra/structChat";
+
+const chatIsOpen = ref(false);
+
 const props = defineProps<{
   question: Question;
 }>();
+
+function saveAnswer(event: Event) {
+  const input = (event.target as HTMLInputElement).value;
+  props.question.answer.answer = input;
+}
+
+function updateSummary(event: Event) {
+  const input = (event.target as HTMLInputElement).value;
+  props.question.answer.summary = input;
+}
 </script>
 
 <style scoped>
@@ -70,5 +92,11 @@ input {
     width: 1.5rem;
     height: 1.5rem;
   }
+}
+
+.summary {
+  background: white;
+  border-radius: 20.5px;
+  padding: 20px;
 }
 </style>
