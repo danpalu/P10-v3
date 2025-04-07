@@ -11,8 +11,9 @@ form {
   display: flex;
   flex-direction: column;
   gap: 10rem;
-  width: 100%;
-  padding: 20px;
-  max-width: 70ch;
+  width: max(100%, 70ch);
+  max-width: min(70ch, 100%);
+  overflow: hidden;
+  padding-right: 20px;
 }
 </style>

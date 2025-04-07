@@ -1,12 +1,14 @@
 <template>
   <div class="questionnaire-section">
-    <h2>{{ title }}</h2>
+    <h2>{{ section.title }}</h2>
     <slot></slot>
   </div>
 </template>
 
 <script lang="ts" setup>
-const props = defineProps(["title"]);
+const props = defineProps<{
+  section: QuestionSection;
+}>();
 </script>
 
 <style scoped>

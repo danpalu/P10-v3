@@ -9,13 +9,10 @@ const data = useDataStore();
       <h1 class="title">Design Brief Generator</h1>
     </div>
   </header>
-  <div class="spacer"></div>
+  <NavigationBar :sections="data.questionnaire"></NavigationBar>
   <Questionnaire>
-    <QuestionnaireSection :title="'Basic stuff'">
-      <Question
-        v-for="question in data.questions"
-        :question="question"
-      ></Question>
+    <QuestionnaireSection v-for="section in data.questionnaire" :section="section">
+      <Question v-for="question in section.questions" :question="question"></Question>
     </QuestionnaireSection>
   </Questionnaire>
 </template>
@@ -27,6 +24,8 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  grid-row: 1;
+  grid-column: span 2;
 }
 
 header > div {

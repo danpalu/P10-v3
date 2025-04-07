@@ -79,6 +79,16 @@ onMounted(() => {
       scrollToButtom();
       return;
     }
+    if (message.data == "[ERROR]") {
+      messages.value.push({
+        role: "assistant",
+        content: { content: `Error: ${message.data}`, type: "text" },
+      });
+      showIncomingMessage.value = false;
+      resetIncomingMessage();
+      scrollToButtom();
+      return;
+    }
     incomingString.value += `${message.data}`;
     scrollToButtom();
   };
@@ -99,7 +109,7 @@ function resetMessages() {
 function addUserMessage(userInput: string) {
   messages.value.push({
     role: "user",
-    content: { content: userInput, type: "text" },
+    content: { content: userInput.trim(), type: "text" },
   });
 }
 
@@ -109,7 +119,7 @@ let input = ref<string>("");
 function getAllAnswers() {}
 
 const data = useDataStore();
-const prevAnswers = data.questions;
+const prevAnswers = "";
 
 function handleSubmit() {
   addUserMessage(input.value);
@@ -132,8 +142,7 @@ function scrollToButtom() {
 
 function cleanIncomingString(input: string): string {
   console.log(input);
-
-  return input.replace(/^.*?\{\s*"?[^"]*"?\s*:\s*"?/, "").slice(0, -24);
+  return input.replace(/^\s*.*?\{\s*"?[^"]*"?\s*:\s*"?/, "").slice(0, -24);
 }
 </script>
 
@@ -155,8 +164,6 @@ function cleanIncomingString(input: string): string {
   flex-direction: column;
   border-radius: 20.5px;
   background: white;
-  box-shadow: inset -5px -5px 5px rgba(0, 0, 0, 0.05),
-    10px 10px 10px rgba(0, 0, 0, 0.1);
 }
 
 .button-container {
@@ -190,6 +197,8 @@ function cleanIncomingString(input: string): string {
   width: fit-content;
   max-width: 60ch;
   padding: 10px 20px;
+  white-space: pre-line;
+  min-height: 45px;
 }
 
 .message.assistant {

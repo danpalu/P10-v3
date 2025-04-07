@@ -8,12 +8,12 @@ export const MessageContent = z.object({
 export type MessageContentType = z.infer<typeof MessageContent>;
 
 export type ClientMessage = {
-  role: "system" | "user" | "assistant" | "tool";
+  role: "system" | "user" | "assistant";
   content: MessageContentType;
 };
 
 export type ChatMessage = {
-  role: "system" | "user" | "assistant" | "tool";
+  role: "system" | "user" | "assistant";
   content: string;
 };
 
@@ -27,4 +27,9 @@ export type Question = {
 export type Answer = {
   answer: ClientMessage[] | string;
   summary: string;
+};
+
+export type QuestionSection = {
+  title: string;
+  questions: Question[];
 };

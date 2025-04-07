@@ -45,8 +45,6 @@
 </template>
 
 <script lang="ts" setup>
-import { convertToParsedChatCompletionResponse } from "@mistralai/mistralai/extra/structChat";
-
 const chatIsOpen = ref(false);
 
 const props = defineProps<{
