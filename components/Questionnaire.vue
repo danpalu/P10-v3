@@ -13,7 +13,7 @@ form {
   gap: 10rem;
   width: max(100%, 70ch);
   max-width: min(70ch, 100%);
-  overflow: hidden;
+  overflow: hidden scroll;
   padding-right: 20px;
 }
 </style>

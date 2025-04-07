@@ -1,22 +1,9 @@
 <template>
   <main class="chat-container">
     <div class="button-container">
-      <button
-        class="center-content button-back"
-        @click.prevent="$emit('closeChat')"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-          />
+      <button class="center-content button-back" @click.prevent="$emit('closeChat')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
         </svg>
       </button>
     </div>
@@ -98,9 +85,7 @@ function resetIncomingMessage() {
   incomingString.value = "";
 }
 
-let disableSubmit = computed(
-  () => input.value.trim() === "" || showIncomingMessage.value
-);
+let disableSubmit = computed(() => input.value.trim() === "" || showIncomingMessage.value);
 
 function resetMessages() {
   messages.value = [];
@@ -123,9 +108,7 @@ const prevAnswers = "";
 
 function handleSubmit() {
   addUserMessage(input.value);
-  ws.send(
-    JSON.stringify({ messages: messages.value, prevAnswers: prevAnswers })
-  );
+  ws.send(JSON.stringify({ messages: messages.value, prevAnswers: prevAnswers }));
   input.value = "";
 
   setTimeout(() => {
@@ -169,7 +152,7 @@ function cleanIncomingString(input: string): string {
 .button-container {
   position: absolute;
   height: fit-content;
-  right: calc(100% + 20px);
+  left: 20px;
 }
 
 .button-back {
@@ -239,11 +222,7 @@ function cleanIncomingString(input: string): string {
     right: 0;
 
     height: 150px;
-    background: linear-gradient(
-      in oklch 0deg,
-      var(--color-background) 40%,
-      transparent 100%
-    );
+    background: linear-gradient(in oklch 0deg, var(--color-background) 40%, transparent 100%);
   }
 }
 
