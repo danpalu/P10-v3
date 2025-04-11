@@ -1,27 +1,43 @@
 <template>
   <main class="chat-container">
-    <div class="button-container">
-      <button class="center-content button-back" @click.prevent="$emit('closeChat')">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-        </svg>
-      </button>
-    </div>
-
-    <div class="messages-container" id="message-scroller">
+    <div class="messages-container" id="message-scroller" ref="message-scroller">
       <ul class="messages">
-        <li v-for="message in messages" class="message" :class="message.role">
+        <li
+          v-for="message in question.answer.answer"
+          class="message"
+          :class="`${message.role} ${message.content.type}`">
           {{ message.content.content }}
+          <div v-if="message.content.type === 'color-question'" class="color-container">
+            <button
+              @click.prevent="sendColorAnswer(color)"
+              v-for="color in message.content.colorDetails?.colors"
+              class="color"
+              :style="{ background: color }"></button>
+          </div>
+          <div v-if="message.content.type === 'slider-question'"></div>
         </li>
         <li v-if="showIncomingMessage" class="incoming message assistant">
           {{ cleanIncomingString(incomingString) }}
         </li>
+        <li
+          v-if="
+            question.answer.answer.length != 0 &&
+            question.answer.answer[question.answer.answer.length - 1].content.type == 'summary'
+          "
+          class="button-container">
+          <button @click.prevent="$emit('closeChat')">Gem</button>
+        </li>
       </ul>
     </div>
     <div class="form-container">
-      <form @submit.prevent="handleSubmit" class="input">
-        <input v-model="input" />
-        <button type="submit" :disabled="disableSubmit">Send</button>
+      <form @submit.prevent="handleSubmit(input)" class="input">
+        <input v-model="input" ref="inputElement" />
+        <button type="submit" :disabled="disableSubmit" class="send" :class="`${loading ? 'loading' : ''}`">
+          <span> Send </span>
+          <div class="spinner" v-if="loading">
+            <LoadingSpinner></LoadingSpinner>
+          </div>
+        </button>
       </form>
     </div>
   </main>
@@ -34,42 +50,66 @@ const props = defineProps<{
 
 let ws: WebSocket;
 let wsURL: URL;
-let messages = ref<ClientMessage[]>([]);
+let loading = ref(true);
 
-let showIncomingMessage = ref(false);
-let incomingString = ref<string>("");
+const showSaveButton = ref(false);
+
+const ready = ref(false);
+
+const showIncomingMessage = ref(false);
+const incomingString = ref<string>("");
+const data = useDataStore();
+const inputElement = useTemplateRef("inputElement");
 
 onMounted(() => {
+  inputElement.value?.focus();
   wsURL = new URL(window.location.href);
   wsURL.protocol = "ws";
   wsURL.pathname = "/api/ws";
+  wsURL.hash = "";
   ws = new WebSocket(wsURL);
 
-  ws.onopen = () => {};
+  ws.onopen = () => {
+    if (props.question.answer.answer.length == 0) {
+      startConversation();
+    } else {
+      ready.value = true;
+      loading.value = false;
+    }
+  };
   ws.onmessage = (message) => {
     if (message.data == "[START]") {
       showIncomingMessage.value = true;
+      loading.value = true;
       return;
     }
     if (message.data == "[DONE]") {
+      if (!ready.value) {
+        ready.value = true;
+      }
+      loading.value = false;
       const newMessage: ClientMessage = {
         role: "assistant",
-        content: JSON.parse(incomingString.value),
+        content: JSON.parse(incomingString.value.trim()),
       };
-      messages.value.push(newMessage);
+
+      props.question.answer.answer.push(newMessage);
       resetIncomingMessage();
       showIncomingMessage.value = false;
       if (newMessage.content.type == "summary") {
-        props.question.answer.answer = messages.value;
+        showSaveButton.value = true;
         props.question.answer.summary = newMessage.content.content;
+        setTimeout(() => {
+          scrollToButtom();
+        }, 100);
       }
       scrollToButtom();
       return;
     }
     if (message.data == "[ERROR]") {
-      messages.value.push({
+      props.question.answer.answer.push({
         role: "assistant",
-        content: { content: `Error: ${message.data}`, type: "text" },
+        content: { content: `Error: ${message.data}`, type: "text", sliderDetails: null, colorDetails: null },
       });
       showIncomingMessage.value = false;
       resetIncomingMessage();
@@ -85,30 +125,31 @@ function resetIncomingMessage() {
   incomingString.value = "";
 }
 
-let disableSubmit = computed(() => input.value.trim() === "" || showIncomingMessage.value);
+let disableSubmit = computed(() => !ready.value || input.value.trim() === "" || showIncomingMessage.value);
 
 function resetMessages() {
-  messages.value = [];
+  props.question.answer.answer = [];
 }
 
 function addUserMessage(userInput: string) {
-  messages.value.push({
+  props.question.answer.answer.push({
     role: "user",
-    content: { content: userInput.trim(), type: "text" },
+    content: { content: userInput.trim(), type: "text", sliderDetails: null, colorDetails: null },
   });
 }
 
 let input = ref<string>("");
 
-// Get answers from all the other questions
-function getAllAnswers() {}
-
-const data = useDataStore();
-const prevAnswers = "";
-
-function handleSubmit() {
-  addUserMessage(input.value);
-  ws.send(JSON.stringify({ messages: messages.value, prevAnswers: prevAnswers }));
+function sendColorAnswer(color: string) {
+  loading.value = true;
+  addUserMessage(color);
+  ws.send(
+    JSON.stringify({
+      messages: props.question.answer.answer,
+      previousAnswers: data.toString(),
+      question: props.question,
+    })
+  );
   input.value = "";
 
   setTimeout(() => {
@@ -116,16 +157,45 @@ function handleSubmit() {
   }, 100);
 }
 
+function startConversation() {
+  ws.send(
+    JSON.stringify({
+      messages: [{ role: "user", content: { content: "Start the conversation", type: "text" } }],
+      previousAnswers: data.toString(),
+      question: props.question,
+    })
+  );
+  setTimeout(() => {
+    scrollToButtom();
+  }, 100);
+}
+
+function handleSubmit(text: string) {
+  loading.value = true;
+  addUserMessage(text);
+  ws.send(
+    JSON.stringify({
+      messages: props.question.answer.answer,
+      previousAnswers: data.toString(),
+      question: props.question,
+    })
+  );
+  input.value = "";
+
+  setTimeout(() => {
+    scrollToButtom();
+  }, 100);
+}
+const messageScroller = useTemplateRef("message-scroller");
 function scrollToButtom() {
-  window.scrollTo({
-    top: document.body.scrollHeight,
+  messageScroller.value?.scrollTo({
+    top: messageScroller.value.scrollHeight,
     behavior: "smooth",
   });
 }
 
 function cleanIncomingString(input: string): string {
-  console.log(input);
-  return input.replace(/^\s*.*?\{\s*"?[^"]*"?\s*:\s*"?/, "").slice(0, -24);
+  return input.replace(/^(\s*.*?\"content\":\")|(^\s*?.*$)/, "").slice(0, -3);
 }
 </script>
 
@@ -136,6 +206,11 @@ function cleanIncomingString(input: string): string {
   width: 100%;
   position: relative;
   transition: height 0.3s ease;
+  height: 100%;
+  background: white;
+  border-radius: 20.5px 20.5px 0 0;
+  overflow: hidden;
+  grid-column: span 2;
 }
 
 .messages-container {
@@ -145,14 +220,11 @@ function cleanIncomingString(input: string): string {
   display: flex;
   align-items: center;
   flex-direction: column;
-  border-radius: 20.5px;
-  background: white;
+  margin-bottom: auto;
 }
 
-.button-container {
-  position: absolute;
+.button-back-container {
   height: fit-content;
-  left: 20px;
 }
 
 .button-back {
@@ -182,12 +254,36 @@ function cleanIncomingString(input: string): string {
   padding: 10px 20px;
   white-space: pre-line;
   min-height: 45px;
+
+  &.assistant {
+    align-self: flex-start;
+    border-radius: 20px 20px 20px 0;
+    background: #f1f1f1;
+  }
+
+  &.summary {
+    background: #dcf1df;
+
+    &::before {
+      content: "Summary: ";
+      font-weight: 600;
+      display: block;
+    }
+  }
 }
 
-.message.assistant {
-  align-self: flex-start;
-  border-radius: 20px 20px 20px 0;
-  background: #f1f1f1;
+.color-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.color {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
 }
 
 .message.user {
@@ -203,14 +299,10 @@ function cleanIncomingString(input: string): string {
 }
 
 .form-container {
-  position: fixed;
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 80px;
   z-index: 2;
 
   &::after {
@@ -221,7 +313,7 @@ function cleanIncomingString(input: string): string {
     left: 0;
     right: 0;
 
-    height: 150px;
+    height: 100px;
     background: linear-gradient(in oklch 0deg, var(--color-background) 40%, transparent 100%);
   }
 }
@@ -255,23 +347,24 @@ function cleanIncomingString(input: string): string {
   }
 }
 
-.input [type="submit"] {
-  border: none;
-  padding: 10px 20px;
-  border-radius: 999px;
-  color: white;
-  margin: 2px;
-  background: linear-gradient(in oklch -45deg, #1c89ff, #4900d1);
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
-  letter-spacing: 2px;
+button.send {
+  position: relative;
 
-  &:disabled {
-    background: linear-gradient(in oklch -45deg, #78b9ff, #6760c3);
-    color: #fff;
-    cursor: not-allowed;
+  & .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
+
+  &.loading span {
+    visibility: hidden;
+  }
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 </style>

@@ -86,31 +86,24 @@ body,
 html {
   height: 100dvh;
   background: #fff9f3;
+  color: var(--color-text);
 }
 
 #__nuxt {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: auto 1fr;
   grid-template-rows: auto 1fr;
   height: 100%;
   overflow: hidden;
 }
 
-h1.title {
-  font-size: 3rem;
-  font-weight: 800;
-  max-width: 70ch;
-  padding: 20px;
-  background: linear-gradient(-20deg in oklch, #3f00b5, #5dabff);
-  background-clip: text;
-  color: transparent;
-  text-align: left;
-}
-
 :root {
   --color-blue: #1c89ff;
+  --color-blue-rgb: 28, 137, 255;
   --color-purple: #4900d1;
+  --color-purple-rgb: 73, 0, 209;
   --color-background: #fff9f3;
+  --color-text: #303136;
 }
 
 *::selection {
@@ -130,10 +123,11 @@ button {
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease;
   letter-spacing: 2px;
+  text-transform: uppercase;
 
   &:disabled {
-    background: linear-gradient(in oklch -45deg, #78b9ff, #6760c3);
-    color: #fff;
+    background: linear-gradient(in oklch -45deg, #3c9aff, #5e28c2);
+    color: white;
     cursor: not-allowed;
   }
 
@@ -147,4 +141,16 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.questionnaire-section:has(.question.chat-open) {
+  overflow: hidden;
+
+  & h2 {
+    display: none;
+  }
+
+  & .question:not(.chat-open) {
+    display: none;
+  }
 }

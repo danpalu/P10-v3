@@ -8,12 +8,12 @@
 
 <style scoped>
 form {
-  display: flex;
-  flex-direction: column;
   gap: 10rem;
-  width: max(100%, 70ch);
-  max-width: min(70ch, 100%);
   overflow: hidden scroll;
-  padding-right: 20px;
+  scroll-behavior: smooth;
+  height: 100%;
+  overflow: hidden;
+  place-self: center;
+  width: 100%;
 }
 </style>
