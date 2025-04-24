@@ -44,7 +44,7 @@ export default defineWebSocketHandler({
           
           The color-question is a question where the user can select a color from a list of colors in hex format. Suggest colors based on the information about the vibe and feel of the user's company and previous answers. For example, if the company is luxurious, suggest gold, purple and such colors. Do not put the colors in the content text.
 
-          The moodboard-question is a question where the user can select a moodboard from a list of images. Output a search string to find the moodboard. 
+          The moodboard-question is a question where the user can select a number of images from a list. For this, you should use an appropriate search string to find images that reflect the user's company and previous answers. Do not put the search string in the content text. You should ask moodboard questions when talking about company values or the feel of a company.
 
           The branding-card-question is a question where the user can select an emotion of feel of their brand, so the emotions should be polar opposites. 
 
