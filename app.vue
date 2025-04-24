@@ -5,7 +5,7 @@ const data = useDataStore();
 
 <template>
   <NavigationBar :sections="data.questionnaire.sections"></NavigationBar>
-  <Questionnaire>
+  <Questionnaire :questionnaire="data.questionnaire">
     <QuestionnaireSection v-for="section in data.questionnaire.sections" :section="section">
       <Question v-for="question in section.questions" :question="question"></Question>
     </QuestionnaireSection>

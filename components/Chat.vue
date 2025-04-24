@@ -2,7 +2,7 @@
   <main class="chat-container">
     <div class="messages-container" id="message-scroller" ref="message-scroller">
       <ul class="messages">
-        <template v-for="prevQuestion in getPreviousQuestions(data.questionnaire, data.currentQuestion)">
+        <template v-for="prevQuestion in getPreviousQuestions(props.questionnaire, data.currentQuestion)">
           <li
             v-for="(message, index) in prevQuestion.answer.answer"
             class="message"
@@ -35,21 +35,24 @@
             data.currentQuestion.answer.answer[data.currentQuestion.answer.answer.length - 1].content.type == 'summary'
           "
           class="button-container">
-          <button @click.prevent="nextQuestion">Næste spørgsmål</button>
+          <button v-if="data.currentQuestion == data.questionnaire.sections.at(-1)?.questions.at(-1)">Finish</button>
+          <button v-else @click.prevent="nextQuestion">Næste spørgsmål</button>
         </li>
       </ul>
     </div>
-    <div class="form-container">
-      <form @submit.prevent="handleSubmit(input)" class="input">
-        <input v-model="input" ref="inputElement" />
-        <button type="submit" :disabled="disableSubmit" class="send" :class="`${loading ? 'loading' : ''}`">
-          <span> Send </span>
-          <div class="spinner" v-if="loading">
-            <LoadingSpinner></LoadingSpinner>
-          </div>
-        </button>
-      </form>
-    </div>
+    <ClientOnly>
+      <div class="form-container">
+        <form @submit.prevent="handleSubmit(input)" class="input">
+          <input v-model="input" ref="inputElement" />
+          <button type="submit" :disabled="disableSubmit" class="send" :class="`${loading ? 'loading' : ''}`">
+            <span> Send </span>
+            <div class="spinner" v-if="loading">
+              <LoadingSpinner></LoadingSpinner>
+            </div>
+          </button>
+        </form>
+      </div>
+    </ClientOnly>
   </main>
 </template>
 
@@ -57,6 +60,7 @@
 const props = defineProps<{
   questionnaire: Questionnaire;
 }>();
+
 const data = useDataStore();
 
 function nextQuestion() {
@@ -186,7 +190,7 @@ function sendMessages() {
       messages: data.currentQuestion.answer.answer,
       previousAnswers: data.toString(),
       question: data.currentQuestion,
-      questionnaire: data.questionnaire,
+      questionnaire: props.questionnaire,
     })
   );
 }
@@ -197,7 +201,7 @@ function startConversation() {
       messages: [{ role: "user", content: { content: "Start the conversation", type: "text" } }],
       previousAnswers: data.toString(),
       question: data.currentQuestion,
-      questionnaire: data.questionnaire,
+      questionnaire: props.questionnaire,
     })
   );
   setTimeout(() => {
@@ -219,7 +223,7 @@ function continueConversation() {
       ],
       previousAnswers: data.toString(),
       question: data.currentQuestion,
-      questionnaire: data.questionnaire,
+      questionnaire: props.questionnaire,
     })
   );
   setTimeout(() => {
@@ -249,8 +253,7 @@ function cleanIncomingString(input: string): string {
     .replace(/^(\s*.*?\"content\":\")|(^\s*?.*$)/, "")
     .replace(/","type":".*$/, "")
     .replace(/\\n/g, "\n")
-    .replace(/\\"/g, '"')
-    .slice(0, -3);
+    .replace(/\\"/g, '"');
 }
 </script>
 

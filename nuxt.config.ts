@@ -9,5 +9,12 @@ export default defineNuxtConfig({
     },
   },
 
+  app: {
+    head: {
+      title: "AIDIA", // default fallback title
+      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.svg" }],
+    },
+  },
+
   modules: ["@pinia/nuxt"],
 });

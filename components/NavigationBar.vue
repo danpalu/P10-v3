@@ -5,12 +5,16 @@
         <a
           class="section-link"
           :href="`#section-${section.id}`"
-          @click="sectionClick(section.id)"
+          @click="data.questionnaire.type == 'survey' ? sectionClick(section.id) : null"
           :class="`${selectedSectionIndex === section.id ? 'selected' : ''} ${
             selectedSectionIndex > section.id ? 'completed' : ''
-          }`">
+          }
+          ${data.questionnaire.type == 'chat' ? 'disable-link' : ''}`">
           {{ section.id }}. {{ section.title }}
         </a>
+      </li>
+      <li class="section">
+        <a class="section-link disable-link" href="#">{{ sections.length + 1 }}. Færdig</a>
       </li>
       <div class="indicator">
         <div class="container">
@@ -57,18 +61,19 @@ watch(
       });
       progress[index] =
         (numberQuestionsCompleted / section.questions.length) * (1 / data.questionnaire.sections.length);
+      if (progress[index] > 0.249) {
+        selectedSectionIndex.value = section.id + 1;
+      }
     });
     height.value = 0;
-    console.log(progress);
+    console.log("progress", progress);
 
     progress.forEach((value) => (height.value += value));
-    console.log(height.value);
     indicator.value?.style.setProperty("height", `${height.value * 100}%`);
   }
 );
 
 function sectionClick(id: number) {
-  if (data.questionnaire.type === "chat") return;
   selectedSectionIndex.value = id;
   const calculatedHeight = (100 * (selectedSectionIndex.value - 1)) / (props.sections.length - 1);
   indicator.value?.style.setProperty("height", `${calculatedHeight}%`);
@@ -175,6 +180,11 @@ nav ul {
 
   &.selected::before {
     border-color: var(--color-blue);
+  }
+
+  &.disable-link {
+    pointer-events: none;
+    cursor: text;
   }
 }
 </style>
