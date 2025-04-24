@@ -32,7 +32,7 @@
         <li
           v-if="
             data.currentQuestion.answer.answer.length != 0 &&
-            data.currentQuestion.answer.answer[data.currentQuestion.answer.answer.length - 1].content.type == 'summary'
+            data.currentQuestion.answer.answer.at(-1)?.content.type == 'summary'
           "
           class="button-container">
           <button v-if="data.currentQuestion == data.questionnaire.sections.at(-1)?.questions.at(-1)">Finish</button>
