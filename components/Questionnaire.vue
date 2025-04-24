@@ -1,10 +1,13 @@
 <template>
   <form>
-    <slot> </slot>
+    <slot v-if="data.questionnaire.type == 'survey'"> </slot>
+    <Chat v-else :questionnaire="data.questionnaire"></Chat>
   </form>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+const data = useDataStore();
+</script>
 
 <style scoped>
 form {

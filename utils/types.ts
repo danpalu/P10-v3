@@ -1,14 +1,23 @@
 import { z } from "zod";
 
 export const MessageContent = z.object({
-  type: z.enum(["text", "slider-question", "binary-question", "summary", "color-question"]),
+  content: z.string(),
+  type: z.enum([
+    "text",
+    "summary",
+    "slider-question",
+    "color-question",
+    "moodboard-question",
+    "branding-card-question",
+  ]),
   sliderDetails: z
     .object({
       xAxis: z.object({ minLabel: z.string(), maxLabel: z.string() }),
     })
     .nullable(),
   colorDetails: z.object({ colors: z.array(z.string()) }).nullable(),
-  content: z.string(),
+  moodboardSearchString: z.string().nullable(),
+  brandingCardDetails: z.object({ emotion: z.string(), oppositeEmotion: z.string() }).nullable(),
 });
 
 export type MessageContentType = z.infer<typeof MessageContent>;
@@ -26,7 +35,6 @@ export type ChatMessage = {
 export type Question = {
   id: number;
   title: string;
-  type: "text" | "chat";
   answer: Answer;
 };
 
@@ -39,4 +47,9 @@ export type QuestionSection = {
   id: number;
   title: string;
   questions: Question[];
+};
+
+export type Questionnaire = {
+  type: "chat" | "survey";
+  sections: QuestionSection[];
 };

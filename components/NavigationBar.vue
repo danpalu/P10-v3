@@ -27,11 +27,48 @@ const props = defineProps<{
   sections: QuestionSection[];
 }>();
 
+const data = useDataStore();
+
 const selectedSectionIndex = ref<number>(1);
 
 const indicator = useTemplateRef("indicator");
 
+let totalNumberOfQuestions = 0;
+props.sections.forEach((section) => {
+  section.questions.forEach(() => totalNumberOfQuestions++);
+});
+
+const progress: number[] = [];
+let height = ref(0);
+watch(
+  () => data.currentQuestion,
+  (newValue) => {
+    let currentQuestionFound = false;
+    data.questionnaire.sections.forEach((section, index) => {
+      if (currentQuestionFound) return;
+      let numberQuestionsCompleted = 0;
+      section.questions.forEach((question) => {
+        if (currentQuestionFound) return;
+        if (question == data.currentQuestion) {
+          currentQuestionFound = true;
+        } else {
+          numberQuestionsCompleted++;
+        }
+      });
+      progress[index] =
+        (numberQuestionsCompleted / section.questions.length) * (1 / data.questionnaire.sections.length);
+    });
+    height.value = 0;
+    console.log(progress);
+
+    progress.forEach((value) => (height.value += value));
+    console.log(height.value);
+    indicator.value?.style.setProperty("height", `${height.value * 100}%`);
+  }
+);
+
 function sectionClick(id: number) {
+  if (data.questionnaire.type === "chat") return;
   selectedSectionIndex.value = id;
   const calculatedHeight = (100 * (selectedSectionIndex.value - 1)) / (props.sections.length - 1);
   indicator.value?.style.setProperty("height", `${calculatedHeight}%`);
@@ -46,6 +83,7 @@ onMounted(() => {
 nav {
   padding: 0 40px;
   justify-content: start;
+  min-height: 100dvh;
 }
 nav ul {
   display: grid;
@@ -64,7 +102,7 @@ nav ul {
   width: 5px;
   left: 11px;
   transform: translateX(-50%);
-  padding: 0.5em 0;
+  padding: 1.3em 0;
 
   & .container {
     position: relative;

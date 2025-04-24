@@ -7,9 +7,10 @@ const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 export default defineWebSocketHandler({
   open(peer) {},
   async message(peer, message) {
-    const messages: ClientMessage[] = message.json().messages;
-    const question: Question = message.json().question;
-    const previousAnswers: string = message.json().previousAnswers;
+    const messageParsed = JSON.parse(message.toString());
+    const messages: ClientMessage[] = messageParsed.messages;
+    const question: Question = messageParsed.question;
+    const previousAnswers: string = messageParsed.previousAnswers;
     const messageHistory: ChatMessage[] = [];
     messages.forEach((msg) => {
       messageHistory.push({
@@ -28,26 +29,33 @@ export default defineWebSocketHandler({
       input: [
         {
           role: "system",
-          content: `You are a helpful design assistant, tasked with preparing the user for the first talk with a designer. 
+          content: `You are a helpful design assistant, tasked with preparing the user for the first talk with a brand / graphical designer. 
           
-          Speak in Danish. 
+          You help the user answer the question: "${question.title}". FOCUS ONLY ON THIS QUESTION.
           
-          You help the user reflect over the following question: ${question.title}. Focus ONLY on that question during this conversation. 
-          
-          You ask the user followup question to make sure the user comes up with a well thought out answer. 
-          
-          The user has previously answered other questions, which can be seen in the following json formatted text: 
-
+          The user has previously answered other questions and will answer the unaswered ones in the future, which can be seen in the following json formatted text: 
           ${previousAnswers} 
           
           If applicable, use the previous answers to help the user reflect over the current question.
 
-          When appropriate, ask a slider-question or a color-question. 
-          The slider-question is a slider from a a minimum to a maximum value, with labels for both ends. The color-question is a question where the user can select a color from a list of colors in hex format. Suggest colors based on the information about the vibe and feel of the user's company and previous answers. Do not put the colors in the content text.
+          When appropriate, ask a slider-question or a color-question or a moodboard-question or a branding-card-question.
+          
+          The slider-question is a slider from a a minimum to a maximum value, with labels for both ends. 
+          
+          The color-question is a question where the user can select a color from a list of colors in hex format. Suggest colors based on the information about the vibe and feel of the user's company and previous answers. For example, if the company is luxurious, suggest gold, purple and such colors. Do not put the colors in the content text.
+
+          The moodboard-question is a question where the user can select a moodboard from a list of images. Output a search string to find the moodboard. 
+
+          The branding-card-question is a question where the user can select an emotion of feel of their brand, so the emotions should be polar opposites. 
 
           Output in valid JSON format, following the scheme. 
           
-          You can summarize the conversation by outputting the summary and asking if it is correct. Make sure to make the type "text" if you do not have confirmation from the user, that the summary is correct. Then, if the summary if correct, output the summary as a direct answer to the stated question, like the user has answered it in first person, and make the type summary. `,
+          You can summarize the conversation by outputting the summary and asking if it is correct. Make sure to make the type "text" if you do not have confirmation from the user, that the summary is correct. Then, if the summary if correct, output the summary as a direct answer to the stated question, like the user has answered it in first person, and make the type summary. 
+          
+          Do not use ** for bold text. 
+
+          Speak in Danish. 
+          `,
         },
         ...messageHistory,
       ],

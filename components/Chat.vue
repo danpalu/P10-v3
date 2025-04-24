@@ -2,8 +2,19 @@
   <main class="chat-container">
     <div class="messages-container" id="message-scroller" ref="message-scroller">
       <ul class="messages">
+        <template v-for="prevQuestion in getPreviousQuestions(data.questionnaire, data.currentQuestion)">
+          <li
+            v-for="(message, index) in prevQuestion.answer.answer"
+            class="message"
+            :class="`${message.role} ${message.content.type} ${
+              index === prevQuestion.answer.answer.length - 1 ? 'last' : ''
+            }`">
+            {{ message.content.content }}
+          </li>
+        </template>
+
         <li
-          v-for="message in question.answer.answer"
+          v-for="message in data.currentQuestion.answer.answer"
           class="message"
           :class="`${message.role} ${message.content.type}`">
           {{ message.content.content }}
@@ -14,18 +25,17 @@
               class="color"
               :style="{ background: color }"></button>
           </div>
-          <div v-if="message.content.type === 'slider-question'"></div>
         </li>
         <li v-if="showIncomingMessage" class="incoming message assistant">
           {{ cleanIncomingString(incomingString) }}
         </li>
         <li
           v-if="
-            question.answer.answer.length != 0 &&
-            question.answer.answer[question.answer.answer.length - 1].content.type == 'summary'
+            data.currentQuestion.answer.answer.length != 0 &&
+            data.currentQuestion.answer.answer[data.currentQuestion.answer.answer.length - 1].content.type == 'summary'
           "
           class="button-container">
-          <button @click.prevent="$emit('closeChat')">Gem</button>
+          <button @click.prevent="nextQuestion">Næste spørgsmål</button>
         </li>
       </ul>
     </div>
@@ -45,8 +55,19 @@
 
 <script lang="ts" setup>
 const props = defineProps<{
-  question: Question;
+  questionnaire: Questionnaire;
 }>();
+const data = useDataStore();
+
+function nextQuestion() {
+  data.currentQuestion = getQuestionById(props.questionnaire, data.currentQuestion?.id + 1);
+  if (data.currentQuestion.answer.answer.length == 0) {
+    continueConversation();
+  } else {
+    ready.value = true;
+    loading.value = false;
+  }
+}
 
 let ws: WebSocket;
 let wsURL: URL;
@@ -58,7 +79,6 @@ const ready = ref(false);
 
 const showIncomingMessage = ref(false);
 const incomingString = ref<string>("");
-const data = useDataStore();
 const inputElement = useTemplateRef("inputElement");
 
 onMounted(() => {
@@ -70,7 +90,7 @@ onMounted(() => {
   ws = new WebSocket(wsURL);
 
   ws.onopen = () => {
-    if (props.question.answer.answer.length == 0) {
+    if (data.currentQuestion.answer.answer.length == 0) {
       startConversation();
     } else {
       ready.value = true;
@@ -92,13 +112,12 @@ onMounted(() => {
         role: "assistant",
         content: JSON.parse(incomingString.value.trim()),
       };
-
-      props.question.answer.answer.push(newMessage);
+      data.currentQuestion.answer.answer.push(newMessage);
       resetIncomingMessage();
       showIncomingMessage.value = false;
       if (newMessage.content.type == "summary") {
         showSaveButton.value = true;
-        props.question.answer.summary = newMessage.content.content;
+        data.currentQuestion.answer.summary = newMessage.content.content;
         setTimeout(() => {
           scrollToButtom();
         }, 100);
@@ -107,9 +126,16 @@ onMounted(() => {
       return;
     }
     if (message.data == "[ERROR]") {
-      props.question.answer.answer.push({
+      data.currentQuestion.answer.answer.push({
         role: "assistant",
-        content: { content: `Error: ${message.data}`, type: "text", sliderDetails: null, colorDetails: null },
+        content: {
+          content: `Error: ${message.data}`,
+          type: "text",
+          sliderDetails: null,
+          colorDetails: null,
+          moodboardSearchString: null,
+          brandingCardDetails: null,
+        },
       });
       showIncomingMessage.value = false;
       resetIncomingMessage();
@@ -127,14 +153,17 @@ function resetIncomingMessage() {
 
 let disableSubmit = computed(() => !ready.value || input.value.trim() === "" || showIncomingMessage.value);
 
-function resetMessages() {
-  props.question.answer.answer = [];
-}
-
 function addUserMessage(userInput: string) {
-  props.question.answer.answer.push({
+  data.currentQuestion.answer.answer.push({
     role: "user",
-    content: { content: userInput.trim(), type: "text", sliderDetails: null, colorDetails: null },
+    content: {
+      content: userInput.trim(),
+      type: "text",
+      sliderDetails: null,
+      colorDetails: null,
+      moodboardSearchString: null,
+      brandingCardDetails: null,
+    },
   });
 }
 
@@ -143,13 +172,7 @@ let input = ref<string>("");
 function sendColorAnswer(color: string) {
   loading.value = true;
   addUserMessage(color);
-  ws.send(
-    JSON.stringify({
-      messages: props.question.answer.answer,
-      previousAnswers: data.toString(),
-      question: props.question,
-    })
-  );
+  sendMessages();
   input.value = "";
 
   setTimeout(() => {
@@ -157,12 +180,24 @@ function sendColorAnswer(color: string) {
   }, 100);
 }
 
+function sendMessages() {
+  ws.send(
+    JSON.stringify({
+      messages: data.currentQuestion.answer.answer,
+      previousAnswers: data.toString(),
+      question: data.currentQuestion,
+      questionnaire: data.questionnaire,
+    })
+  );
+}
+
 function startConversation() {
   ws.send(
     JSON.stringify({
       messages: [{ role: "user", content: { content: "Start the conversation", type: "text" } }],
       previousAnswers: data.toString(),
-      question: props.question,
+      question: data.currentQuestion,
+      questionnaire: data.questionnaire,
     })
   );
   setTimeout(() => {
@@ -170,16 +205,31 @@ function startConversation() {
   }, 100);
 }
 
+function continueConversation() {
+  ws.send(
+    JSON.stringify({
+      messages: [
+        {
+          role: "user",
+          content: {
+            content: "We just started on the next question. Continue the conversation by asking me the question",
+            type: "text",
+          },
+        },
+      ],
+      previousAnswers: data.toString(),
+      question: data.currentQuestion,
+      questionnaire: data.questionnaire,
+    })
+  );
+  setTimeout(() => {
+    scrollToButtom();
+  }, 100);
+}
 function handleSubmit(text: string) {
   loading.value = true;
   addUserMessage(text);
-  ws.send(
-    JSON.stringify({
-      messages: props.question.answer.answer,
-      previousAnswers: data.toString(),
-      question: props.question,
-    })
-  );
+  sendMessages();
   input.value = "";
 
   setTimeout(() => {
@@ -195,7 +245,12 @@ function scrollToButtom() {
 }
 
 function cleanIncomingString(input: string): string {
-  return input.replace(/^(\s*.*?\"content\":\")|(^\s*?.*$)/, "").slice(0, -3);
+  return input
+    .replace(/^(\s*.*?\"content\":\")|(^\s*?.*$)/, "")
+    .replace(/","type":".*$/, "")
+    .replace(/\\n/g, "\n")
+    .replace(/\\"/g, '"')
+    .slice(0, -3);
 }
 </script>
 
@@ -296,6 +351,10 @@ function cleanIncomingString(input: string): string {
 
 .message .role {
   font-weight: 600;
+}
+
+.message.last {
+  margin-bottom: 15rem;
 }
 
 .form-container {

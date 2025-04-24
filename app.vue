@@ -4,9 +4,9 @@ const data = useDataStore();
 </script>
 
 <template>
-  <NavigationBar :sections="data.questionnaire"></NavigationBar>
+  <NavigationBar :sections="data.questionnaire.sections"></NavigationBar>
   <Questionnaire>
-    <QuestionnaireSection v-for="section in data.questionnaire" :section="section">
+    <QuestionnaireSection v-for="section in data.questionnaire.sections" :section="section">
       <Question v-for="question in section.questions" :question="question"></Question>
     </QuestionnaireSection>
   </Questionnaire>
