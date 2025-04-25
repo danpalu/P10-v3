@@ -1,6 +1,6 @@
 export const useDataStore = defineStore("data", () => {
   const questionnaire = ref<Questionnaire>({
-    type: "chat",
+    type: "do-ai",
     sections: [
       {
         id: 1,
