@@ -89,6 +89,7 @@ nav {
   padding: 0 40px;
   justify-content: start;
   min-height: 100dvh;
+  background-color: var(--color-black);
 }
 nav ul {
   display: grid;
@@ -123,7 +124,7 @@ nav ul {
   width: 100%;
   border-radius: 999px;
   transition: height 0.5s ease-in-out;
-  background: linear-gradient(in oklch 180deg, var(--color-blue) 0%, var(--color-purple) 100%);
+  background: var(--color-background);
 }
 
 .indicator-inner-track {
@@ -134,7 +135,7 @@ nav ul {
   transform: scaleX(0.6);
   transform-origin: center;
   border-radius: 999px;
-  background: #ddd;
+  background: var(--color-grey);
 }
 
 .section-link {
@@ -143,18 +144,18 @@ nav ul {
   gap: 1rem;
   text-decoration: none;
   border-radius: 999px;
-  color: var(--color-text);
+  color: var(--color-grey);
 
   &.selected {
-    color: var(--color-blue);
+    color: var(--color-background);
   }
 
   &:not(.selected):not(.completed):hover {
-    color: var(--color-blue);
+    color: var(--color-black);
   }
 
   &.completed {
-    color: var(--color-blue);
+    color: var(--color-dark-grey);
   }
 
   &::before {
@@ -164,22 +165,26 @@ nav ul {
     justify-content: center;
     align-items: center;
     font-size: 0.8rem;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-radius: 999px;
-    background: white;
-    border: var(--color-text) 1px solid;
+    background: var(--color-dark-grey);
+    border: var(--color-grey) 2px solid;
+  }
+
+  &.selected::before {
+    background: var(--color-background);
   }
 
   &.completed::before {
     content: "✓";
-    background: var(--color-blue);
-    color: white;
-    border-color: var(--color-blue);
+    background: var(--color-dark-grey);
+    color: var(--color-background);
+    border-color: var(--color-background);
   }
 
   &.selected::before {
-    border-color: var(--color-blue);
+    border-color: var(--color-grey);
   }
 
   &.disable-link {
