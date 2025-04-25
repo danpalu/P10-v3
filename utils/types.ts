@@ -39,6 +39,7 @@ export type Question = {
   id: number;
   title: string;
   answer: Answer;
+  type: string;
 };
 
 export type Answer = {

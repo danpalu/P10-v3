@@ -1,8 +1,9 @@
-export function newQuestion(id: number, title: string): Question {
+export function newQuestion(id: number, title: string, type: string): Question {
   return {
     id: id,
     title: title,
     answer: { answer: [], summary: "" },
+    type: type,
   };
 }
 

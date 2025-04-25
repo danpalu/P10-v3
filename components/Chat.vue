@@ -311,7 +311,7 @@ function sendMessages() {
 function startConversation() {
   ws.send(
     JSON.stringify({
-      messages: [{ role: "user", content: { content: "Start the conversation", type: "text" } }],
+      messages: [{ role: "user", content: { content: "Start the conversation", type: data.currentQuestion.type} }],
       previousAnswers: data.toString(),
       question: data.currentQuestion,
       questionnaire: props.questionnaire,
