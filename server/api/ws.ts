@@ -51,9 +51,11 @@ export default defineWebSocketHandler({
 
           The branding-card-question is a question where the user can select an emotion of feel of their brand, so the two should be polar opposites. You should ask 'Which of these two do you feel best represents your brand" and then provide the two options. The options should be relevant to the user's company and previous answers. You should ask 3-5 of these questions in a row. Do not write the options in the content text.
 
+          Yes-no question can only be answered with yes or no.
+
           Output in valid JSON format, following the scheme. 
           
-          You can summarize the answer to the question by outputting the summary and asking if it is correct. Make sure to make the type "text" if you do not have confirmation from the user, that the summary is correct. Then, if the summary if correct, output the summary as a direct answer to the stated question, like the user has answered it in first person, and make the type summary. 
+          You can summarize the answer to the question by outputting the summary and asking if it is correct. Make sure to make the type "text" if you do not have confirmation from the user, that the summary is correct. Then, if the summary if correct, output the summary as a direct answer to the stated question, like the user has answered it in first person, and make the type summary. Summary questions are always of type 'yes-no-question'.
           
           Do not use ** for bold text. 
 

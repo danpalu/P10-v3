@@ -47,6 +47,22 @@
                 {{ message.content.brandingCardDetails.oppositeEmotion }}
                 </button>
             </div>
+            <div v-if="message.content.type === 'yes-no-question'" class="yes-no-options">
+            <button
+                @click.prevent="sendYesNoAnswer('No')"
+                class="yes-no-button"
+                :class="{ selected: selectedYesNo === 'No' }"
+            >
+                Nej, lad mig yddybe
+            </button>
+            <button
+                @click.prevent="sendYesNoAnswer('Yes')"
+                class="yes-no-button"
+                :class="{ selected: selectedYesNo === 'Yes' }"
+            >
+                Ja, det er korrekt
+            </button>
+            </div>
             <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
                 <ul>
                     <li
@@ -240,6 +256,18 @@
     }
     }
 
+    const selectedYesNo = ref<string>("");
+
+    function sendYesNoAnswer(answer: string) {
+    selectedYesNo.value = answer;
+    loading.value = true;
+    addUserMessage(answer, true);
+    sendMessages();
+    setTimeout(() => {
+        scrollToButtom();
+    }, 100);
+    }
+
     async function handleMoodboard(search: string) {
     try {
         const response = await $fetch("/api/unsplash", {
@@ -408,6 +436,24 @@
     </script>
 
     <style>
+    .yes-no-options {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+    }
+
+    .yes-no-button {
+        font-size: 0.9rem; /* Adjust text size to smaller */
+        padding: 0.5rem 0.8rem; /* Adjust padding to maintain proportions */
+        width: 100%; /* Make the button fill the entire width */
+        box-sizing: border-box; /* Ensure padding is included in the width */
+    }
+
+    button:hover {
+    background-color: var(--color-dark-grey); /* Slightly lighter background on hover */
+    }
+
     /* Style for checkboxes to be hidden */
     .checkbox-option {
     display: none; /* Hide checkbox but keep it functional */
