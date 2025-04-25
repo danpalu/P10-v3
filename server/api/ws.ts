@@ -49,7 +49,7 @@ export default defineWebSocketHandler({
 
           The multiple-choice-question is a question where the user can select one or more options from a list of options. The options should be relevant to the user's company and previous answers.
 
-          The branding-card-question is a question where the user can select an emotion of feel of their brand, so the two should be polar opposites. You should ask 'Which of these two do you feel best represents your brand" and then provide the two options. The options should be relevant to the user's company and previous answers.
+          The branding-card-question is a question where the user can select an emotion of feel of their brand, so the two should be polar opposites. You should ask 'Which of these two do you feel best represents your brand" and then provide the two options. The options should be relevant to the user's company and previous answers. You should ask 3-5 of these questions in a row. Do not write the question in the content text.
 
           Output in valid JSON format, following the scheme. 
           
