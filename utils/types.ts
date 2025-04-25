@@ -10,6 +10,7 @@ export const MessageContent = z.object({
     "moodboard-question",
     "multiple-choice-question",
     "branding-card-question",
+    "yes-no-question",
   ]),
   sliderDetails: z
     .object({

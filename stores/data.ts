@@ -37,32 +37,32 @@ export const useDataStore = defineStore("data", () => {
           // newQuestion(9, "Hvilke brands eller designs finder du inspirerende? Hvad er det, du godt kan lide ved dem?"),
           // newQuestion(10, "Hvem er virksomhedens/organisationens nuværende og ønskede kunder?"),
           newQuestion(
-            11,
+            5,
             "Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?",
             "moodboard"
           ),
           newQuestion(
-            12,
+            6,
             "Er der særlige symboler, ikoner, farver eller andet visuelt, der har en særlig betydning for din virksomhed/organisation?",
             "color"
           ),
           ,
-          newQuestion(5, "Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?", "text"),
+          newQuestion(7, "Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?", "text"),
         ],
       },
       {
         id: 3,
         title: "Praktiske detaljer",
         questions: [
-          newQuestion(6, "Hvilke leverancer forventer du?", "multiple-choice"),
-          newQuestion(7, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "text"),
-          newQuestion(8, "Hvad er virksomhedens/organisationens budget til projektet?", "text"),
+          newQuestion(8, "Hvilke leverancer forventer du?", "multiple-choice"),
+          newQuestion(9, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "text"),
+          newQuestion(10, "Hvad er virksomhedens/organisationens budget til projektet?", "text"),
         ],
       },
       {
         id: 4,
         title: "Andet",
-        questions: [newQuestion(9, "Er der andet, du gerne vil tilføje?", "text")],
+        questions: [newQuestion(11, "Er der andet, du gerne vil tilføje?", "text")],
       },
     ],
   });
