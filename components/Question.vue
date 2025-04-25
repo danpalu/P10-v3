@@ -1,7 +1,11 @@
 <template>
-  <div class="question" v-if="data.questionnaire.type == 'survey'">
+  <div class="question">
     <label :for="`question-${question.id}`"> {{ question.id }}. {{ question.title }} </label>
-    <input type="text" :id="`question-${question.id}`" @input="saveAnswer($event)" />
+    <input
+      v-if="data.questionnaire.type == 'survey'"
+      type="text"
+      :id="`question-${question.id}`"
+      @input="saveAnswer($event)" />
   </div>
 </template>
 

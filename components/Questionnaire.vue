@@ -1,9 +1,10 @@
 <template>
   <form>
-    <slot v-if="props.questionnaire.type == 'survey' || props.questionnaire.type == 'do-non-ai'"> </slot>
+    <slot v-if="props.questionnaire.type == 'survey'"> </slot>
     <Chat
       v-else-if="props.questionnaire.type == 'do-ai' || props.questionnaire.type == 'chat'"
       :questionnaire="props.questionnaire"></Chat>
+    <DoNonAI v-else-if="props.questionnaire.type == 'do-non-ai'"></DoNonAI>
   </form>
 </template>
 
