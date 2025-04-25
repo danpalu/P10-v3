@@ -19,6 +19,7 @@ export const MessageContent = z.object({
   colorDetails: z.object({ colors: z.array(z.string()) }).nullable(),
   moodboardSearchString: z.string().nullable(),
   brandingCardDetails: z.object({ emotion: z.string(), oppositeEmotion: z.string() }).nullable(),
+  hiddenInChat: z.boolean().nullable(),
 });
 
 export type MessageContentType = z.infer<typeof MessageContent>;

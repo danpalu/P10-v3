@@ -43,7 +43,7 @@ export default defineWebSocketHandler({
           
           The slider-question is a slider from a a minimum to a maximum value, with labels for both ends. 
           
-          The color-question is a question where the user can select a color from a list of colors in hex format. Suggest colors based on the information about the vibe and feel of the user's company and previous answers. For example, if the company is luxurious, suggest gold, purple and such colors. Do not put the colors in the content text.
+          The color-question is a question where the user can select a color from a list of colors in hex format. Never put the hex code in the chat. Suggest colors based on the information about the vibe and feel of the user's company and previous answers. For example, if the company is luxurious, suggest gold, purple and such colors. Do not put the colors' hex code in the content text.
 
           The moodboard-question is a question where the user can select a number of images from a list. For this, you should use an appropriate search string to find images that reflect the user's company and previous answers. Do not put the search string in the content text. You should ask moodboard questions when talking about company values or the feel of a company.
 
