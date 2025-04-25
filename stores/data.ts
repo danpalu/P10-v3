@@ -1,6 +1,6 @@
 export const useDataStore = defineStore("data", () => {
   const questionnaire = ref<Questionnaire>({
-    type: "do-ai",
+    type: "do-non-ai",
     sections: [
       {
         id: 1,
@@ -19,7 +19,8 @@ export const useDataStore = defineStore("data", () => {
           // newQuestion(5, "Hvad vil du gerne have, at folk siger om din virksomhed/organisation?"),
           newQuestion(
             3,
-            "Hvis du skulle vælge en kendt person eller fiktiv karakter som ambassadør for din  virksomhed/organisation – hvem ville det så være, og hvorfor?", "text"
+            "Hvis du skulle vælge en kendt person eller fiktiv karakter som ambassadør for din  virksomhed/organisation – hvem ville det så være, og hvorfor?",
+            "text"
           ),
         ],
       },
