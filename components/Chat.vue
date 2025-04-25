@@ -344,22 +344,26 @@ function cleanIncomingString(input: string): string {
 <style>
 .branding-card-container {
   display: flex;
-  gap: 1rem;
-  margin-top: 10px;
+  gap: 2rem;
 }
 
 .branding-option {
-  padding: 12px 20px;
   border-radius: 8px;
-  background-color: #f3f3f3;
-  border: 1px solid #ccc;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
-}
+  padding: 60px 70px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  margin: 20px 0;
 
-.branding-option:hover {
-  background-color: #e0e0e0;
+  &.dark {
+    background: #363636;
+    color: #fefefe;
+  }
+  &.light {
+    background: #fefefe;
+    color: #333;
+  }
 }
 
 .moodboard-container {

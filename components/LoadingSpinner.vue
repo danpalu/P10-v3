@@ -17,13 +17,12 @@
 }
 
 .loading-spinner {
-  background: linear-gradient(in oklch 0deg, var(--color-blue), var(--color-purple));
+  background: linear-gradient(in oklch 0deg, #fff 0%, #696969 100%);
   border-radius: 50%;
   width: 30px;
   height: 30px;
   animation: spin 1s linear infinite;
-  filter: drop-shadow(0 0 7px rgba(var(--color-blue-rgb), 1))
-    drop-shadow(0px -5px 7px rgba(var(--color-purple-rgb), 0.1));
+  filter: drop-shadow(0 0 4px #aaaaaa86) drop-shadow(0px 5px 7px #ffffff69);
 }
 @keyframes spin {
   0% {

@@ -108,16 +108,16 @@ html {
 
 *::selection {
   background: var(--color-purple);
-  color: chartreuse;
+  color: white;
 }
 
 button {
   border: none;
-  padding: 10px 20px;
+  padding: 15px 25px;
   border-radius: 999px;
   color: white;
   margin: 2px;
-  background: linear-gradient(in oklch -45deg, #1c89ff, #4900d1);
+  background: #333;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -126,8 +126,6 @@ button {
   text-transform: uppercase;
 
   &:disabled {
-    background: linear-gradient(in oklch -45deg, #3c9aff, #5e28c2);
-    color: white;
     cursor: not-allowed;
   }
 
