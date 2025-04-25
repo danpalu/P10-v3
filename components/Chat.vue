@@ -33,15 +33,17 @@
               <img :src="image.url" :alt="image.alt" class="moodboard-image" />
             </button>
           </div>
-          <div v-if="message.content.type === 'branding-card-question'" class="branding-card-container">
+          <div
+            v-if="message.content.type === 'branding-card-question' && message.content.brandingCardDetails"
+            class="branding-card-container">
             <button
               @click.prevent="sendTextAnswer(message.content.brandingCardDetails.emotion)"
-              class="branding-option">
+              class="branding-option dark">
               {{ message.content.brandingCardDetails.emotion }}
             </button>
             <button
               @click.prevent="sendTextAnswer(message.content.brandingCardDetails.oppositeEmotion)"
-              class="branding-option">
+              class="branding-option light">
               {{ message.content.brandingCardDetails.oppositeEmotion }}
             </button>
           </div>
@@ -179,6 +181,10 @@ onMounted(() => {
   };
 });
 
+function resetIncomingMessage() {
+  incomingString.value = "";
+}
+
 async function handleMoodboard(search: string) {
   try {
     const response = await $fetch("/api/unsplash", {
@@ -205,8 +211,31 @@ async function handleMoodboard(search: string) {
   }
 }
 
-function resetIncomingMessage() {
-  incomingString.value = "";
+function sendImageAnswer(image: string) {
+  loading.value = true;
+  addUserMessage(image, true);
+  sendMessages();
+  input.value = "";
+
+  setTimeout(() => {
+    scrollToButtom();
+  }, 100);
+}
+
+function sendTextAnswer(text: string) {
+  loading.value = true;
+  addUserMessage(
+    "My company is best represented by " +
+      text +
+      ". Now ask me a new branding card question. Unless you have already asked me three branding card question, then proceed.",
+    true
+  );
+  sendMessages();
+  input.value = "";
+
+  setTimeout(() => {
+    scrollToButtom();
+  }, 100);
 }
 
 let disableSubmit = computed(() => !ready.value || input.value.trim() === "" || showIncomingMessage.value);
@@ -231,28 +260,6 @@ let input = ref<string>("");
 function sendColorAnswer(color: string) {
   loading.value = true;
   addUserMessage(color, true);
-  sendMessages();
-  input.value = "";
-
-  setTimeout(() => {
-    scrollToButtom();
-  }, 100);
-}
-
-function sendImageAnswer(image: string) {
-  loading.value = true;
-  addUserMessage(image, true);
-  sendMessages();
-  input.value = "";
-
-  setTimeout(() => {
-    scrollToButtom();
-  }, 100);
-}
-
-function sendTextAnswer(text: string) {
-  loading.value = true;
-  addUserMessage(text);
   sendMessages();
   input.value = "";
 
