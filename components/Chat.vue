@@ -37,6 +37,16 @@
                 />
             </button>
             </div>
+            <div v-if="message.content.type === 'branding-card-question'" class="branding-card-container">
+            <button
+                @click.prevent="sendTextAnswer(message.content.brandingCardDetails.emotion)"
+                class="branding-option"> {{ message.content.brandingCardDetails.emotion }}
+            </button>
+            <button
+                @click.prevent="sendTextAnswer(message.content.brandingCardDetails.oppositeEmotion)"
+                class="branding-option"> {{ message.content.brandingCardDetails.oppositeEmotion }}
+            </button>
+            </div>
           </li>
           <li v-if="showIncomingMessage" class="incoming message assistant">
             {{ cleanIncomingString(incomingString) }}
@@ -240,6 +250,16 @@
     }, 100);
   }
 
+  function sendTextAnswer(text: string) {
+    loading.value = true;
+    addUserMessage(text);
+    sendMessages();
+    input.value = "";
+
+    setTimeout(() => {
+        scrollToButtom();
+    }, 100);
+}
   
   function sendMessages() {
     ws.send(
@@ -315,6 +335,26 @@
   </script>
   
   <style>
+.branding-card-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 10px;
+}
+
+.branding-option {
+  padding: 12px 20px;
+  border-radius: 8px;
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.branding-option:hover {
+  background-color: #e0e0e0;
+}
+
 .moodboard-container {
   display: flex;
   gap: 1rem; /* space between images */
