@@ -445,9 +445,9 @@
 
     .yes-no-button {
         font-size: 0.9rem; /* Adjust text size to smaller */
-        padding: 0.5rem 0.8rem; /* Adjust padding to maintain proportions */
         width: 100%; /* Make the button fill the entire width */
         box-sizing: border-box; /* Ensure padding is included in the width */
+        padding: 0.5rem 0.8rem; /* Adjust padding to maintain proportions */
     }
 
     button:hover {
@@ -660,7 +660,7 @@
         background: #dcf1df;
 
         &::before {
-        content: "Summary: ";
+        content: "Opsummering: ";
         font-weight: 600;
         display: block;
         }
