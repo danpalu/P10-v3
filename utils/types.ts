@@ -53,6 +53,6 @@ export type QuestionSection = {
 };
 
 export type Questionnaire = {
-  type: "chat" | "survey";
+  type: "chat" | "survey" | "do-non-ai" | "do-ai";
   sections: QuestionSection[];
 };

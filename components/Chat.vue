@@ -49,22 +49,17 @@
           </div>
           <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
             <ul>
-                <li
+              <li
                 v-for="(option, index) in message.content.multipleChoiceDetails"
                 :key="index"
                 class="questionnaire-item"
-                style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
-
-                <span
-                class="questionnaire-text clickable-option"
-                @click.prevent="sendQuestionnaireAnswer(option)"
-                >
-                {{ option }}
+                style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem">
+                <span class="questionnaire-text clickable-option" @click.prevent="sendQuestionnaireAnswer(option)">
+                  {{ option }}
                 </span>
-                
-                </li>
+              </li>
             </ul>
-            </div>
+          </div>
         </li>
         <li v-if="showIncomingMessage" class="incoming message assistant">
           {{ cleanIncomingString(incomingString) }}
@@ -221,6 +216,9 @@ async function handleMoodboard(search: string) {
       if (latestMessage?.content?.type === "moodboard-question") {
         latestMessage.content.moodboardImages = moodboardImages;
       }
+      setTimeout(() => {
+        scrollToButtom();
+      }, 500);
     } else {
       console.error("No results found from the Unsplash API.");
     }
@@ -453,6 +451,31 @@ function cleanIncomingString(input: string): string {
   width: 140px;
   border-radius: 8px;
   object-fit: cover;
+}
+
+.moodboard-images {
+  padding-top: 40px;
+  padding-bottom: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+
+  & button {
+    padding: 0;
+    background: none;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+
+    & img {
+      width: 100%;
+      height: 100%;
+      border-radius: 0px;
+      object-fit: cover;
+    }
+  }
 }
 
 .chat-container {
