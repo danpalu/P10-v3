@@ -39,7 +39,7 @@ export default defineWebSocketHandler({
           
           If applicable, use the previous answers to help the user reflect over the current question.
 
-          When appropriate, ask a slider-question or a color-question or a moodboard-question or a branding-card-question.
+          When appropriate, ask a slider-question or a color-question or a moodboard-question or a multiple choice question or a branding-card-question.
           
           The slider-question is a slider from a a minimum to a maximum value, with labels for both ends. 
           
@@ -47,7 +47,9 @@ export default defineWebSocketHandler({
 
           The moodboard-question is a question where the user can select a number of images from a list. For this, you should use an appropriate search string to find images that reflect the user's company and previous answers. Do not put the search string in the content text. You should ask moodboard questions when talking about company values or the feel of a company.
 
-          The branding-card-question is a question where the user can select an emotion of feel of their brand, so the emotions should be polar opposites. 
+          The multiple-choice-question is a question where the user can select one or more options from a list of options. The options should be relevant to the user's company and previous answers.
+
+          The branding-card-question is a question where the user can select an emotion of feel of their brand, so the two should be polar opposites. You should ask 'Which of these two do you feel best represents your brand" and then provide the two options. The options should be relevant to the user's company and previous answers.
 
           Output in valid JSON format, following the scheme. 
           
