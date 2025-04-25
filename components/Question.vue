@@ -31,14 +31,14 @@ label {
 
 input {
   border: none;
-  border-bottom: 2px solid var(--color-blue);
+  border-bottom: 2px solid var(--color-black);
   padding: 1rem;
   font-size: 1rem;
   transition: border-color 0.3s ease;
   &:focus {
     outline: none;
     border-color: var(--color-purple);
-    /* box-shadow: 0px 0px 5px var(--color-blue); */
+    /* box-shadow: 0px 0px 5px var(--color-black); */
   }
 }
 

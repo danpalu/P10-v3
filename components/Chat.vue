@@ -509,12 +509,30 @@
     overflow-x: auto;
     }
 
-    .moodboard-image {
-    height: 140px;
-    width: 140px;
-    border-radius: 8px;
-    object-fit: cover;
+    .moodboard-images {
+    padding-top: 40px;
+    padding-bottom: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+
+    & button {
+        padding: 0;
+        background: none;
+        border-radius: 8px;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 1;
+
+        & img {
+        width: 100%;
+        height: 100%;
+        border-radius: 0px;
+        object-fit: cover;
+        }
     }
+}
 
     .chat-container {
     display: flex;
@@ -523,7 +541,7 @@
     position: relative;
     transition: height 0.3s ease;
     height: 100%;
-    background: white;
+    background: var(--color-background);
     border-radius: 20.5px 20.5px 0 0;
     overflow: hidden;
     grid-column: span 2;
@@ -539,6 +557,17 @@
     margin-bottom: auto;
     }
 
+    /* Hide the scrollbar */
+    .messages-container::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Fallback for other browsers */
+    .messages-container {
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        scrollbar-width: none;      /* Firefox */
+    }
+
     .button-back-container {
     height: fit-content;
     }
@@ -551,7 +580,7 @@
     cursor: pointer;
     z-index: 2;
     background: none;
-    color: var(--color-blue);
+    color: var(--color-black);
     }
 
     .messages {
@@ -610,8 +639,8 @@
     align-self: flex-end;
     text-align: right;
     border-radius: 20px 20px 0px 20px;
-    background: linear-gradient(in oklch -190deg, #1c89ff, #4900d1);
-    color: white;
+    background: #333;
+    color: var(--color-background);
     }
 
     .message .role {
@@ -651,10 +680,9 @@
     border-radius: 999px;
     border: 1px solid #ccc;
     overflow: hidden;
-    background-color: white;
 
     &:focus-within {
-        border-color: #007bff;
+        border-color: var(--color-black)
     }
     }
 

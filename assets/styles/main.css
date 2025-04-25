@@ -98,11 +98,13 @@ html {
 }
 
 :root {
-  --color-blue: #1c89ff;
-  --color-blue-rgb: 28, 137, 255;
+  --color-grey: #888;
+  --color-dark-grey: #555;
+  --color-black: #333;
+  --color-black-rgb: 28, 137, 255;
   --color-purple: #4900d1;
   --color-purple-rgb: 73, 0, 209;
-  --color-background: #fff9f3;
+  --color-background:#fff9f3;
   --color-text: #303136;
 }
 
