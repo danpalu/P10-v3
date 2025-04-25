@@ -37,16 +37,34 @@
             v-if="message.content.type === 'branding-card-question' && message.content.brandingCardDetails"
             class="branding-card-container">
             <button
-              @click.prevent="sendTextAnswer(message.content.brandingCardDetails.emotion)"
+              @click.prevent="sendBrandCardAnswer(message.content.brandingCardDetails.emotion)"
               class="branding-option dark">
               {{ message.content.brandingCardDetails.emotion }}
             </button>
             <button
-              @click.prevent="sendTextAnswer(message.content.brandingCardDetails.oppositeEmotion)"
+              @click.prevent="sendBrandCardAnswer(message.content.brandingCardDetails.oppositeEmotion)"
               class="branding-option light">
               {{ message.content.brandingCardDetails.oppositeEmotion }}
             </button>
           </div>
+          <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
+            <ul>
+                <li
+                v-for="(option, index) in message.content.multipleChoiceDetails"
+                :key="index"
+                class="questionnaire-item"
+                style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+
+                <span
+                class="questionnaire-text clickable-option"
+                @click.prevent="sendQuestionnaireAnswer(option)"
+                >
+                {{ option }}
+                </span>
+                
+                </li>
+            </ul>
+            </div>
         </li>
         <li v-if="showIncomingMessage" class="incoming message assistant">
           {{ cleanIncomingString(incomingString) }}
@@ -222,7 +240,7 @@ function sendImageAnswer(image: string) {
   }, 100);
 }
 
-function sendTextAnswer(text: string) {
+function sendBrandCardAnswer(text: string) {
   loading.value = true;
   addUserMessage(
     "My company is best represented by " +
@@ -230,6 +248,17 @@ function sendTextAnswer(text: string) {
       ". Now ask me a new branding card question. Unless you have already asked me three branding card question, then proceed.",
     true
   );
+  sendMessages();
+  input.value = "";
+
+  setTimeout(() => {
+    scrollToButtom();
+  }, 100);
+}
+
+function sendQuestionnaireAnswer(answer: string) {
+  loading.value = true;
+  addUserMessage("I choose " + answer + " but don't ask me about that, let's move on", true);
   sendMessages();
   input.value = "";
 
@@ -342,6 +371,53 @@ function cleanIncomingString(input: string): string {
 </script>
 
 <style>
+.clickable-option {
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  padding: 0.25rem 0.5rem; /* space around text */
+  border-radius: 0.375rem; /* rounded edges */
+  background-color: rgba(0, 0, 0, 0.05); /* lighter background by default */
+}
+
+.clickable-option:hover {
+  color: #2563eb; /* Tailwind blue-600 */
+  background-color: rgba(0, 0, 0, 0.1); /* subtle dark grey on hover */
+}
+
+.questionnaire-options {
+  margin-top: 1rem;
+}
+
+.questionnaire-prompt {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.questionnaire-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.questionnaire-text {
+  flex-grow: 1;
+}
+
+.questionnaire-button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background-color: #1c89ff;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.questionnaire-button:hover {
+  background-color: #166fd9;
+}
+
 .branding-card-container {
   display: flex;
   gap: 2rem;
