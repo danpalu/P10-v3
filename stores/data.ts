@@ -28,25 +28,9 @@ export const useDataStore = defineStore("data", () => {
         id: 2,
         title: "Mål og branding",
         questions: [
-          newQuestion(
-            4,
-            "Hvad ønsker din virksomhed/organisation at opnå med en ny visuel identitet eller design?",
-            "multiple-choice"
-          ),
-          // newQuestion(8, "Hvem er virksomhedens/organisationens konkurrenter og hvordan adskiller den sig fra dem?"),
-          // newQuestion(9, "Hvilke brands eller designs finder du inspirerende? Hvad er det, du godt kan lide ved dem?"),
-          // newQuestion(10, "Hvem er virksomhedens/organisationens nuværende og ønskede kunder?"),
-          newQuestion(
-            5,
-            "Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?",
-            "moodboard"
-          ),
-          newQuestion(
-            6,
-            "Er der særlige symboler, ikoner, farver eller andet visuelt, der har en særlig betydning for din virksomhed/organisation?",
-            "color"
-          ),
-          ,
+          newQuestion(4, "Hvad ønsker din virksomhed/organisation at opnå med en ny visuel identitet eller design?", "multiple-choice"),
+          newQuestion(5, "Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?", "moodboard"),
+          newQuestion(6, "Er der særlige symboler, ikoner, farver eller andet visuelt, der har en særlig betydning for din virksomhed/organisation?", "color"),
           newQuestion(7, "Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?", "text"),
         ],
       },

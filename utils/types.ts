@@ -40,7 +40,7 @@ export type Question = {
   id: number;
   title: string;
   answer: Answer;
-  type: "text" | "color" | "moodboard" | "multiple-choice" | "branding-card";
+  type: "text" | "color" | "moodboard" | "multiple-choice" | "branding-card" | "yes-no";
 };
 
 export type Answer = {
