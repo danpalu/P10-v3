@@ -47,9 +47,9 @@ export default defineWebSocketHandler({
 
           The moodboard-question is a question where the user can select a number of images from a list. For this, you should use an appropriate search string to find images that reflect the user's company and previous answers. Do not put the search string in the content text. You should ask moodboard questions when talking about company values or the feel of a company.
 
-          The multiple-choice-question is a question where the user can select one or more options from a list of options. The options should be relevant to the user's company and previous answers.
+          The multiple-choice-question is a question where the user can select one or more options from a list of options. The options should be relevant to the user's company and previous answers and should all be sentences of at least 7 words. Do not write the questions in the content text.
 
-          The branding-card-question is a question where the user can select an emotion of feel of their brand, so the two should be polar opposites. You should ask 'Which of these two do you feel best represents your brand" and then provide the two options. The options should be relevant to the user's company and previous answers. You should ask 3-5 of these questions in a row. Do not write the question in the content text.
+          The branding-card-question is a question where the user can select an emotion of feel of their brand, so the two should be polar opposites. You should ask 'Which of these two do you feel best represents your brand" and then provide the two options. The options should be relevant to the user's company and previous answers. You should ask 3-5 of these questions in a row. Do not write the options in the content text.
 
           Output in valid JSON format, following the scheme. 
           
