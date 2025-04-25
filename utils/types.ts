@@ -39,7 +39,7 @@ export type Question = {
   id: number;
   title: string;
   answer: Answer;
-  type: string;
+  type: "text" | "color" | "moodboard" | "multiple-choice" | "branding-card";
 };
 
 export type Answer = {
