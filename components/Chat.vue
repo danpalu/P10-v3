@@ -1,127 +1,137 @@
-    <template>
+<template>
     <main class="chat-container">
         <div class="messages-container" id="message-scroller" ref="message-scroller">
-        <ul class="messages">
-            <template v-for="prevQuestion in getPreviousQuestions(props.questionnaire, data.currentQuestion)">
-            <li
-                v-for="(message, index) in prevQuestion.answer.answer"
-                class="message"
-                :class="`${message.role} ${message.content.type} ${
-                index === prevQuestion.answer.answer.length - 1 ? 'last' : ''
-                }`">
-                {{ message.content.content }}
-            </li>
-            </template>
+            <ul class="messages">
 
-            <li
-            v-for="message in data.currentQuestion.answer.answer"
-            class="message"
-            :class="`${message.role} ${message.content.type} ${message.content.hiddenInChat ? 'hidden' : ''}`">
-            {{ message.content.content }}
-            <div v-if="message.content.type === 'color-question'" class="color-container">
-                <button
-                @click.prevent="sendColorAnswer(color)"
-                v-for="color in message.content.colorDetails?.colors"
-                class="color"
-                :style="{ background: color }"></button>
-            </div>
-            <div v-if="message.content.type === 'moodboard-question'" class="moodboard-images">
-                <button
-                v-for="(image, index) in message.content.moodboardImages?.slice(0, 9)"
-                :key="index"
-                @click.prevent="sendImageAnswer(image.alt)">
-                <img :src="image.url" :alt="image.alt" class="moodboard-image" />
-                </button>
-            </div>
-            <div
-                v-if="message.content.type === 'branding-card-question' && message.content.brandingCardDetails"
-                class="branding-card-container">
-                <button
-                @click.prevent="sendBrandCardAnswer(message.content.brandingCardDetails.emotion)"
-                class="branding-option dark">
-                {{ message.content.brandingCardDetails.emotion }}
-                </button>
-                <button
-                @click.prevent="sendBrandCardAnswer(message.content.brandingCardDetails.oppositeEmotion)"
-                class="branding-option light">
-                {{ message.content.brandingCardDetails.oppositeEmotion }}
-                </button>
-            </div>
-            <div v-if="message.content.type === 'yes-no-question'" class="yes-no-options">
-            <button
-                @click.prevent="sendYesNoAnswer('No')"
-                class="yes-no-button"
-                :class="{ selected: selectedYesNo === 'No' }"
-            >
-                Nej, lad mig yddybe
-            </button>
-            <button
-                @click.prevent="sendYesNoAnswer('Yes')"
-                class="yes-no-button"
-                :class="{ selected: selectedYesNo === 'Yes' }"
-            >
-                Ja, det er korrekt
-            </button>
-            </div>
-            <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
-                <ul>
+                <h1 class="title message">
+                    {{ data.questionnaire.sections[0].title }}
+                    <hr style="margin: 0 auto; width: 100%;">
+                </h1>
+
+                <template v-for="prevQuestion in getPreviousQuestions(props.questionnaire, data.currentQuestion)">
                     <li
-                    v-for="(option, index) in message.content.multipleChoiceDetails"
-                    :key="index"
-                    class="questionnaire-item"
-                    style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
-
-                    <!-- Use v-model for binding -->
-                    <input
-                        type="checkbox"
-                        :id="'option-' + index"
-                        v-model="selectedOptions"
-                        :value="option"
-                        class="checkbox-option"
-                    />
-
-                    <!-- Label with clickable text -->
-                    <label :for="'option-' + index" 
-                        class="clickable-option questionnaire-text" 
-                        :class="{ selected: selectedOptions.includes(option) }">
-                        {{ option }}
-                    </label>
+                        v-for="(message, index) in prevQuestion.answer.answer"
+                        class="message"
+                        :class="`${message.role} ${message.content.type} ${
+                            index === prevQuestion.answer.answer.length - 1 ? 'last' : ''
+                        }`">
+                        {{ message.content.content }}
                     </li>
-                </ul>
-                <button @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
-                    Anvend valgte
-                </button>
-                </div>
-            </li>
-            <li v-if="showIncomingMessage" class="incoming message assistant">
-            {{ cleanIncomingString(incomingString) }}
-            </li>
-            <li
-            v-if="
-                data.currentQuestion.answer.answer.length != 0 &&
-                data.currentQuestion.answer.answer.at(-1)?.content.type == 'summary'
-            "
-            class="button-container">
-            <button v-if="data.currentQuestion == data.questionnaire.sections.at(-1)?.questions.at(-1)">Finish</button>
-            <button v-else @click.prevent="nextQuestion">Næste spørgsmål</button>
-            </li>
-        </ul>
+                </template>
+                <li
+                    v-for="message in data.currentQuestion.answer.answer"
+                    class="message"
+                    :class="`${message.content.isTitle ? 'title' : message.role} ${message.content.type} ${message.content.hiddenInChat ? 'hidden' : ''}`">
+                    <!-- Check for title type and render as h1 -->
+                    <h1 v-if="message.content.isTitle === true" class = "title">
+                        {{ message.content.content }}
+                        <hr style="margin: 0 auto; width: 100%;">
+                    </h1>
+                    <!-- Default message rendering -->
+                    <div v-else>
+                        {{ message.content.content }}
+                    </div>
+                    <!-- Handle additional message types like color, moodboard, etc. -->
+                    <div v-if="message.content.type === 'color-question'" class="color-container">
+                        <button
+                            @click.prevent="sendColorAnswer(color)"
+                            v-for="color in message.content.colorOptions"
+                            class="color"
+                            :style="{ background: color }"></button>
+                    </div>
+                    <div v-if="message.content.type === 'moodboard-question'" class="moodboard-images">
+                        <button
+                            v-for="(image, index) in message.content.moodboardImages?.slice(0, 9)"
+                            :key="index"
+                            @click.prevent="sendImageAnswer(image.alt)">
+                            <img :src="image.url" :alt="image.alt" class="moodboard-image" />
+                        </button>
+                    </div>
+                    <div
+                        v-if="message.content.type === 'branding-card-question' && message.content.brandingCardOptions"
+                        class="branding-card-container">
+                        <button
+                            @click.prevent="sendBrandCardAnswer(message.content.brandingCardOptions.option)"
+                            class="branding-option dark">
+                            {{ message.content.brandingCardOptions.option }}
+                        </button>
+                        <button
+                            @click.prevent="sendBrandCardAnswer(message.content.brandingCardOptions.oppositeOption)"
+                            class="branding-option light">
+                            {{ message.content.brandingCardOptions.oppositeOption }}
+                        </button>
+                    </div>
+                    <div v-if="message.content.type === 'yes-no-question'" class="yes-no-options">
+                        <button
+                            @click.prevent="sendYesNoAnswer('No')"
+                            class="yes-no-button"
+                            :class="{ selected: selectedYesNo === 'No' }">
+                            Nej, lad mig yddybe
+                        </button>
+                        <button
+                            @click.prevent="sendYesNoAnswer('Yes')"
+                            class="yes-no-button"
+                            :class="{ selected: selectedYesNo === 'Yes' }">
+                            Ja, det er korrekt
+                        </button>
+                    </div>
+                    <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
+                        <ul>
+                            <li
+                                v-for="(option, index) in message.content.multipleChoiceOptions"
+                                :key="index"
+                                class="questionnaire-item"
+                                style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                <input
+                                    type="checkbox"
+                                    :id="'option-' + index"
+                                    v-model="selectedOptions"
+                                    :value="option"
+                                    class="checkbox-option" />
+                                <label :for="'option-' + index" 
+                                       class="clickable-option questionnaire-text" 
+                                       :class="{ selected: selectedOptions.includes(option) }">
+                                    {{ option }}
+                                </label>
+                            </li>
+                        </ul>
+                        <button @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
+                            Anvend valgte
+                        </button>
+                    </div>
+                </li>
+                <li v-if="showIncomingMessage" class="incoming message assistant">
+                    {{ cleanIncomingString(incomingString) }}
+                </li>
+                <li
+                    v-if="data.currentQuestion.answer.answer.length !== 0 &&
+                          data.currentQuestion.answer.answer.at(-1)?.content.type === 'summary'"
+                    class="button-container">
+                    <button v-if="data.currentQuestion === data.questionnaire.sections.at(-1)?.questions.at(-1)">Finish</button>
+                    <button v-else @click.prevent="nextQuestion">Næste spørgsmål</button>
+                </li>
+            </ul>
         </div>
+
         <ClientOnly>
-        <div class="form-container">
-            <form @submit.prevent="handleSubmit(input)" class="input">
-            <input v-model="input" ref="inputElement" />
-            <button type="submit" :disabled="disableSubmit" class="send" :class="`${loading ? 'loading' : ''}`">
-                <span> Send </span>
-                <div class="spinner" v-if="loading">
-                <LoadingSpinner></LoadingSpinner>
-                </div>
-            </button>
-            </form>
-        </div>
+            <div class="form-container">
+                <form @submit.prevent="handleSubmit(input)" class="input">
+                    <input 
+                        v-model="input" 
+                        ref="inputElement" 
+                        :placeholder="currentPlaceholder" 
+                        />
+                    <button type="submit" :disabled="disableSubmit" class="send" :class="`${loading ? 'loading' : ''}`">
+                        <span> Send </span>
+                        <div class="spinner" v-if="loading">
+                            <LoadingSpinner></LoadingSpinner>
+                        </div>
+                    </button>
+                </form>
+            </div>
         </ClientOnly>
     </main>
-    </template>
+</template>
 
     <script lang="ts" setup>
     const props = defineProps<{
@@ -131,18 +141,29 @@
     const data = useDataStore();
 
     function nextQuestion() {
-    data.currentQuestion = getQuestionById(props.questionnaire, data.currentQuestion?.id + 1);
-    if (data.currentQuestion.answer.answer.length == 0) {
-        continueConversation();
-    } else {
-        ready.value = true;
-        loading.value = false;
-    }
+        // Keep title messages and filter hidden ones
+        data.currentQuestion.answer.answer = data.currentQuestion.answer.answer.filter(
+            (message) => !message.content.hiddenInChat
+        );
+
+        // Proceed to the next question
+        let question_and_title = getQuestionById(props.questionnaire, data.currentQuestion?.id + 1);
+        data.currentQuestion = question_and_title[0];
+        data.currentTitle = question_and_title[1];
+
+        if (data.currentQuestion.answer.answer.length == 0) {
+            continueConversation();
+        } else {
+            ready.value = true;
+            loading.value = false;
+        }
     }
 
     let ws: WebSocket;
     let wsURL: URL;
     let loading = ref(true);
+
+    let placeholderText = ref("Skriv dit svar her...");
 
     const showSaveButton = ref(false);
 
@@ -163,11 +184,13 @@
     ws.onopen = () => {
         if (data.currentQuestion.answer.answer.length == 0) {
         startConversation();
+        
         } else {
         ready.value = true;
         loading.value = false;
         }
     };
+
     ws.onmessage = (message) => {
         if (message.data == "[START]") {
         showIncomingMessage.value = true;
@@ -179,12 +202,12 @@
             ready.value = true;
         }
         loading.value = false;
+        console.log(incomingString.value);
         const newMessage: ClientMessage = {
             role: "assistant",
-            content: JSON.parse(incomingString.value.trim()),
+            content: JSON.parse(incomingString.value.trim().toString()),
         };
         if (newMessage.content.type === "moodboard-question") {
-            console.log("Handling moodboard:", newMessage.content.moodboardSearchString);
             const search = newMessage.content.moodboardSearchString;
             if (search) {
             handleMoodboard(search);
@@ -196,11 +219,8 @@
         if (newMessage.content.type == "summary") {
             showSaveButton.value = true;
             data.currentQuestion.answer.summary = newMessage.content.content;
-            setTimeout(() => {
-            scrollToButtom();
-            }, 100);
         }
-        scrollToButtom();
+        waitAndScroll();
         return;
         }
         if (message.data == "[ERROR]") {
@@ -210,19 +230,19 @@
             content: `Error: ${message.data}`,
             type: "text",
             sliderDetails: null,
-            colorDetails: null,
+            colorOptions: null,
             moodboardSearchString: null,
-            brandingCardDetails: null,
+            brandingCardOptions: null,
             hiddenInChat: false,
+            isTitle: false,
             },
         });
         showIncomingMessage.value = false;
         resetIncomingMessage();
-        scrollToButtom();
         return;
         }
         incomingString.value += `${message.data}`;
-        scrollToButtom();
+        waitAndScroll();
     };
     });
 
@@ -237,22 +257,9 @@
     function sendMultipleChoiceAnswer() {
     if (selectedOptions.value.length > 0) {
         loading.value = true;
-        addUserMessage("I choose: " + selectedOptions.value.join(", "), true);
+        addUserMessage("My idea is best respresented by " + selectedOptions.value.join(", ") + " Let's proceed.", true);
         sendMessages();
         selectedOptions.value = []; // Clear the selected options after submitting
-        setTimeout(() => {
-        scrollToButtom();
-        }, 100);
-    }
-    }
-
-    // Method to toggle selection when clicking the label
-    function toggleSelection(option: string) {
-    const index = selectedOptions.value.indexOf(option);
-    if (index > -1) {
-        selectedOptions.value.splice(index, 1); // Remove option if already selected
-    } else {
-        selectedOptions.value.push(option); // Add option if not already selected
     }
     }
 
@@ -263,76 +270,82 @@
     loading.value = true;
     addUserMessage(answer, true);
     sendMessages();
-    setTimeout(() => {
+    }
+    
+    watch(() => data.currentTitle, (newTitle) => {
+        addTitleMessage(newTitle);
+    });
+
+    async function waitAndScroll() {
+        await nextTick();
         scrollToButtom();
-    }, 100);
     }
 
     async function handleMoodboard(search: string) {
     try {
         const response = await $fetch("/api/unsplash", {
-        method: "POST",
-        body: { query: search },
+            method: "POST",
+            body: { query: search },
         });
 
         if (response && response.results) {
-        const moodboardImages = response.results.map((img: any) => ({
-            url: img.urls.small,
-            alt: img.alt_description || "Unsplash image",
-        }));
+            const moodboardImages = response.results.map((img: any) => ({
+                url: img.urls.small,
+                alt: img.alt_description || "Unsplash image",
+            }));
 
-        // Attach the images directly to the *latest* message
-        const latestMessage = data.currentQuestion.answer.answer.at(-1);
-        if (latestMessage?.content?.type === "moodboard-question") {
-            latestMessage.content.moodboardImages = moodboardImages;
-        }
+            const latestMessage = data.currentQuestion.answer.answer.at(-1);
+            if (latestMessage?.content?.type === "moodboard-question") {
+                latestMessage.content.moodboardImages = moodboardImages;
+            }
         } else {
-        console.error("No results found from the Unsplash API.");
+            console.error("No results found from the Unsplash API.");
         }
     } catch (error) {
         console.error("Error fetching moodboard images:", error);
     }
-    }
+}
 
     function sendImageAnswer(image: string) {
-    loading.value = true;
-    addUserMessage(image, true);
-    sendMessages();
-    input.value = "";
-
-    setTimeout(() => {
-        scrollToButtom();
-    }, 100);
+        loading.value = true;
+        addUserMessage("My idea is best represented by " + image + ". Now proceed with the next question.", true);
+        sendMessages();
+        input.value = "";
     }
 
     function sendBrandCardAnswer(text: string) {
     loading.value = true;
     addUserMessage(
-        "My company is best represented by " +
+        "My idea is best represented by " +
         text +
-        ". Now ask me a new branding card question. Unless you have already asked me three branding card question, then proceed.",
+        ". Now ask me a new branding card question, but mix up your phrasing. Unless you have already asked me three branding card questions, then proceed.",
         true
     );
     sendMessages();
     input.value = "";
-
-    setTimeout(() => {
-        scrollToButtom();
-    }, 100);
-    }
-
-    function sendQuestionnaireAnswer(answer: string) {
-    loading.value = true;
-    addUserMessage("I choose " + answer + " but don't ask me about that, let's move on", true);
-    sendMessages();
-    input.value = "";
-
-    setTimeout(() => {
-        scrollToButtom();
-    }, 100);
     }
 
     let disableSubmit = computed(() => !ready.value || input.value.trim() === "" || showIncomingMessage.value);
+
+    import { computed } from 'vue';
+
+    const currentPlaceholder = computed(() => {
+    const lastMessage = data.currentQuestion.answer.answer.at(-1);
+
+    if (lastMessage?.content.type === 'text') {
+        return "Skriv dit svar her...";
+    } else if (lastMessage?.content.type === 'multiple-choice-question') {
+        return "Vælg en eller flere af ovenstående, eller skriv noget her";
+    } else if (lastMessage?.content.type === 'color-question') {
+        return "Vælg en af farverne, eller skriv noget her";
+    } else if (lastMessage?.content.type === 'branding-card-question') {
+        return "Vælg en af de to muligheder, eller skriv noget her";
+    } else if (lastMessage?.content.type === 'moodboard-question') {
+        return "Vælg et af billederne, eller skriv noget her";
+    }else {
+        return ""; // no placeholder
+    }
+    });
 
     function addUserMessage(userInput: string, hiddenInChat: boolean = false) {
     data.currentQuestion.answer.answer.push({
@@ -341,10 +354,27 @@
         content: userInput.trim(),
         type: "text",
         sliderDetails: null,
-        colorDetails: null,
+        colorOptions: null,
         moodboardSearchString: null,
-        brandingCardDetails: null,
+        brandingCardOptions: null,
         hiddenInChat: hiddenInChat,
+        isTitle: false,
+        },
+    });
+    }
+
+    function addTitleMessage(title: string) {
+    data.currentQuestion.answer.answer.push({
+        role: "user",
+        content: {
+        content: title.trim(),
+        type: "text",
+        sliderDetails: null,
+        colorOptions: null,
+        moodboardSearchString: null,
+        brandingCardOptions: null,
+        hiddenInChat: false,
+        isTitle: true,
         },
     });
     }
@@ -352,39 +382,32 @@
     let input = ref<string>("");
 
     function sendColorAnswer(color: string) {
-    loading.value = true;
-    addUserMessage(color, true);
-    sendMessages();
-    input.value = "";
-
-    setTimeout(() => {
-        scrollToButtom();
-    }, 100);
+        loading.value = true;
+        addUserMessage("I think my idea is well represented by " + color + ". You may ask me a new color question with variants of this color, unless you have already done that, then don't.", true);
+        sendMessages();
+        input.value = "";
     }
 
     function sendMessages() {
     ws.send(
-        JSON.stringify({
-        messages: data.currentQuestion.answer.answer,
-        previousAnswers: data.toString(),
-        question: data.currentQuestion,
-        questionnaire: props.questionnaire,
-        })
-    );
+            JSON.stringify({
+            messages: data.currentQuestion.answer.answer,
+            previousAnswers: data.toString(),
+            question: data.currentQuestion,
+            questionnaire: props.questionnaire,
+            })
+        );
     }
 
     function startConversation() {
-    ws.send(
-        JSON.stringify({
-        messages: [{ role: "user", content: { content: "Start the conversation", type: data.currentQuestion.type} }],
-        previousAnswers: data.toString(),
-        question: data.currentQuestion,
-        questionnaire: props.questionnaire,
-        })
-    );
-    setTimeout(() => {
-        scrollToButtom();
-    }, 100);
+        ws.send(
+            JSON.stringify({
+            messages: [{ role: "user", content: { content: "Start the conversation", type: data.currentQuestion.type} }],
+            previousAnswers: data.toString(),
+            question: data.currentQuestion,
+            questionnaire: props.questionnaire,
+            })
+        );
     }
 
     function continueConversation() {
@@ -404,19 +427,12 @@
         questionnaire: props.questionnaire,
         })
     );
-    setTimeout(() => {
-        scrollToButtom();
-    }, 100);
     }
     function handleSubmit(text: string) {
-    loading.value = true;
-    addUserMessage(text);
-    sendMessages();
-    input.value = "";
-
-    setTimeout(() => {
-        scrollToButtom();
-    }, 100);
+        loading.value = true;
+        addUserMessage(text);
+        sendMessages();
+        input.value = "";
     }
     const messageScroller = useTemplateRef("message-scroller");
     function scrollToButtom() {
@@ -535,7 +551,9 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    padding: 60px 70px;
+    padding-top: 70px;
+    padding-bottom: 70px;
+    width: 50%;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
     margin: 20px 0;
 
@@ -556,7 +574,7 @@
     }
 
     .moodboard-images {
-    padding-top: 40px;
+    padding-top: 10px;
     padding-bottom: 10px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -689,6 +707,16 @@
     color: var(--color-background);
     }
 
+    .title {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .message.title {
+        align-self: center;
+        margin-top: 2rem;
+    }
+
     .message .role {
     font-weight: 600;
     }
@@ -765,4 +793,5 @@
     display: flex;
     justify-content: center;
     }
+
     </style>

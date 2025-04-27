@@ -17,11 +17,12 @@ export const MessageContent = z.object({
       xAxis: z.object({ minLabel: z.string(), maxLabel: z.string() }),
     })
     .nullable(),
-  colorDetails: z.object({ colors: z.array(z.string()) }).nullable(),
+  colorOptions: z.array(z.string()).nullable(),
   moodboardSearchString: z.string().nullable(),
-  brandingCardDetails: z.object({ emotion: z.string(), oppositeEmotion: z.string() }).nullable(),
-  multipleChoiceDetails: z.array(z.string()).nullable(),
+  brandingCardOptions: z.object({option: z.string(), oppositeOption: z.string() }).nullable(),
+  multipleChoiceOptions: z.array(z.string()).nullable(),
   hiddenInChat: z.boolean().nullable(),
+  isTitle: z.boolean().nullable(),
 });
 
 export type MessageContentType = z.infer<typeof MessageContent>;

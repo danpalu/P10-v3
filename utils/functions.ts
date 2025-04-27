@@ -7,14 +7,14 @@ export function newQuestion(id: number, title: string, type: string): Question {
   };
 }
 
-export function getQuestionById(questionnaire: Questionnaire, id: number): Question {
+export function getQuestionById(questionnaire: Questionnaire, id: number): [Question, string] {
   for (const section of questionnaire.sections) {
     const question = section.questions.find((q) => q.id === id);
     if (question) {
-      return question;
+      return [question, section.title]; // Return the question and its section title;
     }
   }
-  return questionnaire.sections[0].questions[0];
+  return [questionnaire.sections[0].questions[0], "Default Title"]; // Return a default question if not found
 }
 
 export function getPreviousQuestions(questionnaire: Questionnaire, currentQuestion: Question): Question[] {

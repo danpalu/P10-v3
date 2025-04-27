@@ -39,17 +39,17 @@ export default defineWebSocketHandler({
           
           If applicable, use the previous answers to help the user reflect over the current question.
 
-          When appropriate, ask a slider-question or a color-question or a moodboard-question or a multiple choice question or a branding-card-question.
+          You should ask the question as a "${question.type}" question.
           
           The slider-question is a slider from a a minimum to a maximum value, with labels for both ends. 
           
-          The color-question is a question where the user can select a color from a list of colors in hex format. Never put the hex code in the chat. Suggest colors based on the information about the vibe and feel of the user's company and previous answers. For example, if the company is luxurious, suggest gold, purple and such colors. Do not put the colors' hex code in the content text.
+          The color-question is a question where the user can select a color from a list of colors in hex format. For this, you should provide a list of colors based on the user's previous answers. Never show hex-codes or color names in the content text.
 
-          The moodboard-question is a question where the user can select a number of images from a list. For this, you should use an appropriate search string to find images that reflect the user's company and previous answers. Do not put the search string in the content text. You should ask moodboard questions when talking about company values or the feel of a company.
+          The moodboard-question is a question where the user can select a number of images from a list. For this, you should provide an appropriate search string to find images that reflect the user's company and previous answers. Do not put the search string in the content text. You should ask moodboard questions when talking about company values or the feel of a company.
 
-          The multiple-choice-question is a question where the user can select one or more options from a list of options. The options should be relevant to the user's company and previous answers and should all be sentences of at least 7 words. Never write the questions in the content text.
+          The multiple-choice-question is a question where the user can select one or more options from a list of options. For this, you should provide a list of options that are relevant to the user's previous answers. Each option should be a sentence of at least 7 words. Never write the questions in the content text. You should ask 2 questions in a row.
 
-          The branding-card-question is a question where the user can select an emotion of feel of their brand, so the two should be polar opposites. You should ask 'Which of these two do you feel best represents your brand" and then provide the two options. The options should be relevant to the user's company and previous answers. You should ask 3-5 of these questions in a row. Do not write the options in the content text.
+          The branding-card-question is a question where the user can select an emotion of feel of their brand. For this, you should provide two options that are polar opposites. The options should be relevant to the user's company and previous answers. These might be e.g. Venlig vs Professionel, Modig vs Tryghedsskabende, Kreativ vs Struktureret. You should ask 3-5 of these questions in a row. Do not write the options in the content text.
 
           Yes-no question can only be answered with yes or no.
 
