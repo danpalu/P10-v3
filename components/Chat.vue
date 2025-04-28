@@ -64,14 +64,12 @@
                     <div v-if="message.content.type === 'yes-no-question'" class="yes-no-options">
                         <button
                             @click.prevent="sendYesNoAnswer('No')"
-                            class="yes-no-button"
-                            :class="{ selected: selectedYesNo === 'No' }">
+                            class="yes-no-button" id="no-button">
                             Nej, lad mig yddybe
                         </button>
                         <button
                             @click.prevent="sendYesNoAnswer('Yes')"
-                            class="yes-no-button"
-                            :class="{ selected: selectedYesNo === 'Yes' }">
+                            class="yes-no-button" id="yes-button">
                             Ja, det er korrekt
                         </button>
                     </div>
@@ -108,7 +106,6 @@
                           data.currentQuestion.answer.answer.at(-1)?.content.type === 'summary'"
                     class="button-container">
                     <button v-if="data.currentQuestion === data.questionnaire.sections.at(-1)?.questions.at(-1)">Finish</button>
-                    <button v-else @click.prevent="nextQuestion">Næste spørgsmål</button>
                 </li>
             </ul>
         </div>
@@ -266,10 +263,28 @@
     const selectedYesNo = ref<string>("");
 
     function sendYesNoAnswer(answer: string) {
-    selectedYesNo.value = answer;
-    loading.value = true;
-    addUserMessage(answer, true);
-    sendMessages();
+        selectedYesNo.value = answer;
+        loading.value = true;
+
+        // Find the latest assistant yes-no-question message
+        const messageElements = document.querySelectorAll('.message.assistant.yes-no-question');
+
+        if (messageElements.length > 0) {
+            const lastYesNoMessage = messageElements[messageElements.length - 1];
+            lastYesNoMessage.classList.remove('green', 'red');
+            if (answer === 'Yes') {
+                lastYesNoMessage.classList.add('green');
+            } else {
+                lastYesNoMessage.classList.add('red');
+            }
+        }
+
+        if (answer === "Yes") {
+            nextQuestion();
+        } else {
+            addUserMessage(answer, true);
+            sendMessages();
+        }
     }
     
     watch(() => data.currentTitle, (newTitle) => {
@@ -449,14 +464,19 @@
         .replace(/\\n/g, "\n")
         .replace(/\\"/g, '"');
     }
+
     </script>
 
     <style>
+    .message.assistant.yes-no-question.last {
+        background: #dcf1df;
+    }
+
     .yes-no-options {
     display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 1rem;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1rem;
     }
 
     .yes-no-button {
@@ -675,8 +695,8 @@
     }
 
     &.summary {
+        display:none;
         background: #dcf1df;
-
         &::before {
         content: "Opsummering: ";
         font-weight: 600;
@@ -722,7 +742,7 @@
     }
 
     .message.last {
-    margin-bottom: 15rem;
+    margin-bottom: 5rem;
     }
 
     .form-container {
