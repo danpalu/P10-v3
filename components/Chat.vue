@@ -64,14 +64,12 @@
                     <div v-if="message.content.type === 'yes-no-question'" class="yes-no-options">
                         <button
                             @click.prevent="sendYesNoAnswer('No')"
-                            class="yes-no-button"
-                            :class="{ selected: selectedYesNo === 'No' }">
+                            class="yes-no-button" id="no-button">
                             Nej, lad mig yddybe
                         </button>
                         <button
                             @click.prevent="sendYesNoAnswer('Yes')"
-                            class="yes-no-button"
-                            :class="{ selected: selectedYesNo === 'Yes' }">
+                            class="yes-no-button" id="yes-button">
                             Ja, det er korrekt
                         </button>
                     </div>
@@ -99,6 +97,14 @@
                             Anvend valgte
                         </button>
                     </div>
+                    <div v-if="message.content.type === 'link-question'" class="link">
+                    <a v-if="data.questionnaire.type === 'chat'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=chat" target="_blank" class="link-button">
+                        Besvar venligst spørgeskemaet her.
+                    </a>
+                    <a v-else-if="data.questionnaire.type === 'do-ai'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=do-ai" target="_blank" class="link-button">
+                        Besvar venligst spørgeskemaet her.
+                    </a>
+                </div>
                 </li>
                 <li v-if="showIncomingMessage" class="incoming message assistant">
                     {{ cleanIncomingString(incomingString) }}
@@ -108,7 +114,6 @@
                           data.currentQuestion.answer.answer.at(-1)?.content.type === 'summary'"
                     class="button-container">
                     <button v-if="data.currentQuestion === data.questionnaire.sections.at(-1)?.questions.at(-1)">Finish</button>
-                    <button v-else @click.prevent="nextQuestion">Næste spørgsmål</button>
                 </li>
             </ul>
         </div>
@@ -202,23 +207,32 @@
             ready.value = true;
         }
         loading.value = false;
-        console.log(incomingString.value);
-        const newMessage: ClientMessage = {
-            role: "assistant",
-            content: JSON.parse(incomingString.value.trim().toString()),
-        };
-        if (newMessage.content.type === "moodboard-question") {
-            const search = newMessage.content.moodboardSearchString;
-            if (search) {
-            handleMoodboard(search);
+        try {
+            const parsedContent = JSON.parse(incomingString.value.trim());
+
+            const newMessage: ClientMessage = {
+                role: "assistant",
+                content: parsedContent,
+            };
+
+            if (newMessage.content.type === "moodboard-question") {
+                const search = newMessage.content.moodboardSearchString;
+                if (search) {
+                    handleMoodboard(search);
+                }
             }
-        }
-        data.currentQuestion.answer.answer.push(newMessage);
-        resetIncomingMessage();
-        showIncomingMessage.value = false;
-        if (newMessage.content.type == "summary") {
-            showSaveButton.value = true;
-            data.currentQuestion.answer.summary = newMessage.content.content;
+
+            data.currentQuestion.answer.answer.push(newMessage);
+            resetIncomingMessage();
+            showIncomingMessage.value = false;
+
+            if (newMessage.content.type === "summary") {
+                showSaveButton.value = true;
+                data.currentQuestion.answer.summary = newMessage.content.content;
+            }
+
+        } catch (error) {
+            console.error("Failed to parse JSON:", incomingString.value);
         }
         waitAndScroll();
         return;
@@ -266,10 +280,28 @@
     const selectedYesNo = ref<string>("");
 
     function sendYesNoAnswer(answer: string) {
-    selectedYesNo.value = answer;
-    loading.value = true;
-    addUserMessage(answer, true);
-    sendMessages();
+        selectedYesNo.value = answer;
+        loading.value = true;
+
+        // Find the latest assistant yes-no-question message
+        const messageElements = document.querySelectorAll('.message.assistant.yes-no-question');
+
+        if (messageElements.length > 0) {
+            const lastYesNoMessage = messageElements[messageElements.length - 1];
+            lastYesNoMessage.classList.remove('green', 'red');
+            if (answer === 'Yes') {
+                lastYesNoMessage.classList.add('green');
+            } else {
+                lastYesNoMessage.classList.add('red');
+            }
+        }
+
+        if (answer === "Yes") {
+            nextQuestion();
+        } else {
+            addUserMessage(answer, true);
+            sendMessages();
+        }
     }
     
     watch(() => data.currentTitle, (newTitle) => {
@@ -449,14 +481,19 @@
         .replace(/\\n/g, "\n")
         .replace(/\\"/g, '"');
     }
+
     </script>
 
     <style>
+    .message.assistant.yes-no-question.last {
+        background: #dcf1df;
+    }
+
     .yes-no-options {
     display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 1rem;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1rem;
     }
 
     .yes-no-button {
@@ -675,8 +712,8 @@
     }
 
     &.summary {
+        display:none;
         background: #dcf1df;
-
         &::before {
         content: "Opsummering: ";
         font-weight: 600;
@@ -707,14 +744,8 @@
     color: var(--color-background);
     }
 
-    .title {
-        text-align: center;
-        margin-top: 2rem;
-    }
-
     .message.title {
         align-self: center;
-        margin-top: 2rem;
     }
 
     .message .role {
@@ -722,7 +753,7 @@
     }
 
     .message.last {
-    margin-bottom: 15rem;
+    margin-bottom: 5rem;
     }
 
     .form-container {
