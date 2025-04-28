@@ -89,6 +89,10 @@ html {
   color: var(--color-text);
 }
 
+.hidden {
+  display: none !important;
+}
+
 #__nuxt {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -104,7 +108,7 @@ html {
   --color-black-rgb: 28, 137, 255;
   --color-purple: #4900d1;
   --color-purple-rgb: 73, 0, 209;
-  --color-background:#fff9f3;
+  --color-background: #fff9f3;
   --color-text: #303136;
 }
 

@@ -5,7 +5,11 @@
         <a
           class="section-link"
           :href="`#section-${section.id}`"
-          @click="data.questionnaire.type == 'survey' ? sectionClick(section.id) : null"
+          @click="
+            data.questionnaire.type == 'survey' || data.questionnaire.type == 'do-non-ai'
+              ? sectionClick(section.id)
+              : null
+          "
           :class="`${selectedSectionIndex === section.id ? 'selected' : ''} ${
             selectedSectionIndex > section.id ? 'completed' : ''
           }
@@ -75,7 +79,7 @@ watch(
 
 function sectionClick(id: number) {
   selectedSectionIndex.value = id;
-  const calculatedHeight = (100 * (selectedSectionIndex.value - 1)) / (props.sections.length - 1);
+  const calculatedHeight = (100 * (selectedSectionIndex.value - 1)) / props.sections.length;
   indicator.value?.style.setProperty("height", `${calculatedHeight}%`);
 }
 
@@ -151,7 +155,7 @@ nav ul {
   }
 
   &:not(.selected):not(.completed):hover {
-    color: var(--color-black);
+    color: #eee;
   }
 
   &.completed {
