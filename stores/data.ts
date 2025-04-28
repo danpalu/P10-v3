@@ -45,6 +45,11 @@ export const useDataStore = defineStore("data", () => {
         title: "Andet",
         questions: [newQuestion(11, "Er der andet, du gerne vil tilføje?", "text")],
       },
+      {
+        id: 5,
+        title: "Færdig",
+        questions: [newQuestion(12, "Tak for at deltage. Nu vil vi gerne høre lidt om dine oplevelser:", "link")],
+      },
     ],
   });
 

@@ -13,9 +13,6 @@
           {{ section.id }}. {{ section.title }}
         </a>
       </li>
-      <li class="section">
-        <a class="section-link disable-link" href="#">{{ sections.length + 1 }}. Færdig</a>
-      </li>
       <div class="indicator">
         <div class="container">
           <div class="indicator-inner-track"></div>
@@ -60,10 +57,12 @@ watch(
         }
       });
       progress[index] =
-        (numberQuestionsCompleted / section.questions.length) * (1 / data.questionnaire.sections.length);
+        (numberQuestionsCompleted / section.questions.length) * (1 / (data.questionnaire.sections.length-1));
       if (progress[index] > 0.249) {
         selectedSectionIndex.value = section.id + 1;
       }
+      console.log("sections", data.questionnaire.sections.length-1);
+      console.log("progress", progress[index]);
     });
     height.value = 0;
     console.log("progress", progress);

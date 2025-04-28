@@ -97,6 +97,14 @@
                             Anvend valgte
                         </button>
                     </div>
+                    <div v-if="message.content.type === 'link-question'" class="link">
+                    <a v-if="data.questionnaire.type === 'chat'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=chat" target="_blank" class="link-button">
+                        Besvar venligst spørgeskemaet her.
+                    </a>
+                    <a v-else-if="data.questionnaire.type === 'do-ai'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=do-ai" target="_blank" class="link-button">
+                        Besvar venligst spørgeskemaet her.
+                    </a>
+                </div>
                 </li>
                 <li v-if="showIncomingMessage" class="incoming message assistant">
                     {{ cleanIncomingString(incomingString) }}
@@ -199,23 +207,32 @@
             ready.value = true;
         }
         loading.value = false;
-        console.log(incomingString.value);
-        const newMessage: ClientMessage = {
-            role: "assistant",
-            content: JSON.parse(incomingString.value.trim().toString()),
-        };
-        if (newMessage.content.type === "moodboard-question") {
-            const search = newMessage.content.moodboardSearchString;
-            if (search) {
-            handleMoodboard(search);
+        try {
+            const parsedContent = JSON.parse(incomingString.value.trim());
+
+            const newMessage: ClientMessage = {
+                role: "assistant",
+                content: parsedContent,
+            };
+
+            if (newMessage.content.type === "moodboard-question") {
+                const search = newMessage.content.moodboardSearchString;
+                if (search) {
+                    handleMoodboard(search);
+                }
             }
-        }
-        data.currentQuestion.answer.answer.push(newMessage);
-        resetIncomingMessage();
-        showIncomingMessage.value = false;
-        if (newMessage.content.type == "summary") {
-            showSaveButton.value = true;
-            data.currentQuestion.answer.summary = newMessage.content.content;
+
+            data.currentQuestion.answer.answer.push(newMessage);
+            resetIncomingMessage();
+            showIncomingMessage.value = false;
+
+            if (newMessage.content.type === "summary") {
+                showSaveButton.value = true;
+                data.currentQuestion.answer.summary = newMessage.content.content;
+            }
+
+        } catch (error) {
+            console.error("Failed to parse JSON:", incomingString.value);
         }
         waitAndScroll();
         return;
@@ -727,14 +744,8 @@
     color: var(--color-background);
     }
 
-    .title {
-        text-align: center;
-        margin-top: 2rem;
-    }
-
     .message.title {
         align-self: center;
-        margin-top: 2rem;
     }
 
     .message .role {

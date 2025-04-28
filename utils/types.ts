@@ -11,16 +11,15 @@ export const MessageContent = z.object({
     "multiple-choice-question",
     "branding-card-question",
     "yes-no-question",
+    "link-question",
   ]),
-  sliderDetails: z
-    .object({
-      xAxis: z.object({ minLabel: z.string(), maxLabel: z.string() }),
-    })
-    .nullable(),
+  sliderDetails: z.object({xAxis: z.object({ minLabel: z.string(), maxLabel: z.string() }),
+    }).nullable(),
   colorOptions: z.array(z.string()).nullable(),
   moodboardSearchString: z.string().nullable(),
   brandingCardOptions: z.object({option: z.string(), oppositeOption: z.string() }).nullable(),
   multipleChoiceOptions: z.array(z.string()).nullable(),
+  link: z.string().nullable(),
   hiddenInChat: z.boolean().nullable(),
   isTitle: z.boolean().nullable(),
 });
@@ -41,7 +40,7 @@ export type Question = {
   id: number;
   title: string;
   answer: Answer;
-  type: "text" | "color" | "moodboard" | "multiple-choice" | "branding-card" | "yes-no";
+  type: "text" | "color" | "moodboard" | "multiple-choice" | "branding-card" | "yes-no" | "link";
 };
 
 export type Answer = {
