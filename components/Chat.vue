@@ -39,13 +39,29 @@
                             class="color"
                             :style="{ background: color }"></button>
                     </div>
-                    <div v-if="message.content.type === 'moodboard-question'" class="moodboard-images">
-                        <button
-                            v-for="(image, index) in message.content.moodboardImages?.slice(0, 9)"
-                            :key="index"
-                            @click.prevent="sendImageAnswer(image.alt)">
-                            <img :src="image.url" :alt="image.alt" class="moodboard-image" />
-                        </button>
+                    <div v-if="message.content.type === 'moodboard-question'" style="padding-top: 0.5rem;">
+                        <div class="moodboard-images">
+                            <button
+                                v-for="(image, index) in message.content.moodboardImages?.slice(0, 9)"
+                                :key="index"
+                                @click.prevent="toggleImageSelection(image.alt)" class="moodboard-image"
+                                :class="{ selected: selectedImages.includes(image.alt) }"
+                            >
+                                <img :src="image.url" :alt="image.alt" class="moodboard-image" />
+                                <!-- Checkmark Circle for selected images -->
+                                <div v-if="selectedImages.includes(image.alt)" class="checkmark-circle">
+                                    <span class="checkmark">✔</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <button @click.prevent="sendNoneOfAbove" class="questionnaire-button">
+                                Ingen af ovennævnte
+                            </button>
+                            <button @click.prevent="sendMoodboardSelection" class="questionnaire-button">
+                                Anvend valgte
+                            </button>
+                        </div>
                     </div>
                     <div
                         v-if="message.content.type === 'branding-card-question' && message.content.brandingCardOptions"
@@ -73,13 +89,25 @@
                             Ja, det er korrekt
                         </button>
                     </div>
+                    <div v-if="message.content.type === 'yes-no-name-question'" class="yes-no-options">
+                        <button
+                            @click.prevent="sendYesNoAnswer('No')"
+                            class="yes-no-button" id="no-button">
+                            Nej, det er ikke navnet
+                        </button>
+                        <button
+                            @click.prevent="sendYesNoAnswer('Yes', message.content.companyName ?? undefined)"
+                            class="yes-no-button" id="yes-button">
+                            Ja, det er korrekt
+                        </button>
+                    </div>
                     <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
                         <ul>
                             <li
                                 v-for="(option, index) in message.content.multipleChoiceOptions"
                                 :key="index"
                                 class="questionnaire-item"
-                                style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
                                 <input
                                     type="checkbox"
                                     :id="'option-' + index"
@@ -87,22 +115,29 @@
                                     :value="option"
                                     class="checkbox-option" />
                                 <label :for="'option-' + index" 
-                                       class="clickable-option questionnaire-text" 
-                                       :class="{ selected: selectedOptions.includes(option) }">
+                                    class="clickable-option questionnaire-text" 
+                                    :class="{ selected: selectedOptions.includes(option) }">
                                     {{ option }}
                                 </label>
                             </li>
                         </ul>
-                        <button @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
-                            Anvend valgte
-                        </button>
+
+                        <!-- Button container to align buttons side by side -->
+                        <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
+                            <button @click.prevent="sendNoneOfAbove" class="questionnaire-button">
+                                Ingen af ovennævnte
+                            </button>
+                            <button @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
+                                Anvend valgte
+                            </button>
+                        </div>
                     </div>
-                    <div v-if="message.content.type === 'link-question'" class="link">
-                    <a v-if="data.questionnaire.type === 'chat'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=chat" target="_blank" class="link-button">
-                        Besvar venligst spørgeskemaet her.
-                    </a>
-                    <a v-else-if="data.questionnaire.type === 'do-ai'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=do-ai" target="_blank" class="link-button">
-                        Besvar venligst spørgeskemaet her.
+                        <div v-if="message.content.type === 'link-question'" class="link">
+                        <a v-if="data.questionnaire.type === 'chat'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=chat" target="_blank" class="link-button">
+                            Besvar venligst spørgeskemaet her.
+                        </a>
+                        <a v-else-if="data.questionnaire.type === 'do-ai'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=do-ai" target="_blank" class="link-button">
+                            Besvar venligst spørgeskemaet her.
                     </a>
                 </div>
                 </li>
@@ -124,7 +159,7 @@
                     <input 
                         v-model="input" 
                         ref="inputElement" 
-                        :placeholder="currentPlaceholder" 
+                        :placeholder="currentPlaceholder" :disabled="isNonTextQuestion" 
                         />
                     <button type="submit" :disabled="disableSubmit" class="send" :class="`${loading ? 'loading' : ''}`">
                         <span> Send </span>
@@ -213,6 +248,7 @@
             const newMessage: ClientMessage = {
                 role: "assistant",
                 content: parsedContent,
+                name: companyName
             };
 
             if (newMessage.content.type === "moodboard-question") {
@@ -262,24 +298,32 @@
 
     function resetIncomingMessage() {
     incomingString.value = "";
-    }
+    };
 
     const selectedOptions = ref<string[]>([]); // Array to store selected options
+    const selectedImages = ref<string[]>([]); // Array to store selected images
 
     // Method to send the selected multiple-choice answers
     // Send the selected multiple-choice answers when the button is clicked
     function sendMultipleChoiceAnswer() {
-    if (selectedOptions.value.length > 0) {
+        if (selectedOptions.value.length > 0) {
+            loading.value = true;
+            addUserMessage("My idea is best respresented by " + selectedOptions.value.join(", ") + " Let's proceed.", true);
+            sendMessages();
+            selectedOptions.value = []; // Clear the selected options after submitting
+        }
+    }
+
+    function sendNoneOfAbove() {
         loading.value = true;
-        addUserMessage("My idea is best respresented by " + selectedOptions.value.join(", ") + " Let's proceed.", true);
+        addUserMessage('Ingen af ovennævnte, lad mig beskrive det med et tekst spørgsmål', true);
         sendMessages();
         selectedOptions.value = []; // Clear the selected options after submitting
-    }
     }
 
     const selectedYesNo = ref<string>("");
 
-    function sendYesNoAnswer(answer: string) {
+    function sendYesNoAnswer(answer: string, name = "none") {
         selectedYesNo.value = answer;
         loading.value = true;
 
@@ -294,6 +338,10 @@
             } else {
                 lastYesNoMessage.classList.add('red');
             }
+        }
+
+        if (name != "none") {
+            companyName = name;
         }
 
         if (answer === "Yes") {
@@ -312,6 +360,8 @@
         await nextTick();
         scrollToButtom();
     }
+
+    let companyName = "virksomhed/organisation";
 
     async function handleMoodboard(search: string) {
     try {
@@ -336,13 +386,26 @@
     } catch (error) {
         console.error("Error fetching moodboard images:", error);
     }
+
+    waitAndScroll();
 }
 
-    function sendImageAnswer(image: string) {
-        loading.value = true;
-        addUserMessage("My idea is best represented by " + image + ". Now proceed with the next question.", true);
-        sendMessages();
-        input.value = "";
+    function toggleImageSelection(imageAlt: string) {
+        const index = selectedImages.value.indexOf(imageAlt);
+        if (index === -1) {
+            selectedImages.value.push(imageAlt);
+        } else {
+            selectedImages.value.splice(index, 1);
+        }
+    }
+
+    function sendMoodboardSelection() {
+        if (selectedImages.value.length > 0) {
+            loading.value = true;
+            addUserMessage("My idea is best represented by images containing: " + selectedImages.value.join(", ") + " Now proceed with the next question.", true);
+            sendMessages();
+            selectedImages.value = []; // Clear after sending
+        }
     }
 
     function sendBrandCardAnswer(text: string) {
@@ -361,23 +424,28 @@
 
     import { computed } from 'vue';
 
-    const currentPlaceholder = computed(() => {
-    const lastMessage = data.currentQuestion.answer.answer.at(-1);
-
-    if (lastMessage?.content.type === 'text') {
-        return "Skriv dit svar her...";
-    } else if (lastMessage?.content.type === 'multiple-choice-question') {
-        return "Vælg en eller flere af ovenstående, eller skriv noget her";
-    } else if (lastMessage?.content.type === 'color-question') {
-        return "Vælg en af farverne, eller skriv noget her";
-    } else if (lastMessage?.content.type === 'branding-card-question') {
-        return "Vælg en af de to muligheder, eller skriv noget her";
-    } else if (lastMessage?.content.type === 'moodboard-question') {
-        return "Vælg et af billederne, eller skriv noget her";
-    }else {
-        return ""; // no placeholder
-    }
+    const isNonTextQuestion = computed(() => {
+        const lastMessage = data.currentQuestion.answer.answer.at(-1);
+        return lastMessage?.content.type !== 'text';
     });
+
+    const currentPlaceholder = computed(() => {
+        const lastMessage = data.currentQuestion.answer.answer.at(-1);
+
+        if (lastMessage?.content.type === 'text') {
+            return "Skriv dit svar her...";
+            } else if (lastMessage?.content.type === 'multiple-choice-question') {
+                return "Vælg en eller flere af ovenstående muligheder";
+            } else if (lastMessage?.content.type === 'color-question') {
+                return "Vælg en af farverne";
+            } else if (lastMessage?.content.type === 'branding-card-question') {
+                return "Vælg en af de to muligheder";
+            } else if (lastMessage?.content.type === 'moodboard-question') {
+                return "Vælg et af billederne";
+            }else {
+                return ""; // no placeholder
+            }
+        });
 
     function addUserMessage(userInput: string, hiddenInChat: boolean = false) {
     data.currentQuestion.answer.answer.push({
@@ -427,8 +495,10 @@
             previousAnswers: data.toString(),
             question: data.currentQuestion,
             questionnaire: props.questionnaire,
+            companyName: companyName.toString(),
             })
         );
+        waitAndScroll();
     }
 
     function startConversation() {
@@ -449,7 +519,7 @@
             {
             role: "user",
             content: {
-                content: "We just started on the next question. Continue the conversation by asking me the question",
+                content: "We just started on the next question. Continue the conversation by asking me the question.",
                 type: "text",
             },
             },
@@ -457,6 +527,7 @@
         previousAnswers: data.toString(),
         question: data.currentQuestion,
         questionnaire: props.questionnaire,
+        companyName: companyName.toString(),
         })
     );
     }
@@ -485,6 +556,25 @@
     </script>
 
     <style>
+    .checkmark-circle {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: var(--color-black); /* Semi-transparent background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--color-background);
+        font-size: 18px; /* Adjust size of checkmark */
+    }
+
+    .moodboard-image.selected .checkmark-circle {
+        display: flex; /* Show checkmark circle when image is selected */
+    }
+
     .message.assistant.yes-no-question.last {
         background: #dcf1df;
     }
@@ -518,14 +608,14 @@
 
     /* Style for the clickable option text */
     .clickable-option {
-    cursor: pointer;
-    transition: color 0.2s ease, background-color 0.2s ease;
-    padding: 0.25rem 0.5rem; /* space around text */
-    border-radius: 0.375rem; /* rounded edges */
-    background-color: rgba(0, 0, 0, 0.05); /* lighter background by default */
-    display: flex;
-    align-items: center; /* Aligns the text and checkmark horizontally */
-    justify-content: space-between; /* Ensures the checkmark appears on the right */
+        cursor: pointer;
+        transition: color 0.2s ease, background-color 0.2s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        background-color: rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     /* Selected option styles */
@@ -541,7 +631,7 @@
     width: 20px;
     height: 20px;
     background-color: #333; /* Circle color */
-    color: white; /* Checkmark color */
+    color: var(--color-background); /* Checkmark color */
     text-align: center;
     line-height: 20px; /* Centers the checkmark */
     font-size: 14px; /* Size of the checkmark */
@@ -555,11 +645,11 @@
 
     /* Smaller text for the submit button */
     .questionnaire-button {
-    font-size: 0.9rem; /* Adjust text size to smaller */
-    padding: 0.5rem 0.8rem; /* Adjust padding to maintain proportions */
-    width: 100%; /* Make the button fill the entire width */
-    box-sizing: border-box; /* Ensure padding is included in the width */
-    margin-top: 0.5rem;
+        font-size: 0.9rem; /* Adjust text size to smaller */
+        padding: 0.5rem 0.8rem; /* Adjust padding to maintain proportions */
+        width: 100%; /* Make the button fill the entire width */
+        box-sizing: border-box; /* Ensure padding is included in the width */
+        margin-top: 0.5rem;
     }
 
     .questionnaire-item {
@@ -604,18 +694,30 @@
     }
     }
 
-    .moodboard-container {
-    display: flex;
-    gap: 1rem; /* space between images */
-    overflow-x: auto;
+    .moodboard-image {
+        width: 100%; /* Ensures image takes up full container space */
+        height: auto;
+        position: relative;
+    }
+
+    .moodboard-image.selected {
+        box-sizing: border-box;
+        border: 5px solid var(--color-black);
+    }
+
+    .moodboard-image img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 8px;
     }
 
     .moodboard-images {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
+    display: grid; /* Ensure images are placed in a grid */
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    gap: 10px; /* Space between images */
+    width: 100%; /* Ensure the container uses the full width */
+    padding-bottom: 1rem;
 
     & button {
         padding: 0;
@@ -694,7 +796,7 @@
     }
 
     .message {
-    margin-bottom: 30px;
+    margin-top: 30px;
     width: fit-content;
     max-width: 60ch;
     padding: 10px 20px;

@@ -61,11 +61,8 @@ watch(
       if (progress[index] > 0.249) {
         selectedSectionIndex.value = section.id + 1;
       }
-      console.log("sections", data.questionnaire.sections.length-1);
-      console.log("progress", progress[index]);
     });
     height.value = 0;
-    console.log("progress", progress);
 
     progress.forEach((value) => (height.value += value));
     indicator.value?.style.setProperty("height", `${height.value * 100}%`);

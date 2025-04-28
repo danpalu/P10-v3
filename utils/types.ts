@@ -11,6 +11,7 @@ export const MessageContent = z.object({
     "multiple-choice-question",
     "branding-card-question",
     "yes-no-question",
+    "yes-no-name-question",
     "link-question",
   ]),
   sliderDetails: z.object({xAxis: z.object({ minLabel: z.string(), maxLabel: z.string() }),
@@ -22,6 +23,7 @@ export const MessageContent = z.object({
   link: z.string().nullable(),
   hiddenInChat: z.boolean().nullable(),
   isTitle: z.boolean().nullable(),
+  companyName: z.string().nullable(),
 });
 
 export type MessageContentType = z.infer<typeof MessageContent>;
@@ -29,6 +31,7 @@ export type MessageContentType = z.infer<typeof MessageContent>;
 export type ClientMessage = {
   role: "system" | "user" | "assistant";
   content: MessageContentType;
+  name: String;
 };
 
 export type ChatMessage = {
@@ -40,7 +43,7 @@ export type Question = {
   id: number;
   title: string;
   answer: Answer;
-  type: "text" | "color" | "moodboard" | "multiple-choice" | "branding-card" | "yes-no" | "link";
+  type: "text" | "color" | "moodboard" | "multiple-choice" | "branding-card" | "yes-no" | "link" | "name";
 };
 
 export type Answer = {

@@ -12,6 +12,8 @@ export default defineWebSocketHandler({
     const messages: ClientMessage[] = messageParsed.messages;
     const question: Question = messageParsed.question;
     const previousAnswers: string = messageParsed.previousAnswers;
+    let companyName: string = messageParsed.companyName;
+    if (companyName === undefined) companyName = "virksomhed/organisation"; // Default value if companyName is not provided
     const messageHistory: ChatMessage[] = [];
     messages.forEach((msg) => {
       messageHistory.push({
@@ -32,7 +34,7 @@ export default defineWebSocketHandler({
           role: "system",
           content: `You are a helpful design assistant, tasked with preparing the user for the first talk with a brand / graphical designer. 
           
-          You help the user answer the question: "${question.title}". FOCUS ONLY ON THIS QUESTION.
+          You help the user answer the question: "${question.title}" for their company ${companyName}. FOCUS ONLY ON THIS QUESTION. Instead of writing virksomhed/organisation, write ${companyName}.
           
           The user has previously answered other questions and will answer the unaswered ones in the future, which can be seen in the following json formatted text: 
           ${previousAnswers} 
@@ -51,11 +53,13 @@ export default defineWebSocketHandler({
 
           Yes-no question can only be answered with yes or no.
 
+          Yes-no-name questions can only be answered by yes or no. For this, you provide the company name in the content text. The company name is provided in the question object as a string.
+
           In link questions, you stick strictly to the question.
 
           Output in valid JSON format, following the scheme. 
           
-          You can summarize the answer to the question by outputting the summary and asking if it is correct. Make sure to make the type "text" if you do not have confirmation from the user, that the summary is correct. Then, if the summary if correct, output the summary as a direct answer to the stated question, like the user has answered it in first person, and make the type summary. Summary questions are always of type 'yes-no-question'.
+          You can summarize the answer to the question by outputting the summary and asking if it is correct. If the summary if correct, output the summary as a answer to the stated question and make the type 'summary'. Summary questions are always of type 'yes-no-question', or if you asked the user about their company name, type 'yes-no-name-question'.
           
           Do not use ** for bold text. 
 
