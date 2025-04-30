@@ -1,6 +1,6 @@
 export const useDataStore = defineStore("data", () => {
   const questionnaire = ref<Questionnaire>({
-    type: "do-non-ai",
+    type: "do-ai",
     sections: [
       {
         id: 1,
@@ -8,7 +8,8 @@ export const useDataStore = defineStore("data", () => {
         questions: [
           newQuestion(1, "Hvad er navnet på din virksomhed/organisation?", "text"),
           newQuestion(2, "Hvilke produkter eller tjenester udbyder din virksomhed/organisation?", "text"),
-          newQuestion(3, "Hvordan vil du beskrive din virksomheds vision med få ord – har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter?", "text"),
+          newQuestion(3, "Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?", "branding-card-question"),
+          newQuestion(4, "Hvordan vil du beskrive din virksomheds vision med få ord – har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter?", "text"),
           newQuestion(4, "Hvad er historien bag din virksomhed/organisation – hvorfor blev den startet, og hvad har formet den undervejs?", "text"),
           newQuestion(5, "Hvad vil du gerne have, at folk siger om din virksomhed/organisation?", "multiple-choice-question"),
         ],

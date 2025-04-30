@@ -59,7 +59,7 @@ export default defineWebSocketHandler({
 
           Output in valid JSON format, following the scheme. 
           
-          You can summarize the answer to the question by outputting the summary and asking if it is correct. If the summary if correct, output the summary as a answer to the stated question and make the type 'summary'. Summary questions are always of type 'yes-no-question', or if you asked the user about their company name, type 'yes-no-name-question'.
+          When thes user has given a concrete answer, you should output a summary of it, asking if it is correct. When doing this, you use the type 'yes-no-question', or if you asked the user about their company name, you use the type 'yes-no-name-question'.
           
           Do not use ** for bold text. 
 

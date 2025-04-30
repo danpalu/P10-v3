@@ -28,6 +28,9 @@
                         <hr style="margin: 0 auto; width: 100%;">
                     </h1>
                     <!-- Default message rendering -->
+                    <div v-else-if="message.content.type === 'branding-card-question'">
+                        {{ message.content.content }} {{brandCardQuestionsAsked}}/{{brandCardQuestionsToAsk}}
+                    </div>
                     <div v-else>
                         {{ message.content.content }}
                     </div>
@@ -408,14 +411,28 @@
         }
     }
 
+    let brandCardQuestionsAsked = ref<number>(1);
+    const brandCardQuestionsToAsk = 3;
+
     function sendBrandCardAnswer(text: string) {
     loading.value = true;
-    addUserMessage(
+    if (brandCardQuestionsAsked.value < brandCardQuestionsToAsk) {
+        addUserMessage(
+            "My idea is best represented by " +
+            text +
+            ". Now ask me a new branding card question, but mix up your phrasing.",
+            true
+        );
+        brandCardQuestionsAsked.value++;
+    } else {
+        addUserMessage(
         "My idea is best represented by " +
         text +
-        ". Now ask me a new branding card question, but mix up your phrasing. Unless you have already asked me three branding card questions, then proceed.",
+        "Let's proceed to the next question.",
         true
     );
+        brandCardQuestionsAsked.value = 0;
+    }
     sendMessages();
     input.value = "";
     }
@@ -480,10 +497,18 @@
     }
 
     let input = ref<string>("");
+    let colorQuestionsAsked = ref<number>(0);
 
     function sendColorAnswer(color: string) {
+        console.log(colorQuestionsAsked.value);
         loading.value = true;
-        addUserMessage("I think my idea is well represented by " + color + ". You may ask me a new color question with variants of this color, unless you have already done that, then don't.", true);
+        if (colorQuestionsAsked.value == 0) {
+            addUserMessage("I think my idea is well represented by " + color + ". You may ask me a new color question, asking me about what variant of this color i prefer.", true);
+            colorQuestionsAsked.value++;
+        } else {
+            addUserMessage("I think my idea is well represented by " + color + ". Let's proceed with the next question.", true);
+            colorQuestionsAsked.value = 0;
+        }
         sendMessages();
         input.value = "";
     }
@@ -575,7 +600,7 @@
         display: flex; /* Show checkmark circle when image is selected */
     }
 
-    .message.assistant.yes-no-question.last {
+    .message.assistant.yes-no-name-question.last, .message.assistant.yes-no-question.last {
         background: #dcf1df;
     }
 
@@ -855,7 +880,7 @@
     }
 
     .message.last {
-    margin-bottom: 5rem;
+        margin-bottom: 5rem;
     }
 
     .form-container {
