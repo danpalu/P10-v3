@@ -12,10 +12,18 @@
                     <li
                         v-for="(message, index) in prevQuestion.answer.answer"
                         class="message"
-                        :class="`${message.role} ${message.content.type} ${
+                        :class="`${message.content.type} ${
                             index === prevQuestion.answer.answer.length - 1 ? 'last' : ''
-                        }`">
+                        } ${message.content.isTitle ? 'title' : message.role}`">
+                        <!-- Check for title type and render as h1 -->
+                        <h1 v-if="message.content.isTitle === true" class = "title">
+                            {{ message.content.content }}
+                            <hr style="margin: 0 auto; width: 100%;">
+                        </h1>
+                        <!-- Default message rendering -->
+                        <div v-else>
                         {{ message.content.content }}
+                    </div>
                     </li>
                 </template>
                 <li
@@ -28,19 +36,23 @@
                         <hr style="margin: 0 auto; width: 100%;">
                     </h1>
                     <!-- Default message rendering -->
-                    <div v-else-if="message.content.type === 'branding-card-question'">
-                        {{ message.content.content }} {{brandCardQuestionsAsked}}/{{brandCardQuestionsToAsk}}
-                    </div>
                     <div v-else>
                         {{ message.content.content }}
                     </div>
                     <!-- Handle additional message types like color, moodboard, etc. -->
                     <div v-if="message.content.type === 'color-question'" class="color-container">
-                        <button
+                        <div class="color-options">
+                            <button
                             @click.prevent="sendColorAnswer(color)"
                             v-for="color in message.content.colorOptions"
                             class="color"
                             :style="{ background: color }"></button>
+                        </div>
+                        <div>
+                            <button @click.prevent="sendNoneOfAbove" class="questionnaire-button">
+                                Ingen af disse
+                            </button>
+                        </div>
                     </div>
                     <div v-if="message.content.type === 'moodboard-question'" style="padding-top: 0.5rem;">
                         <div class="moodboard-images">
@@ -420,7 +432,7 @@
         addUserMessage(
             "My idea is best represented by " +
             text +
-            ". Now ask me a new branding card question, but mix up your phrasing.",
+            ". Now ask me a new branding card question, but don't any of the same options you have already used.",
             true
         );
         brandCardQuestionsAsked.value++;
@@ -581,6 +593,11 @@
     </script>
 
     <style>
+    .color-options {
+        display: flex;
+        justify-content: space-between;
+    }
+
     .checkmark-circle {
         position: absolute;
         top: 5px;
@@ -851,15 +868,15 @@
 
     .color-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 5px;
     margin-top: 10px;
     margin-bottom: 10px;
     }
 
     .color {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 5px;
     }
 

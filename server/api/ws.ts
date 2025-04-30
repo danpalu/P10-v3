@@ -49,7 +49,7 @@ export default defineWebSocketHandler({
 
           The moodboard-question is a question where the user can select a number of images from a list. For this, you should provide an appropriate search string to find images that reflect the user's company and previous answers. Do not put the search string in the content text. You should ask moodboard questions when talking about company values or the feel of a company.
 
-          The color-question is a question where the user can select a color from a list of colors in hex format. For this, you should provide a list of colors based on the user's previous answers. Never show hex-codes or color names in the content text.
+          The color-question is a question where the user can select a color from a list of 8 colors in hex format. For this, you should provide a list of colors based on the user's previous answers. Never this list in the content text.
 
           Yes-no question can only be answered with yes or no.
 
