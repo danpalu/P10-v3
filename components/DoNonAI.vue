@@ -3,382 +3,370 @@
     <section id="section-1">
       <h2>Virksomhedsoplysninger</h2>
       <div class="question">
-        <label for="name">Hvad er navnet på virksomheden/organisationen? </label>
+        <label class="question-title" for="name">Hvad er navnet på virksomheden/organisationen? </label>
         <input type="text" name="Hvad er navnet på virksomheden/organisationen?" id="name" />
       </div>
       <div class="question">
-        <label for="services">Hvilke produkter eller tjenester udbyder I? </label>
+        <label class="question-title" for="services">Hvilke produkter eller tjenester udbyder I? </label>
         <textarea type="text" name="Hvilke produkter eller tjenester udbyder I?" id="services" />
       </div>
       <div class="question">
-        <h3>
+        <h3 class="question-title">
           Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
           stræber efter?
         </h3>
-        <fieldset
-          name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter?">
-          <legend>Vælg nogle sætninger og færdiggør dem</legend>
-          <label
-            >Vi drømmer om en verden, hvor...<input
-              type="text"
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
+        <label
+          >Vi drømmer om en verden, hvor...<input
+            type="text"
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
           stræber efter? Vi drømmer om en verden, hvor.."
-          /></label>
-          <label
-            >Vi tror på, at det vigtigste er...<input
-              type="text"
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
+        /></label>
+        <label
+          >Vi tror på, at det vigtigste er...<input
+            type="text"
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
           stræber efter? Vi tror på, at det vigtigste er..."
-          /></label>
-          <label
-            >Vi arbejder for at...<input
-              type="text"
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
+        /></label>
+        <label
+          >Vi arbejder for at...<input
+            type="text"
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
           stræber efter? Vi arbejder for at..."
-          /></label>
-          <label
-            >Vi vil være dem, der...<input
-              type="text"
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
+        /></label>
+        <label
+          >Vi vil være dem, der...<input
+            type="text"
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
           stræber efter? Vi vil være dem, der..."
-          /></label>
-          <label
-            >Vores mål er at gøre det muligt for...<input
-              type="text"
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
+        /></label>
+        <label
+          >Vores mål er at gøre det muligt for...<input
+            type="text"
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
           stræber efter? Vores mål er at gøre det muligt for..."
-          /></label>
-          <label
-            >Vi ønsker at ændre måden, folk tænker om...<input
-              type="text"
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
+        /></label>
+        <label
+          >Vi ønsker at ændre måden, folk tænker om...<input
+            type="text"
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
           stræber efter? Vi ønsker at ændre måden, folk tænker om.."
-          /></label>
-          <label
-            >Vi er drevet af en tro på, at...<input
-              type="text"
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
+        /></label>
+        <label
+          >Vi er drevet af en tro på, at...<input
+            type="text"
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
           stræber efter? Vi er drevet af en tro på, at..."
-          /></label>
-          <label
-            >Vi står op om morgenen for at...<input
-              type="text"
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
+        /></label>
+        <label
+          >Vi står op om morgenen for at...<input
+            type="text"
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
           stræber efter? Vi står op om morgenen for at.."
-          /></label>
-          <label
-            >Vi håber, at vores arbejde vil føre til...<input
-              type="text"
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
+        /></label>
+        <label
+          >Vi håber, at vores arbejde vil føre til...<input
+            type="text"
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
           stræber efter? Vi håber, at vores arbejde vil føre til..."
-          /></label>
-          <label
-            >Vi prøver ikke at være de største - men de mest...<input
-              type="text"
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
+        /></label>
+        <label
+          >Vi prøver ikke at være de største - men de mest...<input
+            type="text"
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
           stræber efter? Vi prøver ikke at være de største - men de mest..."
-          /></label>
-        </fieldset>
+        /></label>
       </div>
       <div class="question">
         <h3>
           Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs?
         </h3>
-        <fieldset name="history">
-          <legend>Svar på spørgsmål</legend>
-          <label>
-            Hvilket behov, problem eller drøm førte til, at virksomheden blev startet?
-            <input
-              type="text"
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvilket behov, problem eller drøm førte til, at virksomheden blev startet?" />
-          </label>
+        <label>
+          Hvilket behov, problem eller drøm førte til, at virksomheden blev startet?
+          <input
+            type="text"
+            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvilket behov, problem eller drøm førte til, at virksomheden blev startet?" />
+        </label>
 
-          <label>
-            Hvad var den oprindelige vision eller idé - og er den ændret siden?
-            <input
-              type="text"
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad var den oprindelige vision eller idé - og er den ændret siden?" />
-          </label>
+        <label>
+          Hvad var den oprindelige vision eller idé - og er den ændret siden?
+          <input
+            type="text"
+            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad var den oprindelige vision eller idé - og er den ændret siden?" />
+        </label>
 
-          <label>
-            Hvem stod bag opstarten, og hvilken baggrund havde de?
-            <input
-              type="text"
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvem stod bag opstarten, og hvilken baggrund havde de?" />
-          </label>
+        <label>
+          Hvem stod bag opstarten, og hvilken baggrund havde de?
+          <input
+            type="text"
+            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvem stod bag opstarten, og hvilken baggrund havde de?" />
+        </label>
 
-          <label>
-            Er der en konkret oplevelse eller aha-øjeblik, der satte gang i det hele?
-            <input
-              type="text"
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Er der en konkret oplevelse eller aha-øjeblik, der satte gang i det hele?" />
-          </label>
+        <label>
+          Er der en konkret oplevelse eller aha-øjeblik, der satte gang i det hele?
+          <input
+            type="text"
+            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Er der en konkret oplevelse eller aha-øjeblik, der satte gang i det hele?" />
+        </label>
 
-          <label>
-            Hvad har været de største milepæle eller udfordringer undervejs?
-            <input
-              type="text"
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad har været de største milepæle eller udfordringer undervejs?" />
-          </label>
+        <label>
+          Hvad har været de største milepæle eller udfordringer undervejs?
+          <input
+            type="text"
+            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad har været de største milepæle eller udfordringer undervejs?" />
+        </label>
 
-          <label>
-            Hvordan har virksomheden udviklet sig siden starten - og hvorfor?
-            <input
-              type="text"
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvordan har virksomheden udviklet sig siden starten - og hvorfor?" />
-          </label>
+        <label>
+          Hvordan har virksomheden udviklet sig siden starten - og hvorfor?
+          <input
+            type="text"
+            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvordan har virksomheden udviklet sig siden starten - og hvorfor?" />
+        </label>
 
-          <label>
-            Har der været vigtige samarbejder, kundetyper eller begivenheder, der har formet jer?
-            <input
-              type="text"
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Har der været vigtige samarbejder, kundetyper eller begivenheder, der har formet jer?" />
-          </label>
+        <label>
+          Har der været vigtige samarbejder, kundetyper eller begivenheder, der har formet jer?
+          <input
+            type="text"
+            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Har der været vigtige samarbejder, kundetyper eller begivenheder, der har formet jer?" />
+        </label>
 
-          <label>
-            Hvordan har jeres værdier eller mission været med til at styre jeres vej?
-            <input
-              type="text"
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvordan har jeres værdier eller mission været med til at styre jeres vej?" />
-          </label>
+        <label>
+          Hvordan har jeres værdier eller mission været med til at styre jeres vej?
+          <input
+            type="text"
+            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvordan har jeres værdier eller mission været med til at styre jeres vej?" />
+        </label>
 
-          <label>
-            Hvilke vendepunkter har ændret jeres retning eller selvforståelse?
-            <input
-              type="text"
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvilke vendepunkter har ændret jeres retning eller selvforståelse?" />
-          </label>
+        <label>
+          Hvilke vendepunkter har ændret jeres retning eller selvforståelse?
+          <input
+            type="text"
+            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvilke vendepunkter har ændret jeres retning eller selvforståelse?" />
+        </label>
 
-          <label>
-            Hvad er I særligt stolte af, når I ser tilbage på jeres rejse?
-            <input
-              type="text"
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad er I særligt stolte af, når I ser tilbage på jeres rejse?" />
-          </label>
-        </fieldset>
+        <label>
+          Hvad er I særligt stolte af, når I ser tilbage på jeres rejse?
+          <input
+            type="text"
+            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad er I særligt stolte af, når I ser tilbage på jeres rejse?" />
+        </label>
       </div>
       <div class="question">
-        <h3>Hvad vil du gerne have, at folk siger om Jer?</h3>
-        <fieldset>
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad vil du gerne have, at folk siger om Jer? values"
-              value="troværdige og professionelle" />
-            At vi er troværdige og professionelle
-          </label>
+        <h3>Hvilke farver vil du associere med jer?</h3>
+        <ColorQuestion></ColorQuestion>
+      </div>
+      <div class="question">
+        <h3>Hvad vil du gerne have, at folk siger om jer?</h3>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad vil du gerne have, at folk siger om Jer? values"
+            value="troværdige og professionelle" />
+          At vi er troværdige og professionelle
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad vil du gerne have, at folk siger om Jer? values"
-              value="nytænkende og innovative" />
-            At vi er nytænkende og innovative
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad vil du gerne have, at folk siger om Jer? values"
+            value="nytænkende og innovative" />
+          At vi er nytænkende og innovative
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad vil du gerne have, at folk siger om Jer? values"
-              value="positiv forskel i samfundet" />
-            At vi gør en positiv forskel i samfundet
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad vil du gerne have, at folk siger om Jer? values"
+            value="positiv forskel i samfundet" />
+          At vi gør en positiv forskel i samfundet
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad vil du gerne have, at folk siger om Jer? values"
-              value="nemme og behagelige at samarbejde med" />
-            At vi er nemme og behagelige at samarbejde med
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad vil du gerne have, at folk siger om Jer? values"
+            value="nemme og behagelige at samarbejde med" />
+          At vi er nemme og behagelige at samarbejde med
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad vil du gerne have, at folk siger om Jer? values"
-              value="passionerede og engagerede" />
-            At vi er passionerede og engagerede
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad vil du gerne have, at folk siger om Jer? values"
+            value="passionerede og engagerede" />
+          At vi er passionerede og engagerede
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad vil du gerne have, at folk siger om Jer? values"
-              value="venlige og imødekommende" />
-            At vi er venlige og imødekommende
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad vil du gerne have, at folk siger om Jer? values"
+            value="venlige og imødekommende" />
+          At vi er venlige og imødekommende
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad vil du gerne have, at folk siger om Jer? values"
-              value="bæredygtighed og ansvarlighed" />
-            At vi har fokus på bæredygtighed og ansvarlighed
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad vil du gerne have, at folk siger om Jer? values"
+            value="bæredygtighed og ansvarlighed" />
+          At vi har fokus på bæredygtighed og ansvarlighed
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad vil du gerne have, at folk siger om Jer? values"
-              value="høj kvalitet og gode resultater" />
-            At vi leverer høj kvalitet og gode resultater
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad vil du gerne have, at folk siger om Jer? values"
+            value="høj kvalitet og gode resultater" />
+          At vi leverer høj kvalitet og gode resultater
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad vil du gerne have, at folk siger om Jer? values"
-              value="sjove og kreative" />
-            At vi er sjove og kreative
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad vil du gerne have, at folk siger om Jer? values"
+            value="sjove og kreative" />
+          At vi er sjove og kreative
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad vil du gerne have, at folk siger om Jer? values"
-              value="forstår kunders eller brugeres behov" />
-            At vi forstår vores kunders/brugeres behov
-          </label>
-          <label
-            >Andet:
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad vil du gerne have, at folk siger om Jer? values"
+            value="forstår kunders eller brugeres behov" />
+          At vi forstår vores kunders/brugeres behov
+        </label>
+        <label
+          >Andet:
 
-            <input type="text" name="Hvad vil du gerne have, at folk siger om Jer? review-other" />
-          </label>
-        </fieldset>
+          <input type="text" name="Hvad vil du gerne have, at folk siger om Jer? review-other" />
+        </label>
       </div>
     </section>
     <section id="section-2">
       <h2>Mål og Branding</h2>
       <div class="question">
         <h3>Hvad ønsker I at opnå med en ny visuel identitet eller design?</h3>
-        <fieldset>
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design? "
-              value="stærkere og mere genkendeligt brand" />
-            At skabe et stærkere og mere genkendeligt brand
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+            value="stærkere og mere genkendeligt brand" />
+          At skabe et stærkere og mere genkendeligt brand
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design? "
-              value="tiltrække ny målgruppe eller marked" />
-            At tiltrække en ny målgruppe eller marked
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+            value="tiltrække ny målgruppe eller marked" />
+          At tiltrække en ny målgruppe eller marked
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design? "
-              value="opdatere image og signalere modernitet" />
-            At opdatere virksomhedens image og signalere modernitet
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+            value="opdatere image og signalere modernitet" />
+          At opdatere virksomhedens image og signalere modernitet
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design? "
-              value="styrke værdier og mission gennem design" />
-            At styrke virksomhedens værdier og mission gennem design
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+            value="styrke værdier og mission gennem design" />
+          At styrke virksomhedens værdier og mission gennem design
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design? "
-              value="sammenhængende og professionel oplevelse" />
-            At skabe en mere sammenhængende og professionel visuel oplevelse
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+            value="sammenhængende og professionel oplevelse" />
+          At skabe en mere sammenhængende og professionel visuel oplevelse
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design? "
-              value="differentiere os fra konkurrenterne" />
-            At differentiere os fra konkurrenterne i markedet
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+            value="differentiere os fra konkurrenterne" />
+          At differentiere os fra konkurrenterne i markedet
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design? "
-              value="lettere og mere effektiv kommunikation" />
-            At gøre vores kommunikation lettere at forstå og mere effektiv
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+            value="lettere og mere effektiv kommunikation" />
+          At gøre vores kommunikation lettere at forstå og mere effektiv
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design? "
-              value="formidle kultur og personlighed gennem design" />
-            At formidle vores kultur og personlighed gennem design
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+            value="formidle kultur og personlighed gennem design" />
+          At formidle vores kultur og personlighed gennem design
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design? "
-              value="genkendelse og hukommelse af brand" />
-            At gøre det lettere for kunder at genkende og huske vores brand
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+            value="genkendelse og hukommelse af brand" />
+          At gøre det lettere for kunder at genkende og huske vores brand
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design? "
-              value="fremme tillid og troværdighed" />
-            At fremme tillid og troværdighed i vores målgrupper
-          </label>
-          <label
-            >Andet:
+        <label>
+          <input
+            type="checkbox"
+            name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+            value="fremme tillid og troværdighed" />
+          At fremme tillid og troværdighed i vores målgrupper
+        </label>
+        <label
+          >Andet:
 
-            <input type="text" name="Hvad ønsker I at opnå med en ny visuel identitet eller design? Other " />
-          </label>
-        </fieldset>
+          <input type="text" name="Hvad ønsker I at opnå med en ny visuel identitet eller design? Other" />
+        </label>
       </div>
       <div class="question">
         <h3>Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem?</h3>
-        <fieldset name="competitors">
-          <legend>Svar på spørgsmål</legend>
+        <label>
+          Vores primære konkurrenter er…
+          <input
+            type="text"
+            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vores primære konkurrenter er…" />
+        </label>
 
-          <label>
-            Vores primære konkurrenter er…
-            <input
-              type="text"
-              name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vores primære konkurrenter er…" />
-          </label>
+        <label>
+          Den største forskel mellem vores virksomhed og vores konkurrenter er…
+          <input
+            type="text"
+            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Den største forskel mellem vores virksomhed og vores konkurrenter er…" />
+        </label>
 
-          <label>
-            Den største forskel mellem vores virksomhed og vores konkurrenter er…
-            <input
-              type="text"
-              name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Den største forskel mellem vores virksomhed og vores konkurrenter er…" />
-          </label>
+        <label>
+          Vi skiller os ud fra konkurrenterne ved at…
+          <input
+            type="text"
+            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi skiller os ud fra konkurrenterne ved at…" />
+        </label>
 
-          <label>
-            Vi skiller os ud fra konkurrenterne ved at…
-            <input
-              type="text"
-              name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi skiller os ud fra konkurrenterne ved at…" />
-          </label>
+        <label>
+          Kunder vælger os frem for vores konkurrenter, fordi…
+          <input
+            type="text"
+            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Kunder vælger os frem for vores konkurrenter, fordi…" />
+        </label>
 
-          <label>
-            Kunder vælger os frem for vores konkurrenter, fordi…
-            <input
-              type="text"
-              name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Kunder vælger os frem for vores konkurrenter, fordi…" />
-          </label>
-
-          <label>
-            Vi har en fordel i forhold til vores konkurrenter, fordi…
-            <input
-              type="text"
-              name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi har en fordel i forhold til vores konkurrenter, fordi…" />
-          </label>
-        </fieldset>
+        <label>
+          Vi har en fordel i forhold til vores konkurrenter, fordi…
+          <input
+            type="text"
+            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi har en fordel i forhold til vores konkurrenter, fordi…" />
+        </label>
       </div>
       <div class="question target-group">
         <h3>Hvem er jeres målgruppe?</h3>
@@ -491,24 +479,24 @@
           <fieldset>
             <legend>Foretrukne brands</legend>
             <label
-              ><input type="radio" name="Målgruppe foretrykne brands" value="apple_nike_tesla" />Apple, Nike,
+              ><input type="radio" name="Målgruppe foretrukne brands" value="apple_nike_tesla" />Apple, Nike,
               Tesla</label
             >
             <label
-              ><input type="radio" name="Målgruppe foretrykne brands" value="patagonia_ikea" />Patagonia, IKEA, Whole
+              ><input type="radio" name="Målgruppe foretrukne brands" value="patagonia_ikea" />Patagonia, IKEA, Whole
               Foods</label
             >
-            <label><input type="radio" name="Målgruppe foretrykne brands" value="fastfashion" />H&M, Zara, ASOS</label>
+            <label><input type="radio" name="Målgruppe foretrukne brands" value="fastfashion" />H&M, Zara, ASOS</label>
             <label
-              ><input type="radio" name="Målgruppe foretrykne brands" value="luksusbrands" />Luksusbrands som Chanel,
+              ><input type="radio" name="Målgruppe foretrukne brands" value="luksusbrands" />Luksusbrands som Chanel,
               Louis Vuitton</label
             >
             <label
-              ><input type="radio" name="Målgruppe foretrykne brands" value="socialevirksomheder" />Sociale virksomheder
+              ><input type="radio" name="Målgruppe foretrukne brands" value="socialevirksomheder" />Sociale virksomheder
               og non-profit organisationer</label
             >
             <label
-              ><input type="radio" name="Målgruppe foretrykne brands" value="freelance" />Freelance- eller
+              ><input type="radio" name="Målgruppe foretrukne brands" value="freelance" />Freelance- eller
               startup-virksomheder</label
             >
           </fieldset>
@@ -703,193 +691,186 @@
       <h2>Praktiske Detaljer</h2>
       <div class="question">
         <h3>Hvilke leverancer forventer du?</h3>
-        <fieldset>
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Logo" />
-            Logo
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Logo" />
+          Logo
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Visuel identitet" />
-            Visuel identitet
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Visuel identitet" />
+          Visuel identitet
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Reklame" />
-            Reklame
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Reklame" />
+          Reklame
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Brandguide" />
-            Brandguide
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Brandguide" />
+          Brandguide
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Hjemmesidedesign" />
-            Hjemmesidedesign
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Hjemmesidedesign" />
+          Hjemmesidedesign
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Sociale medie-templates" />
-            Sociale medie-templates
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Sociale medie-templates" />
+          Sociale medie-templates
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Tryksager" />
-            Tryksager (f.eks. visitkort, brochurer)
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Tryksager" />
+          Tryksager (f.eks. visitkort, brochurer)
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Farvepalette og typografi" />
-            Farvepalette og typografi
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Farvepalette og typografi" />
+          Farvepalette og typografi
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Ikon-sæt" />
-            Ikon-sæt
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Ikon-sæt" />
+          Ikon-sæt
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Animeret grafik eller video" />
-            Animeret grafik eller video
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Animeret grafik eller video" />
+          Animeret grafik eller video
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Emballage design" />
-            Emballage design
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Emballage design" />
+          Emballage design
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Marketingmateriale" />
-            Marketingmateriale (f.eks. bannerreklamer, flyers)
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Marketingmateriale" />
+          Marketingmateriale (f.eks. bannerreklamer, flyers)
+        </label>
 
-          <label>
-            <input type="checkbox" name="Hvilke leverancer forventer du?" value="Strategisk branding" />
-            Strategisk branding
-          </label>
+        <label>
+          <input type="checkbox" name="Hvilke leverancer forventer du?" value="Strategisk branding" />
+          Strategisk branding
+        </label>
 
-          <label>
-            Andet (specificér)
-            <input type="text" name="Hvilke leverancer forventer du?" value="Andet" />
-          </label>
-        </fieldset>
+        <label>
+          Andet (specificér)
+          <input type="text" name="Hvilke leverancer forventer du?" />
+        </label>
       </div>
       <div class="question">
         <h3>Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?</h3>
-        <fieldset>
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Hjemmeside" />
-            Hjemmeside
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="Hjemmeside" />
+          Hjemmeside
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Sociale medier" />
-            Sociale medier (Instagram, Facebook, LinkedIn, etc.)
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="Sociale medier" />
+          Sociale medier (Instagram, Facebook, LinkedIn, etc.)
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Tryksager" />
-            Tryksager (f.eks. visitkort, brochurer, plakater)
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="Tryksager" />
+          Tryksager (f.eks. visitkort, brochurer, plakater)
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Emballage" />
-            Emballage
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="Emballage" />
+          Emballage
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Skilte og banners" />
-            Skilte og banners
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="Skilte og banners" />
+          Skilte og banners
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Produktdesign" />
-            Produktdesign
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="Produktdesign" />
+          Produktdesign
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Annoncer" />
-            Annoncer (print og digital)
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="Annoncer" />
+          Annoncer (print og digital)
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="E-mail marketing" />
-            E-mail marketing
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="E-mail marketing" />
+          E-mail marketing
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Merchandising" />
-            Merchandising (f.eks. t-shirts, krus)
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="Merchandising" />
+          Merchandising (f.eks. t-shirts, krus)
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Events og messer" />
-            Events og messer
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="Events og messer" />
+          Events og messer
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="App design" />
-            App design
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="App design" />
+          App design
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Præsentationer" />
-            Præsentationer (PowerPoint, Keynote)
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="Præsentationer" />
+          Præsentationer (PowerPoint, Keynote)
+        </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Forretningsdokumenter" />
-            Forretningsdokumenter (f.eks. brevpapir, kontrakter)
-          </label>
+        <label>
+          <input
+            type="checkbox"
+            name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
+            value="Forretningsdokumenter" />
+          Forretningsdokumenter (f.eks. brevpapir, kontrakter)
+        </label>
 
-          <label>
-            Andet (specifikér)
-            <input
-              type="text"
-              name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?"
-              value="Andet" />
-          </label>
-        </fieldset>
+        <label>
+          Andet (specifikér)
+          <input type="text" name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?" />
+        </label>
       </div>
       <div class="question">
         <label for="deadline">Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med? </label>
@@ -912,7 +893,23 @@
           designeren eller noter til dig selv."
           id="other" />
         <div class="center-content button-container">
-          <button @click.prevent="sendForm">Indsend</button>
+          <button class="send-form" @click.prevent="sendForm">
+            <span class="text" :class="`${loadingSummary ? 'loading' : ''}`">
+              <span v-if="!data.summary">Indsend</span>
+              <span v-else>Indsend</span>
+            </span>
+            <span class="send-form-spinner" v-if="loadingSummary">
+              <LoadingSpinner></LoadingSpinner>
+            </span>
+          </button>
+        </div>
+        <div v-if="data.summary">
+          <h3>Opsummering</h3>
+          <div v-for="section in data.summary.sections">
+            <br />
+            <h4>{{ section.title }}</h4>
+            <p>{{ section.content }}</p>
+          </div>
         </div>
       </div>
     </section>
@@ -1018,18 +1015,21 @@ function scrollToBrandCardSection(sectionIndex: number) {
     behavior: "smooth",
   });
 }
+const loadingSummary = ref(false);
 
 async function sendForm() {
+  loadingSummary.value = true;
   const form = document.querySelector("#questionnaire-form") as HTMLFormElement;
   if (form) {
-    const formData = new FormData(form);
-    const response = await fetch("/api/summarize", {
+    const formDataObject = formDataToObjectWithArrays(form);
+    const response = await fetch("/api/summarize-do-non-ai", {
       method: "POST",
-      body: formData,
+      body: JSON.stringify(formDataObject),
     });
     const summary = await response.text();
-    console.log(summary);
+    data.summary = JSON.parse(summary);
   }
+  loadingSummary.value = false;
 }
 
 onMounted(() => {
@@ -1039,6 +1039,24 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.summary {
+  white-space: pre-line;
+}
+.send-form {
+  position: relative;
+
+  & .text.loading {
+    visibility: hidden;
+  }
+
+  & .send-form-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
 h2 {
   margin-bottom: 1em;
 }
@@ -1074,6 +1092,14 @@ section {
   &:not(:last-child) {
     margin-bottom: 100vh;
   }
+
+  &:not(#section-5) > :first-child {
+    margin-top: 4rem;
+  }
+
+  &:not(#section-5) > :last-child {
+    margin-bottom: 4rem;
+  }
 }
 
 .brand-card-section {
@@ -1102,10 +1128,6 @@ section {
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   padding: 2rem;
-
-  &:not(:last-child) {
-    margin-bottom: 2rem;
-  }
 
   & label {
     align-items: center;
@@ -1155,11 +1177,16 @@ section {
     }
   }
 
-  & fieldset {
-    padding: 1rem;
+  & > label {
+    margin-bottom: 1.4rem;
 
-    & > label {
-      margin-bottom: 1.4rem;
+    &:has(> input[type="checkbox"]),
+    &:has(> input[type="radio"]) {
+      margin-bottom: 0.8rem;
+    }
+
+    &:not(:first-child) {
+      font-size: 1rem;
     }
   }
 
@@ -1176,8 +1203,24 @@ fieldset {
   border: none;
 }
 
+input[type="text"],
+textarea {
+  font-size: 1rem;
+  padding: 0.5rem;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
 .target-group {
   position: relative;
+
+  & legend {
+    padding-bottom: 1rem;
+    font-weight: 500;
+  }
+
   & .scroller {
     overflow: hidden;
     height: 460px;
@@ -1196,7 +1239,7 @@ fieldset {
     gap: 1rem;
 
     &:not(:last-child) {
-      margin-bottom: 1rem;
+      margin-bottom: 0.6rem;
     }
   }
 
@@ -1216,10 +1259,13 @@ fieldset {
   }
 }
 
-h3,
 .question > label {
-  font-size: 1.2rem;
+  font-size: 1rem;
+}
+
+.question > :first-child {
   font-weight: 500;
-  padding-bottom: 1rem;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
 </style>
