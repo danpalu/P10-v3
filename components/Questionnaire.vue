@@ -1,5 +1,5 @@
 <template>
-  <form :class="`${props.questionnaire.type}`">
+  <form id="questionnaire-form" :class="`${props.questionnaire.type}`">
     <slot v-if="props.questionnaire.type == 'survey'"> </slot>
     <Chat
       v-else-if="props.questionnaire.type == 'do-ai' || props.questionnaire.type == 'chat'"

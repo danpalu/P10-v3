@@ -61,7 +61,7 @@ watch(
         }
       });
       progress[index] =
-        (numberQuestionsCompleted / section.questions.length) * (1 / (data.questionnaire.sections.length-1));
+        (numberQuestionsCompleted / section.questions.length) * (1 / (data.questionnaire.sections.length - 1));
       if (progress[index] > 0.249) {
         selectedSectionIndex.value = section.id + 1;
       }
@@ -75,8 +75,9 @@ watch(
 
 function sectionClick(id: number) {
   selectedSectionIndex.value = id;
-  const calculatedHeight = (100 * (selectedSectionIndex.value - 1)) / props.sections.length;
-  indicator.value?.style.setProperty("height", `${calculatedHeight}%`);
+  const calculatedHeight = (selectedSectionIndex.value - 1) / (props.sections.length - 1);
+  console.log(calculatedHeight);
+  indicator.value?.style.setProperty("height", `${calculatedHeight * 100}%`);
 }
 
 onMounted(() => {
