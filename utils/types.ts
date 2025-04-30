@@ -14,11 +14,10 @@ export const MessageContent = z.object({
     "yes-no-name-question",
     "link-question",
   ]),
-  sliderDetails: z.object({xAxis: z.object({ minLabel: z.string(), maxLabel: z.string() }),
-    }).nullable(),
+  sliderDetails: z.object({ xAxis: z.object({ minLabel: z.string(), maxLabel: z.string() }) }).nullable(),
   colorOptions: z.array(z.string()).nullable(),
   moodboardSearchString: z.string().nullable(),
-  brandingCardOptions: z.object({option: z.string(), oppositeOption: z.string() }).nullable(),
+  brandingCardOptions: z.object({ option: z.string(), oppositeOption: z.string() }).nullable(),
   multipleChoiceOptions: z.array(z.string()).nullable(),
   link: z.string().nullable(),
   hiddenInChat: z.boolean().nullable(),
@@ -61,3 +60,6 @@ export type Questionnaire = {
   type: "chat" | "survey" | "do-non-ai" | "do-ai";
   sections: QuestionSection[];
 };
+
+export const SummarySchema = z.object({ sections: z.array(z.object({ title: z.string(), content: z.string() })) });
+export type SummarySchemaType = z.infer<typeof SummarySchema>;

@@ -4,7 +4,7 @@
     afspejle.
   </p>
   <div class="container">
-    <label v-for="(image, index) in pictures">
+    <label v-for="(image, index) in data.pictures">
       <img :src="image.url" :alt="image.alt" />
       <input
         class="hidden"
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-
+const data = useDataStore();
 </script>
 
 <style scoped>
