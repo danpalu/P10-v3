@@ -7,20 +7,16 @@ export function newQuestion(
     id: id,
     title: title,
     answer: { answer: [], summary: "" },
-    type: type,
+    type: "text",
   };
 }
 
-export function newBrandCard(
-    option: string, 
-    oppositeOption: string
-): brandCard {
-    return {
-        option: option,
-        oppositeOption: oppositeOption,
-    }
+export function newBrandCard(option: string, oppositeOption: string): brandCard {
+  return {
+    option: option,
+    oppositeOption: oppositeOption,
+  };
 }
-  
 
 export function getQuestionById(questionnaire: Questionnaire, id: number): [Question, string] {
   for (const section of questionnaire.sections) {
