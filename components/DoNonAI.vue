@@ -2,13 +2,23 @@
   <div class="wrapper">
     <section id="section-1">
       <h2>Virksomhedsoplysninger</h2>
+      <p>
+        Du behøver ikke svare på alle spørgsmål - svar på dem du synes er relevante for din virksomhed/organisation.
+        <br /><br />
+      </p>
       <div class="question">
         <label class="question-title" for="name">Hvad er navnet på virksomheden/organisationen? </label>
-        <input type="text" name="Hvad er navnet på virksomheden/organisationen?" id="name" />
+        <textarea name="Hvad er navnet på virksomheden/organisationen?" id="name" />
       </div>
       <div class="question">
         <label class="question-title" for="services">Hvilke produkter eller tjenester udbyder I? </label>
-        <textarea type="text" name="Hvilke produkter eller tjenester udbyder I?" id="services" />
+        <textarea
+          oninput="
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+          "
+          name="Hvilke produkter eller tjenester udbyder I?"
+          id="services" />
       </div>
       <div class="question">
         <h3 class="question-title">
@@ -16,65 +26,55 @@
           stræber efter?
         </h3>
         <label
-          >Vi drømmer om en verden, hvor...<input
-            type="text"
+          >Vi drømmer om en verden, hvor...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi drømmer om en verden, hvor.."
-        /></label>
+          stræber efter? Vi drømmer om en verden, hvor.." />
+        </label>
         <label
-          >Vi tror på, at det vigtigste er...<input
-            type="text"
+          >Vi tror på, at det vigtigste er...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi tror på, at det vigtigste er..."
-        /></label>
+          stræber efter? Vi tror på, at det vigtigste er..." />
+        </label>
         <label
-          >Vi arbejder for at...<input
-            type="text"
+          >Vi arbejder for at...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi arbejder for at..."
-        /></label>
+          stræber efter? Vi arbejder for at..." />
+        </label>
         <label
-          >Vi vil være dem, der...<input
-            type="text"
+          >Vi vil være dem, der...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi vil være dem, der..."
-        /></label>
+          stræber efter? Vi vil være dem, der..." />
+        </label>
         <label
-          >Vores mål er at gøre det muligt for...<input
-            type="text"
+          >Vores mål er at gøre det muligt for...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vores mål er at gøre det muligt for..."
-        /></label>
+          stræber efter? Vores mål er at gøre det muligt for..." />
+        </label>
         <label
-          >Vi ønsker at ændre måden, folk tænker om...<input
-            type="text"
+          >Vi ønsker at ændre måden, folk tænker om...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi ønsker at ændre måden, folk tænker om.."
-        /></label>
+          stræber efter? Vi ønsker at ændre måden, folk tænker om.." />
+        </label>
         <label
-          >Vi er drevet af en tro på, at...<input
-            type="text"
+          >Vi er drevet af en tro på, at...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi er drevet af en tro på, at..."
-        /></label>
+          stræber efter? Vi er drevet af en tro på, at..." />
+        </label>
         <label
-          >Vi står op om morgenen for at...<input
-            type="text"
+          >Vi står op om morgenen for at...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi står op om morgenen for at.."
-        /></label>
+          stræber efter? Vi står op om morgenen for at.." />
+        </label>
         <label
-          >Vi håber, at vores arbejde vil føre til...<input
-            type="text"
+          >Vi håber, at vores arbejde vil føre til...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi håber, at vores arbejde vil føre til..."
-        /></label>
+          stræber efter? Vi håber, at vores arbejde vil føre til..." />
+        </label>
         <label
-          >Vi prøver ikke at være de største - men de mest...<input
-            type="text"
+          >Vi prøver ikke at være de største - men de mest...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi prøver ikke at være de største - men de mest..."
-        /></label>
+          stræber efter? Vi prøver ikke at være de største - men de mest..." />
+        </label>
       </div>
       <div class="question">
         <h3>
@@ -82,71 +82,61 @@
         </h3>
         <label>
           Hvilket behov, problem eller drøm førte til, at virksomheden blev startet?
-          <input
-            type="text"
+          <textarea
             name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvilket behov, problem eller drøm førte til, at virksomheden blev startet?" />
         </label>
 
         <label>
           Hvad var den oprindelige vision eller idé - og er den ændret siden?
-          <input
-            type="text"
+          <textarea
             name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad var den oprindelige vision eller idé - og er den ændret siden?" />
         </label>
 
         <label>
           Hvem stod bag opstarten, og hvilken baggrund havde de?
-          <input
-            type="text"
+          <textarea
             name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvem stod bag opstarten, og hvilken baggrund havde de?" />
         </label>
 
         <label>
           Er der en konkret oplevelse eller aha-øjeblik, der satte gang i det hele?
-          <input
-            type="text"
+          <textarea
             name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Er der en konkret oplevelse eller aha-øjeblik, der satte gang i det hele?" />
         </label>
 
         <label>
           Hvad har været de største milepæle eller udfordringer undervejs?
-          <input
-            type="text"
+          <textarea
             name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad har været de største milepæle eller udfordringer undervejs?" />
         </label>
 
         <label>
           Hvordan har virksomheden udviklet sig siden starten - og hvorfor?
-          <input
-            type="text"
+          <textarea
             name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvordan har virksomheden udviklet sig siden starten - og hvorfor?" />
         </label>
 
         <label>
           Har der været vigtige samarbejder, kundetyper eller begivenheder, der har formet jer?
-          <input
-            type="text"
+          <textarea
             name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Har der været vigtige samarbejder, kundetyper eller begivenheder, der har formet jer?" />
         </label>
 
         <label>
           Hvordan har jeres værdier eller mission været med til at styre jeres vej?
-          <input
-            type="text"
+          <textarea
             name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvordan har jeres værdier eller mission været med til at styre jeres vej?" />
         </label>
 
         <label>
           Hvilke vendepunkter har ændret jeres retning eller selvforståelse?
-          <input
-            type="text"
+          <textarea
             name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvilke vendepunkter har ændret jeres retning eller selvforståelse?" />
         </label>
 
         <label>
           Hvad er I særligt stolte af, når I ser tilbage på jeres rejse?
-          <input
-            type="text"
+          <textarea
             name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad er I særligt stolte af, når I ser tilbage på jeres rejse?" />
         </label>
       </div>
@@ -238,7 +228,7 @@
         <label
           >Andet:
 
-          <input type="text" name="Hvad vil du gerne have, at folk siger om Jer? review-other" />
+          <textarea name="Hvad vil du gerne have, at folk siger om Jer? review-other" />
         </label>
       </div>
     </section>
@@ -328,43 +318,38 @@
         <label
           >Andet:
 
-          <input type="text" name="Hvad ønsker I at opnå med en ny visuel identitet eller design? Other" />
+          <textarea name="Hvad ønsker I at opnå med en ny visuel identitet eller design? Other" />
         </label>
       </div>
       <div class="question">
         <h3>Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem?</h3>
         <label>
           Vores primære konkurrenter er…
-          <input
-            type="text"
+          <textarea
             name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vores primære konkurrenter er…" />
         </label>
 
         <label>
           Den største forskel mellem vores virksomhed og vores konkurrenter er…
-          <input
-            type="text"
+          <textarea
             name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Den største forskel mellem vores virksomhed og vores konkurrenter er…" />
         </label>
 
         <label>
           Vi skiller os ud fra konkurrenterne ved at…
-          <input
-            type="text"
+          <textarea
             name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi skiller os ud fra konkurrenterne ved at…" />
         </label>
 
         <label>
           Kunder vælger os frem for vores konkurrenter, fordi…
-          <input
-            type="text"
+          <textarea
             name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Kunder vælger os frem for vores konkurrenter, fordi…" />
         </label>
 
         <label>
           Vi har en fordel i forhold til vores konkurrenter, fordi…
-          <input
-            type="text"
+          <textarea
             name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi har en fordel i forhold til vores konkurrenter, fordi…" />
         </label>
       </div>
@@ -676,8 +661,7 @@
           >Er der særlige symboler, ikoner, farver eller andet visuelt, der har en særlig betydning for din
           virksomhed/organisation?
         </label>
-        <input
-          type="text"
+        <textarea
           name="Er der særlige symboler, ikoner, farver eller andet visuelt, der har en særlig betydning for din
           virksomhed/organisation?"
           id="symbols" />
@@ -758,7 +742,7 @@
 
         <label>
           Andet (specificér)
-          <input type="text" name="Hvilke leverancer forventer du?" />
+          <textarea name="Hvilke leverancer forventer du?" />
         </label>
       </div>
       <div class="question">
@@ -869,16 +853,16 @@
 
         <label>
           Andet (specifikér)
-          <input type="text" name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?" />
+          <textarea name="Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?" />
         </label>
       </div>
       <div class="question">
         <label for="deadline">Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med? </label>
-        <input type="text" name="Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?" id="deadline" />
+        <textarea name="Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?" id="deadline" />
       </div>
       <div class="question">
         <label for="budget">Hvad er virksomhedens/organisationens budget til projektet? </label>
-        <input type="text" name="Hvad er virksomhedens/organisationens budget til projektet?" id="budget" />
+        <textarea name="Hvad er virksomhedens/organisationens budget til projektet?" id="budget" />
       </div>
     </section>
     <section id="section-4">
@@ -893,7 +877,7 @@
           designeren eller noter til dig selv."
           id="other" />
         <div class="center-content button-container">
-          <button class="send-form" @click.prevent="sendForm">
+          <button class="send-form" @click.prevent="getSummary">
             <span class="text" :class="`${loadingSummary ? 'loading' : ''}`">
               <span v-if="!data.summary">Indsend</span>
               <span v-else>Indsend</span>
@@ -1017,24 +1001,32 @@ function scrollToBrandCardSection(sectionIndex: number) {
 }
 const loadingSummary = ref(false);
 
-async function sendForm() {
+async function getSummary() {
   loadingSummary.value = true;
   const form = document.querySelector("#questionnaire-form") as HTMLFormElement;
   if (form) {
     const formDataObject = formDataToObjectWithArrays(form);
-    const response = await fetch("/api/summarize-do-non-ai", {
-      method: "POST",
-      body: JSON.stringify(formDataObject),
-    });
-    const summary = await response.text();
-    data.summary = JSON.parse(summary);
+    data.summary = await fetchSummary(JSON.stringify(formDataObject));
   }
   loadingSummary.value = false;
+}
+
+function initResizeFields() {
+  const textareas = document.querySelectorAll("textarea");
+  textareas.forEach((textarea) => {
+    textarea.rows = 1;
+
+    textarea.addEventListener("input", () => {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    });
+  });
 }
 
 onMounted(() => {
   targetGroupInit();
   brandCardInit();
+  initResizeFields();
 });
 </script>
 
@@ -1203,14 +1195,16 @@ fieldset {
   border: none;
 }
 
-input[type="text"],
 textarea {
   font-size: 1rem;
   padding: 0.5rem;
+  overflow: hidden;
   width: 100%;
   border-radius: 8px;
   border: 1px solid #ccc;
   background: #fff;
+  resize: none;
+  height: 41px;
 }
 
 .target-group {

@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
     
     The summary is for the client to make sure that you have interpreted the answers correctly. 
 
-    In the end, suggest some things that the client should reflect on before meeting the designer, maybe something that seems like the client has not thought that much about.  
+    In the end, suggest some things that the client should reflect on before meeting the designer, maybe something that seems like the client has not thought that much about. Make it a bit provocative and in its own section called "Refleksioner".
 
     The form is as follows, with questions and answers in JSON format:
 

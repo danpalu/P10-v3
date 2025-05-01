@@ -1,4 +1,8 @@
-export function newQuestion(id: number, title: string, type: string): Question {
+export function newQuestion(
+  id: number,
+  title: string,
+  type: "text" | "multiple-choice" | "link" | "name" | "color" | "moodboard" | "branding-card" | "yes-no"
+): Question {
   return {
     id: id,
     title: title,
@@ -55,4 +59,13 @@ export function formDataToObjectWithArrays(
   }
 
   return result;
+}
+
+export async function fetchSummary(body: string): Promise<SummarySchemaType> {
+  const response = await fetch("/api/summarize-do-non-ai", {
+    method: "POST",
+    body: body,
+  });
+  const summary = await response.json();
+  return summary;
 }
