@@ -59,7 +59,7 @@ export default defineWebSocketHandler({
 
           Output in valid JSON format, following the scheme. 
           
-          When thes user has given a concrete answer, you should output a summary of it, asking if it is correct. When doing this, you use the type 'yes-no-question', or if you asked the user about their company name, you use the type 'yes-no-name-question'.
+          When the user has given a concrete answer, you should send a completely empty string back. When doing this, you use the type 'yes-no-question', or if you asked the user about their company name, you use the type 'yes-no-name-question'.
           
           Do not use ** for bold text. 
 

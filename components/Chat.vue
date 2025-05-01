@@ -9,145 +9,122 @@
                 </h1>
 
                 <template v-for="prevQuestion in getPreviousQuestions(props.questionnaire, data.currentQuestion)">
-                    <li
-                    v-for="(message, index) in prevQuestion.answer.answer"
-                    class="message"
-                    :class="`${message.content.type} ${
+                    <template
+                    v-for="(message, index) in prevQuestion.answer.answer">
+                        <li v-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question'" class="message"
+                    :class="`${ 
                             index === prevQuestion.answer.answer.length - 1 ? 'last' : ''
-                        } ${message.content.isTitle ? 'title' : message.role} ${message.content.type} ${message.content.hiddenInChat ? 'hidden' : ''}`">
-                    <!-- Check for title type and render as h1 -->
-                    <h1 v-if="message.content.isTitle === true" class = "title">
-                        {{ message.content.content }}
-                        <hr style="margin: 0 auto; width: 100%;">
-                    </h1>
-                    <!-- Default message rendering -->
-                    <div v-else>
-                        {{ message.content.content }}
-                    </div>
-                    <!-- Handle additional message types like color, moodboard, etc. -->
-                    <div v-if="message.content.type === 'color-question'" class="color-container">
-                        <div class="color-options">
-                            <button
-                            @click.prevent="sendColorAnswer(color)"
-                            v-for="color in getColors(message.content.colorOptions).slice(0, 8)"
-                            class="color"
-                            :style="{ background: color }" :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"></button>
-                        </div>
-                        <div>
-                            <button @click.prevent="sendNoneOfAbove" class="questionnaire-button" :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"        >
-                                Ingen af disse
-                            </button>
-                        </div>
-                    </div>
-                    <div v-if="message.content.type === 'moodboard-question'" style="padding-top: 0.5rem;">
-                        <div class="moodboard-images">
-                            <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                                v-for="(image, index) in getImages(message.content.moodboardImages)?.slice(0, 9)"
-                                :key="index" class="moodboard-image">
-                                <img :src="image.url" class="moodboard-image" />
-                                <!-- Checkmark Circle for selected images -->
-                                <div v-if="selectedImages.includes(image.alt)" class="checkmark-circle">
-                                    <span class="checkmark">✔</span>
+                        } ${message.content.isTitle ? 'title' : message.role} ${message.content.hiddenInChat ? 'hidden' : ''}`">
+                            <!-- Check for title type and render as h1 -->
+                            <h1 v-if="message.content.isTitle === true" class = "title">
+                                {{ message.content.content }}
+                                <hr style="margin: 0 auto; width: 100%;">
+                            </h1>
+                            <!-- Don't render if yes-no-question -->
+                            <div v-else-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question'">
+                                {{ message.content.content }}
+                            </div>
+                            <!-- Handle additional message types like color, moodboard, etc. -->
+                            <div v-if="message.content.type === 'color-question'" class="color-container">
+                                <div class="color-options">
+                                    <button
+                                    @click.prevent="sendColorAnswer(color)"
+                                    v-for="color in getColors(message.content.colorOptions).slice(0, 8)"
+                                    class="color"
+                                    :style="{ background: color }" :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"></button>
                                 </div>
-                            </button>
-                        </div>
-                        <div style="display: flex; gap: 1rem;">
-                            <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                Ingen af ovennævnte
-                            </button>
-                            <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
-                                Anvend valgte
-                            </button>
-                        </div>
-                    </div>
-                    <div
-                        v-if="message.content.type === 'branding-card-question' && message.content.brandingCardOptions"
-                        class="branding-card-container">
-                        <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendBrandCardAnswer(message.content.brandingCardOptions.option)"
-                            class="branding-option dark">
-                            {{ message.content.brandingCardOptions.option }}
-                        </button>
-                        <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendBrandCardAnswer(message.content.brandingCardOptions.oppositeOption)"
-                            class="branding-option light">
-                            {{ message.content.brandingCardOptions.oppositeOption }}
-                        </button>
-                    </div>
-                    <div v-if="message.content.type === 'yes-no-question'" class="yes-no-options">
-                        <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendYesNoAnswer('No')"
-                            class="yes-no-button" id="no-button">
-                            Nej, lad mig yddybe
-                        </button>
-                        <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendYesNoAnswer('Yes')"
-                            class="yes-no-button" id="yes-button">
-                            Ja, det er korrekt
-                        </button>
-                    </div>
-                    <div v-if="message.content.type === 'yes-no-name-question'" class="yes-no-options">
-                        <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendYesNoAnswer('No')"
-                            class="yes-no-button" id="no-button">
-                            Nej, det er ikke navnet
-                        </button>
-                        <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendYesNoAnswer('Yes', message.content.companyName ?? undefined)"
-                            class="yes-no-button" id="yes-button">
-                            Ja, det er korrekt
-                        </button>
-                    </div>
-                    <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
-                        <ul>
-                            <li
-                                v-for="(option, index) in message.content.multipleChoiceOptions"
-                                :key="index"
-                                class="questionnaire-item"
-                                style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
-                                <input
-                                    type="checkbox"
-                                    v-model="selectedOptions"
-                                    :value="option"
-                                    class="checkbox-option" :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" />
-                                <label class="clickable-option questionnaire-text"
-                                    :class="{ selected: selectedOptions.includes(option), disabled: data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content}">
-                                    {{ option }}
-                                </label>
-                            </li>
-                        </ul>
+                                <div>
+                                    <button @click.prevent="sendNoneOfAbove" class="questionnaire-button" :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"        >
+                                        Ingen af disse
+                                    </button>
+                                </div>
+                            </div>
+                            <div v-if="message.content.type === 'moodboard-question'" style="padding-top: 0.5rem;">
+                                <div class="moodboard-images">
+                                    <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
+                                        v-for="(image, index) in getImages(message.content.moodboardImages)?.slice(0, 9)"
+                                        :key="index" class="moodboard-image">
+                                        <img :src="image.url" class="moodboard-image" />
+                                        <!-- Checkmark Circle for selected images -->
+                                        <div v-if="selectedImages.includes(image.alt)" class="checkmark-circle">
+                                            <span class="checkmark">✔</span>
+                                        </div>
+                                    </button>
+                                </div>
+                                <div style="display: flex; gap: 1rem;">
+                                    <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
+                                        Ingen af ovennævnte
+                                    </button>
+                                    <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
+                                        Anvend valgte
+                                    </button>
+                                </div>
+                            </div>
+                            <div
+                                v-if="message.content.type === 'branding-card-question' && message.content.brandingCardOptions"
+                                class="branding-card-container">
+                                <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
+                                    @click.prevent="sendBrandCardAnswer(message.content.brandingCardOptions.option)"
+                                    class="branding-option dark">
+                                    {{ message.content.brandingCardOptions.option }}
+                                </button>
+                                <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
+                                    @click.prevent="sendBrandCardAnswer(message.content.brandingCardOptions.oppositeOption)"
+                                    class="branding-option light">
+                                    {{ message.content.brandingCardOptions.oppositeOption }}
+                                </button>
+                            </div>
+                            <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
+                                <ul>
+                                    <li
+                                        v-for="(option, index) in message.content.multipleChoiceOptions"
+                                        :key="index"
+                                        class="questionnaire-item"
+                                        style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                                        <input
+                                            type="checkbox"
+                                            v-model="selectedOptions"
+                                            :value="option"
+                                            class="checkbox-option" :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" />
+                                        <label class="clickable-option questionnaire-text"
+                                            :class="{ selected: selectedOptions.includes(option), disabled: data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content}">
+                                            {{ option }}
+                                        </label>
+                                    </li>
+                                </ul>
 
-                        <!-- Button container to align buttons side by side -->
-                        <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
-                            <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                Ingen af ovennævnte
-                            </button>
-                            <button  :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
-                                Anvend valgte
-                            </button>
+                                <!-- Button container to align buttons side by side -->
+                                <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
+                                    <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
+                                        Ingen af ovennævnte
+                                    </button>
+                                    <button  :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
+                                        Anvend valgte
+                                    </button>
+                                </div>
+                            </div>
+                                <div v-if="message.content.type === 'link-question'" class="link">
+                                <a v-if="data.questionnaire.type === 'chat'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=chat" target="_blank" class="link-button">
+                                    Besvar venligst spørgeskemaet her.
+                                </a>
+                                <a v-else-if="data.questionnaire.type === 'do-ai'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=do-ai" target="_blank" class="link-button">
+                                    Besvar venligst spørgeskemaet her.
+                            </a>
                         </div>
-                    </div>
-                        <div v-if="message.content.type === 'link-question'" class="link">
-                        <a v-if="data.questionnaire.type === 'chat'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=chat" target="_blank" class="link-button">
-                            Besvar venligst spørgeskemaet her.
-                        </a>
-                        <a v-else-if="data.questionnaire.type === 'do-ai'" href="https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=do-ai" target="_blank" class="link-button">
-                            Besvar venligst spørgeskemaet her.
-                    </a>
-                </div>
-                </li>
+                        </li>
+                    </template>
                 </template>
-                <li
-                    v-for="message in data.currentQuestion.answer.answer"
-                    class="message"
-                    :class="`${message.content.isTitle ? 'title' : message.role} ${message.content.type} ${message.content.hiddenInChat ? 'hidden' : ''}`">
+                <template
+                    v-for="message in data.currentQuestion.answer.answer">
                     <!-- Check for title type and render as h1 -->
+                     <li v-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question'" class="message"
+                     :class="`${message.content.isTitle ? 'title' : message.role} ${message.content.type} ${message.content.hiddenInChat ? 'hidden' : ''}`">
                     <h1 v-if="message.content.isTitle === true" class = "title">
                         {{ message.content.content }}
                         <hr style="margin: 0 auto; width: 100%;">
                     </h1>
-                    <!-- Default message rendering -->
-                    <div v-else>
+                    <!-- Don't render if yes-no-question -->
+                    <div v-else-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question'">
                         {{ message.content.content }}
                     </div>
                     <!-- Handle additional message types like color, moodboard, etc. -->
@@ -203,30 +180,6 @@
                             {{ message.content.brandingCardOptions.oppositeOption }}
                         </button>
                     </div>
-                    <div v-if="message.content.type === 'yes-no-question'" class="yes-no-options">
-                        <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendYesNoAnswer('No')"
-                            class="yes-no-button" id="no-button">
-                            Nej, lad mig yddybe
-                        </button>
-                        <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendYesNoAnswer('Yes')"
-                            class="yes-no-button" id="yes-button">
-                            Ja, det er korrekt
-                        </button>
-                    </div>
-                    <div v-if="message.content.type === 'yes-no-name-question'" class="yes-no-options">
-                        <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendYesNoAnswer('No')"
-                            class="yes-no-button" id="no-button">
-                            Nej, det er ikke navnet
-                        </button>
-                        <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendYesNoAnswer('Yes', message.content.companyName ?? undefined)"
-                            class="yes-no-button" id="yes-button">
-                            Ja, det er korrekt
-                        </button>
-                    </div>
                     <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
                         <ul>
                             <li
@@ -267,7 +220,8 @@
                     </a>
                 </div>
                 </li>
-                <li v-if="showIncomingMessage" class="incoming message assistant">
+                </template>
+                <li v-if="showIncomingMessage && cleanIncomingString(incomingString).length >= 10" class="incoming message assistant">
                     {{ cleanIncomingString(incomingString) }}
                 </li>
                 <li
@@ -285,7 +239,7 @@
                     <input 
                         v-model="input" 
                         ref="inputElement" 
-                        :placeholder="currentPlaceholder" :disabled="isNonTextQuestion" 
+                        :placeholder="currentPlaceholder" :disabled="chatFieldDisabled" 
                         />
                     <button type="submit" :disabled="disableSubmit" class="send" :class="`${loading ? 'loading' : ''}`">
                         <span> Send </span>
@@ -377,11 +331,20 @@
                 name: companyName
             };
 
-            if (newMessage.content.type === "moodboard-question") {
+            if (newMessage.content.type === "text") {
+                chatFieldDisabled = false;
+            }
+            else if (newMessage.content.type === "moodboard-question") {
                 const search = newMessage.content.moodboardSearchString;
                 if (search) {
                     handleMoodboard(search);
                 }
+            }
+            else if (newMessage.content.type === "yes-no-name-question") {
+                sendYesNoAnswer("Yes", companyName);
+            }
+            else if (newMessage.content.type === "yes-no-question") {
+                sendYesNoAnswer("Yes");
             }
 
             data.currentQuestion.answer.answer.push(newMessage);
@@ -474,6 +437,8 @@
                 lastYesNoMessage.classList.add('red');
             }
         }
+
+        console.log(companyName);
 
         if (name != "none") {
             companyName = name;
@@ -600,12 +565,12 @@
 import type { Image } from 'openai/resources.mjs';
     import { computed } from 'vue';
 
-    const isNonTextQuestion = computed(() => {
+    let chatFieldDisabled = computed(() => {
         const lastMessage = data.currentQuestion.answer.answer.at(-1);
         return lastMessage?.content.type !== 'text';
     });
 
-    const currentPlaceholder = computed(() => {
+    let currentPlaceholder = computed(() => {
         const lastMessage = data.currentQuestion.answer.answer.at(-1);
 
         if (lastMessage?.content.type === 'text') {
@@ -637,6 +602,8 @@ import type { Image } from 'openai/resources.mjs';
         isTitle: false,
         },
     });
+    currentPlaceholder = "";
+    chatFieldDisabled = true;
     }
 
     function addTitleMessage(title: string) {
@@ -775,29 +742,6 @@ import type { Image } from 'openai/resources.mjs';
 
     .moodboard-image:hover {
         opacity: 0.9; /* Slightly transparent on hover */
-    }
-
-    .message.assistant.yes-no-name-question.last, .message.assistant.yes-no-question.last {
-        background: #dcf1df;
-    }
-
-    .message.assistant.yes-no-name-question {
-        width: 100%;
-    }
-
-
-    .yes-no-options {
-    display: flex;
-        gap: 1rem;
-        justify-content: center;
-        margin-top: 1rem;
-    }
-
-    .yes-no-button {
-        font-size: 0.9rem; /* Adjust text size to smaller */
-        width: 100%; /* Make the button fill the entire width */
-        box-sizing: border-box; /* Ensure padding is included in the width */
-        padding: 0.5rem 0.8rem; /* Adjust padding to maintain proportions */
     }
 
     button:hover {
