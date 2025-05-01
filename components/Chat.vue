@@ -11,7 +11,7 @@
                 <template v-for="prevQuestion in getPreviousQuestions(props.questionnaire, data.currentQuestion)">
                     <template
                     v-for="(message, index) in prevQuestion.answer.answer">
-                        <li v-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question'" class="message"
+                        <li v-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'" class="message"
                     :class="`${ 
                             index === prevQuestion.answer.answer.length - 1 ? 'last' : ''
                         } ${message.content.isTitle ? 'title' : message.role} ${message.content.hiddenInChat ? 'hidden' : ''}`">
@@ -21,7 +21,7 @@
                                 <hr style="margin: 0 auto; width: 100%;">
                             </h1>
                             <!-- Don't render if yes-no-question -->
-                            <div v-else-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question'">
+                            <div v-else-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'">
                                 {{ message.content.content }}
                             </div>
                             <!-- Handle additional message types like color, moodboard, etc. -->
@@ -117,14 +117,14 @@
                 <template
                     v-for="message in data.currentQuestion.answer.answer">
                     <!-- Check for title type and render as h1 -->
-                     <li v-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question'" class="message"
+                     <li v-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'" class="message"
                      :class="`${message.content.isTitle ? 'title' : message.role} ${message.content.type} ${message.content.hiddenInChat ? 'hidden' : ''}`">
                     <h1 v-if="message.content.isTitle === true" class = "title">
                         {{ message.content.content }}
                         <hr style="margin: 0 auto; width: 100%;">
                     </h1>
                     <!-- Don't render if yes-no-question -->
-                    <div v-else-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question'">
+                    <div v-else-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'">
                         {{ message.content.content }}
                     </div>
                     <!-- Handle additional message types like color, moodboard, etc. -->
@@ -234,6 +234,9 @@
         </div>
 
         <ClientOnly>
+            <button class="next-question button" @click.prevent="nextQuestion()">
+                        <span> Næste spørgsmål <i class="arrow right"></i></span>
+                    </button>
             <div class="form-container">
                 <form @submit.prevent="handleSubmit(input)" class="input">
                     <input 
@@ -324,12 +327,17 @@
         loading.value = false;
         try {
             const parsedContent = JSON.parse(incomingString.value.trim());
-
+            
             const newMessage: ClientMessage = {
                 role: "assistant",
                 content: parsedContent,
                 name: companyName
             };
+
+            
+            if (newMessage.content.type !== 'yes-no-question' && newMessage.content.type !== 'yes-no-name-question'){
+                lastQuestionType.value = newMessage.content.type;
+            }
 
             if (newMessage.content.type === "text") {
                 chatFieldDisabled = false;
@@ -341,10 +349,15 @@
                 }
             }
             else if (newMessage.content.type === "yes-no-name-question") {
-                sendYesNoAnswer("Yes", companyName);
+                showIncomingMessage.value = false;
+                sendYesNoAnswer("Yes", newMessage.content.companyName);
             }
             else if (newMessage.content.type === "yes-no-question") {
+                showIncomingMessage.value = false;
                 sendYesNoAnswer("Yes");
+            }
+            else if (newMessage.content.type === "summary") {
+                showIncomingMessage.value = false;
             }
 
             data.currentQuestion.answer.answer.push(newMessage);
@@ -405,7 +418,7 @@
     function sendMultipleChoiceAnswer() {
         if (selectedOptions.value.length > 0) {
             loading.value = true;
-            addUserMessage("My idea is best respresented by " + selectedOptions.value.join(", ") + " Let's proceed.", true);
+            addUserMessage("My idea is best respresented by " + selectedOptions.value.join(", "), true);
             sendMessages();
             selectedOptions.value = []; // Clear the selected options after submitting
         }
@@ -438,17 +451,16 @@
             }
         }
 
-        console.log(companyName);
-
         if (name != "none") {
             companyName = name;
         }
-
-        if (answer === "Yes") {
+        console.log(wordsInAnswer.value);
+        console.log(lastQuestionType.value);
+        if (answer === "Yes" && (lastQuestionType.value !== "text" || name != "none" || wordsInAnswer.value >= 30)) {
             nextQuestion();
+            wordsInAnswer.value = 0;
         } else {
-            addUserMessage("Nej, stil mig et tekst spørgsmål.", true);
-            console.log("Nej, lad mig beskrive det med et tekst spørgsmål.");
+            addUserMessage("Bed mig om at yddybe.", true);
             sendMessages();
         }
     }
@@ -511,8 +523,6 @@
     }
 
     function getColors(colorList: String[]){
-        console.log(colorList);
-        console.log(data.colors);
         if (colorList.length >= 8){
             return colorList;
         }
@@ -529,7 +539,7 @@
     function sendMoodboardSelection() {
         if (selectedImages.value.length > 0) {
             loading.value = true;
-            addUserMessage("My idea is best represented by images containing: " + selectedImages.value.join(", ") + " Now proceed with the next question.", true);
+            addUserMessage("My idea is best represented by images containing: " + selectedImages.value.join(", "), true);
             sendMessages();
         }
     }
@@ -550,8 +560,7 @@
     } else {
         addUserMessage(
         "My idea is best represented by " +
-        text +
-        "Let's proceed to the next question.",
+        text,
         true
     );
         brandCardQuestionsAsked.value = 0;
@@ -588,6 +597,9 @@ import type { Image } from 'openai/resources.mjs';
             }
         });
 
+    let wordsInAnswer = ref<number>(0);
+    let lastQuestionType = ref<string>("text");
+
     function addUserMessage(userInput: string, hiddenInChat: boolean = false) {
     data.currentQuestion.answer.answer.push({
         role: "user",
@@ -602,6 +614,8 @@ import type { Image } from 'openai/resources.mjs';
         isTitle: false,
         },
     });
+    console.log(userInput.trim().split(/\s+/).length);
+    wordsInAnswer.value += userInput.trim().split(/\s+/).length;
     currentPlaceholder = "";
     chatFieldDisabled = true;
     }
@@ -633,7 +647,7 @@ import type { Image } from 'openai/resources.mjs';
             addUserMessage("I think my idea is well represented by " + color + ". You may ask me a new color question, asking me about what variant of this color i prefer.", true);
             colorQuestionsAsked.value++;
         } else {
-            addUserMessage("I think my idea is well represented by " + color + ". Let's proceed with the next question.", true);
+            addUserMessage("I think my idea is well represented by " + color, true);
             colorQuestionsAsked.value = 0;
         }
         sendMessages();
@@ -708,6 +722,18 @@ import type { Image } from 'openai/resources.mjs';
     </script>
 
     <style>
+    .arrow {
+        border: solid var(--color-grey);
+        border-width: 0 1px 1px 0;
+        display: inline-block;
+        padding: 3px;
+    }
+
+    .right {
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+    }
+
     :disabled, .disabled{
         opacity: 0.7;
     }
@@ -745,7 +771,17 @@ import type { Image } from 'openai/resources.mjs';
     }
 
     button:hover {
-    background-color: var(--color-dark-grey); /* Slightly lighter background on hover */
+        background-color: var(--color-dark-grey); /* Slightly lighter background on hover */
+
+        &.next-question {
+            background-color: white;
+            border-color: var(--color-black); 
+            color: var(--color-black);
+        }
+
+        & .arrow {
+            border-color: var(--color-black);
+        }
     }
 
     /* Style for checkboxes to be hidden */
@@ -940,11 +976,27 @@ import type { Image } from 'openai/resources.mjs';
     color: var(--color-black);
     }
 
+    .next-question {
+        padding: 5px 20px;
+        width: fit-content;
+        height: fit-content;
+        font-size: small;
+        align-self: end;
+        z-index: 3;
+        background-color: white;
+        color: var(--color-grey);
+        border: 1px solid #ccc;
+        margin-bottom: 0.5rem;
+        text-transform: none;
+        font-weight: normal;
+        transition: none;
+    }
+
     .messages {
     max-width: 100%;
-    width: 70ch;
+    width: 100%;
     list-style: none;
-    padding: 40px 0;
+    padding: 20px 0;
     display: flex;
     flex-direction: column;
     }
@@ -1037,7 +1089,7 @@ import type { Image } from 'openai/resources.mjs';
     }
 
     .input {
-    width: calc(70ch - 40px);
+    width: 100%;
     height: fit-content;
     max-width: 100%;
     display: flex;
@@ -1045,6 +1097,8 @@ import type { Image } from 'openai/resources.mjs';
     border-radius: 999px;
     border: 1px solid #ccc;
     overflow: hidden;
+    background-color: white;
+    margin-bottom: 1rem;
 
     &:focus-within {
         border-color: var(--color-black)

@@ -42,7 +42,7 @@ export type Question = {
   id: number;
   title: string;
   answer: Answer;
-  type: "text" | "color" | "moodboard" | "multiple-choice" | "branding-card" | "yes-no" | "link" | "yes-no-name";
+  type: "text" | "summary" | "slider-question" | "color-question" | "moodboard-question" |"multiple-choice-question" | "branding-card-question" | "yes-no-question" | "yes-no-name-question" |"link-question";
 };
 
 export type Answer = {
