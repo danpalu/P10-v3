@@ -25,6 +25,11 @@ export const MessageContent = z.object({
   companyName: z.string().nullable(),
 });
 
+export type brandCard = {
+    option: string;
+    oppositeOption: string;
+}
+
 export type MessageContentType = z.infer<typeof MessageContent>;
 
 export type ClientMessage = {

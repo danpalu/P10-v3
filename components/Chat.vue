@@ -61,17 +61,17 @@
                                 </div>
                             </div>
                             <div
-                                v-if="message.content.type === 'branding-card-question' && message.content.brandingCardOptions"
+                                v-if="message.content.type === 'branding-card-question'"
                                 class="branding-card-container">
                                 <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                                    @click.prevent="sendBrandCardAnswer(message.content.brandingCardOptions.option)"
+                                    @click.prevent="sendBrandCardAnswer(getBrandCardOption(message.content.brandingCardOptions?.option))"
                                     class="branding-option dark">
-                                    {{ message.content.brandingCardOptions.option }}
+                                    {{ getBrandCardOption(message.content.brandingCardOptions?.option) }}
                                 </button>
                                 <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                                    @click.prevent="sendBrandCardAnswer(message.content.brandingCardOptions.oppositeOption)"
+                                    @click.prevent="sendBrandCardAnswer(getOppositeBrandCardOption(message.content.brandingCardOptions?.oppositeOption))"
                                     class="branding-option light">
-                                    {{ message.content.brandingCardOptions.oppositeOption }}
+                                    {{ getOppositeBrandCardOption(message.content.brandingCardOptions?.oppositeOption) }}
                                 </button>
                             </div>
                             <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
@@ -167,17 +167,17 @@
                         </div>
                     </div>
                     <div
-                        v-if="message.content.type === 'branding-card-question' && message.content.brandingCardOptions"
+                        v-if="message.content.type === 'branding-card-question'"
                         class="branding-card-container">
                         <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendBrandCardAnswer(message.content.brandingCardOptions.option)"
+                            @click.prevent="sendBrandCardAnswer(getBrandCardOption(message.content.brandingCardOptions?.option))"
                             class="branding-option dark">
-                            {{ message.content.brandingCardOptions.option }}
+                            {{ getBrandCardOption(message.content.brandingCardOptions?.option) }}
                         </button>
                         <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                            @click.prevent="sendBrandCardAnswer(message.content.brandingCardOptions.oppositeOption)"
+                            @click.prevent="sendBrandCardAnswer(getOppositeBrandCardOption(message.content.brandingCardOptions?.oppositeOption))"
                             class="branding-option light">
-                            {{ message.content.brandingCardOptions.oppositeOption }}
+                            {{ getOppositeBrandCardOption(message.content.brandingCardOptions?.oppositeOption) }}
                         </button>
                     </div>
                     <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
@@ -333,7 +333,6 @@
                 content: parsedContent,
                 name: companyName
             };
-
             
             if (newMessage.content.type !== 'yes-no-question' && newMessage.content.type !== 'yes-no-name-question'){
                 lastQuestionType.value = newMessage.content.type;
@@ -432,6 +431,24 @@
         selectedImages.value = []; // Clear the selected images after submitting
     }
 
+    function getBrandCardOption(brandCardOption: any){
+        if (brandCardOption != null){
+            return brandCardOption;
+        }
+        else {
+            return data.brandCards[brandCardQuestionsAsked.value-1].option;
+        }      
+    }
+
+    function getOppositeBrandCardOption(brandCardOppositeOption: any){
+        if (brandCardOppositeOption != null){
+            return brandCardOppositeOption;
+        }
+        else {
+            return data.brandCards[brandCardQuestionsAsked.value-1].oppositeOption;
+        }      
+    }
+    
     const selectedYesNo = ref<string>("");
 
     function sendYesNoAnswer(answer: string, name = "none") {
@@ -454,13 +471,11 @@
         if (name != "none") {
             companyName = name;
         }
-        console.log(wordsInAnswer.value);
-        console.log(lastQuestionType.value);
-        if (answer === "Yes" && (lastQuestionType.value !== "text" || name != "none" || wordsInAnswer.value >= 30)) {
+        if (answer === "Yes" && (name != "none" || wordsInAnswer.value >= 35)){
             nextQuestion();
             wordsInAnswer.value = 0;
         } else {
-            addUserMessage("Bed mig om at yddybe.", true);
+            addUserMessage("Bed mig om at yddybe med et tekst spørgsmål.", true);
             sendMessages();
         }
     }
@@ -614,7 +629,6 @@ import type { Image } from 'openai/resources.mjs';
         isTitle: false,
         },
     });
-    console.log(userInput.trim().split(/\s+/).length);
     wordsInAnswer.value += userInput.trim().split(/\s+/).length;
     currentPlaceholder = "";
     chatFieldDisabled = true;
@@ -990,6 +1004,7 @@ import type { Image } from 'openai/resources.mjs';
         text-transform: none;
         font-weight: normal;
         transition: none;
+        margin-top: 0.5rem;
     }
 
     .messages {

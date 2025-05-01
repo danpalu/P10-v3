@@ -11,6 +11,17 @@ export function newQuestion(
   };
 }
 
+export function newBrandCard(
+    option: string, 
+    oppositeOption: string
+): brandCard {
+    return {
+        option: option,
+        oppositeOption: oppositeOption,
+    }
+}
+  
+
 export function getQuestionById(questionnaire: Questionnaire, id: number): [Question, string] {
   for (const section of questionnaire.sections) {
     const question = section.questions.find((q) => q.id === id);

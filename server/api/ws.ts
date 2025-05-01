@@ -13,7 +13,6 @@ export default defineWebSocketHandler({
     const question: Question = messageParsed.question;
     const previousAnswers: string = messageParsed.previousAnswers;
     let companyName: string = messageParsed.companyName;
-    console.log(companyName);
     if (companyName === undefined) companyName = "virksomhed/organisation"; // Default value if companyName is not provided
     const messageHistory: ChatMessage[] = [];
     messages.forEach((msg) => {
@@ -36,6 +35,8 @@ export default defineWebSocketHandler({
           content: `You are a helpful design assistant, tasked with preparing the user for the first talk with a brand / graphical designer. 
           
           You help the user answer the question: "${question.title}" for their company ${companyName}. FOCUS ONLY ON THIS QUESTION. Instead of writing virksomhed/organisation, ALWAYS write ${companyName}.
+
+          When asking a new question, you show appreciation for the answers and proceed. You don't have to phrase them exactly as stated here.
           
           The user has previously answered other questions and will answer the unaswered ones in the future, which can be seen in the following json formatted text: 
           ${previousAnswers} 
@@ -60,7 +61,7 @@ export default defineWebSocketHandler({
 
           Output in valid JSON format, following the scheme. 
           
-          When the user has given a concrete answer, you should send a completely empty string back. When doing this, you use the type 'yes-no-question', or if you asked the user about their company name, you use the type 'yes-no-name-question'. You should only do this if the user has provided a detailed answer, coherent with their previous answers. If their answer is vague, you should ask a follow-up question, or rephrase your question.
+          When the user has given a concrete answer, you should send a completely empty string back. When doing this, you use the type 'yes-no-question', or if you just asked the user about their company name, the type 'yes-no-name-question'. If their answer is vague, you should instead ask a follow-up question, or rephrase your question.
           
           Do not use ** for bold text. 
 
