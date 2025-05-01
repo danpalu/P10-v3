@@ -1,11 +1,10 @@
 <template>
   <div class="question">
     <label :for="`question-${question.id}`"> {{ question.id }}. {{ question.title }} </label>
-    <input
-      v-if="data.questionnaire.type == 'survey'"
-      type="text"
-      :id="`question-${question.id}`"
-      @input="saveAnswer($event)" />
+    <textarea v-if="data.questionnaire.type == 'survey'" :id="`question-${question.id}`" @input="saveAnswer($event)" />
+    <div v-if="isLastQuestion">
+      <Summary></Summary>
+    </div>
   </div>
 </template>
 
@@ -16,70 +15,260 @@ const props = defineProps<{
   question: Question;
 }>();
 
+const isLastQuestion = props.question == data.questionnaire.sections.at(-1)?.questions.at(-1);
+
 function saveAnswer(event: Event) {
   const input = (event.target as HTMLInputElement).value;
   props.question.answer.summary = input;
 }
+
+function initResizeFields() {
+  const textareas = document.querySelectorAll("textarea");
+  textareas.forEach((textarea) => {
+    textarea.rows = 1;
+
+    textarea.addEventListener("input", () => {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    });
+  });
+}
+
+onMounted(() => {
+  initResizeFields();
+});
 </script>
 
 <style scoped>
-label {
-  grid-column: 1 / span 2;
-  grid-row: 1;
+.summary {
+  white-space: pre-line;
+}
+.send-form {
+  position: relative;
+
+  & .text.loading {
+    visibility: hidden;
+  }
+
+  & .send-form-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
-.button-back-container {
-  grid-row: 1;
-  grid-column: 1;
+h2 {
+  margin-bottom: 1em;
 }
 
-input {
+.button-container {
+  padding-top: 5rem;
+}
+
+.question.finish-section {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.google-form {
+  flex-grow: 1;
+  width: 100%;
   border: none;
-  border-bottom: 2px solid var(--color-black);
-  padding: 1rem;
-  font-size: 1rem;
-  transition: border-color 0.3s ease;
-  &:focus {
-    outline: none;
-    border-color: var(--color-purple);
-    /* box-shadow: 0px 0px 5px var(--color-black); */
+}
+
+.wrapper {
+  height: 100%;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+
+section {
+  height: 100%;
+  overflow: hidden scroll;
+  padding: 20px;
+  scroll-behavior: smooth;
+
+  &:not(:last-child) {
+    margin-bottom: 100vh;
+  }
+
+  &:not(#section-5) > :first-child {
+    margin-top: 4rem;
+  }
+
+  &:not(#section-5) > :last-child {
+    margin-bottom: 4rem;
+  }
+}
+
+.brand-card-section {
+  position: relative;
+  margin-bottom: 20rem;
+
+  & button {
+    display: grid;
+    place-content: center;
+    transition: all 0.3s ease-in-out;
+    margin: 0 auto;
+    opacity: 0;
+    &.show-button {
+      opacity: 1;
+    }
+  }
+}
+
+.brand-card-scroller {
+  position: relative;
+  height: calc(257px + 32px);
+  overflow: hidden;
+}
+.brand-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+
+  & label {
+    align-items: center;
+    gap: 1rem;
+    padding: 100px 0;
+    border-radius: 15px;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.15);
+    outline: 0px solid #729e7200;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    position: relative;
+
+    & > input {
+      display: none;
+    }
+    &:has(> input:checked) {
+      outline: 3px solid #333;
+      outline-offset: 3px;
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.96);
+    }
+
+    &:nth-child(even) {
+      background: #333;
+      color: #eee;
+    }
+
+    &:nth-child(odd) {
+      background: #fafafa;
+      color: #333;
+    }
   }
 }
 
 .question {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  max-width: 70ch;
-  transition: margin 0.3s ease-out, opacity 0.3s ease-out;
+  & label {
+    display: flex;
+    flex-direction: column;
 
-  &.chat-open {
-    place-items: center;
-    height: 100%;
+    &:has(> input[type="checkbox"]) {
+      flex-direction: row;
+      gap: 1rem;
+      align-items: baseline;
+    }
+  }
+
+  & > label {
+    margin-bottom: 1.4rem;
+
+    &:has(> input[type="checkbox"]),
+    &:has(> input[type="radio"]) {
+      margin-bottom: 0.8rem;
+    }
+
+    &:not(:first-child) {
+      font-size: 1rem;
+    }
+  }
+
+  & fieldset.brand-card > label {
+    margin-bottom: 0;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 6rem;
+  }
+}
+
+fieldset {
+  border: none;
+}
+
+textarea {
+  font-size: 1rem;
+  padding: 0.5rem;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  resize: none;
+  height: 41px;
+}
+
+.target-group {
+  position: relative;
+
+  & legend {
+    padding-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  & .scroller {
+    overflow: hidden;
+    height: 460px;
     display: grid;
-    grid-template-rows: auto 1fr;
-    grid-template-columns: 48px 1fr;
-    transition: grid-template-columns 0.5s ease-out;
+    grid-template-columns: repeat(10, 100%);
+
+    & fieldset {
+      width: fit-content;
+      height: fit-content;
+      margin: auto;
+    }
   }
 
-  &.chat {
-    display: none;
+  & label {
+    flex-direction: row;
+    gap: 1rem;
+
+    &:not(:last-child) {
+      margin-bottom: 0.6rem;
+    }
+  }
+
+  & button {
+    position: absolute;
+    display: grid;
+    place-content: center;
+    aspect-ratio: 1;
+    &.previous {
+      left: 20px;
+      top: 250px;
+    }
+    &.next {
+      right: 20px;
+      top: 250px;
+    }
   }
 }
 
-.button-chat {
-  width: fit-content;
-  padding: 0.5rem 1rem;
-  gap: 0.7rem;
-  svg {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
+.question > label {
+  font-size: 1rem;
 }
 
-.summary {
-  background: white;
-  border-radius: 20.5px;
-  padding: 20px;
+.question > :first-child {
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
 </style>

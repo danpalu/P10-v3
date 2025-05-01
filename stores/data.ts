@@ -1,6 +1,6 @@
 export const useDataStore = defineStore("data", () => {
   const questionnaire = ref<Questionnaire>({
-    type: "do-ai",
+    type: "do-non-ai",
     sections: [
       {
         id: 1,
@@ -10,19 +10,15 @@ export const useDataStore = defineStore("data", () => {
           newQuestion(2, "Hvilke produkter eller tjenester udbyder din virksomhed/organisation?", "text"),
           newQuestion(
             3,
-            "Hvordan vil du beskrive din virksomheds vision med få ord – har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter?",
+            "Hvordan vil du beskrive din virksomheds vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter?",
             "text"
           ),
           newQuestion(
             4,
-            "Hvad er historien bag din virksomhed/organisation – hvorfor blev den startet, og hvad har formet den undervejs?",
+            "Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet, og hvad har formet den undervejs?",
             "text"
           ),
-          newQuestion(
-            5,
-            "Hvad vil du gerne have, at folk siger om din virksomhed/organisation?",
-            "multiple-choice-question"
-          ),
+          newQuestion(5, "Hvad vil du gerne have, at folk siger om din virksomhed/organisation?", "multiple-choice"),
         ],
       },
       {
@@ -32,19 +28,19 @@ export const useDataStore = defineStore("data", () => {
           newQuestion(
             6,
             "Hvad ønsker din virksomhed/organisation at opnå med en ny visuel identitet eller design?",
-            "multiple-choice-question"
+            "multiple-choice"
           ),
           newQuestion(
             7,
             "Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?",
-            "branding-card-question"
+            "branding-card"
           ),
           newQuestion(
             8,
             "Er der særlige symboler, ikoner eller andet visuelt, der har en særlig betydning for din virksomhed/organisation?",
-            "moodboard-question"
+            "moodboard"
           ),
-          newQuestion(9, "Hvilken farve repræsenterer bedst virksomhedens/organisations værdier?", "color-question"),
+          newQuestion(9, "Hvilken farve repræsenterer bedst virksomhedens/organisations værdier?", "color"),
           newQuestion(
             10,
             "Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?",
@@ -56,7 +52,7 @@ export const useDataStore = defineStore("data", () => {
         id: 3,
         title: "Praktiske detaljer",
         questions: [
-          newQuestion(11, "Hvilke leverancer forventer du?", "multiple-choice-question"),
+          newQuestion(11, "Hvilke leverancer forventer du?", "multiple-choice"),
           newQuestion(12, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "text"),
           newQuestion(13, "Hvad er virksomhedens/organisationens budget til projektet?", "text"),
         ],

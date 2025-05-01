@@ -23,7 +23,6 @@ form {
   overflow: hidden;
   place-self: center;
   width: 100%;
-  padding: 20px 0;
   max-width: 80ch;
 
   &.do-non-ai {

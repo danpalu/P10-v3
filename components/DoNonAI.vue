@@ -876,25 +876,8 @@
           name="Er der andet, du gerne vil tilføje? - Det kan fx være noget, du synes designeren bør vide, spørgsmål til
           designeren eller noter til dig selv."
           id="other" />
-        <div class="center-content button-container">
-          <button class="send-form" @click.prevent="getSummary">
-            <span class="text" :class="`${loadingSummary ? 'loading' : ''}`">
-              <span v-if="!data.summary">Indsend</span>
-              <span v-else>Indsend</span>
-            </span>
-            <span class="send-form-spinner" v-if="loadingSummary">
-              <LoadingSpinner></LoadingSpinner>
-            </span>
-          </button>
-        </div>
-        <div v-if="data.summary">
-          <h3>Opsummering</h3>
-          <div v-for="section in data.summary.sections">
-            <br />
-            <h4>{{ section.title }}</h4>
-            <p>{{ section.content }}</p>
-          </div>
-        </div>
+        <h3>Opsummering</h3>
+        <Summary></Summary>
       </div>
     </section>
     <section id="section-5">
@@ -1001,16 +984,6 @@ function scrollToBrandCardSection(sectionIndex: number) {
 }
 const loadingSummary = ref(false);
 
-async function getSummary() {
-  loadingSummary.value = true;
-  const form = document.querySelector("#questionnaire-form") as HTMLFormElement;
-  if (form) {
-    const formDataObject = formDataToObjectWithArrays(form);
-    data.summary = await fetchSummary(JSON.stringify(formDataObject));
-  }
-  loadingSummary.value = false;
-}
-
 function initResizeFields() {
   const textareas = document.querySelectorAll("textarea");
   textareas.forEach((textarea) => {
@@ -1024,9 +997,9 @@ function initResizeFields() {
 }
 
 onMounted(() => {
-  targetGroupInit();
-  brandCardInit();
   initResizeFields();
+  brandCardInit();
+  targetGroupInit();
 });
 </script>
 

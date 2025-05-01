@@ -60,12 +60,3 @@ export function formDataToObjectWithArrays(
 
   return result;
 }
-
-export async function fetchSummary(body: string): Promise<SummarySchemaType> {
-  const response = await fetch("/api/summarize-do-non-ai", {
-    method: "POST",
-    body: body,
-  });
-  const summary = await response.json();
-  return summary;
-}

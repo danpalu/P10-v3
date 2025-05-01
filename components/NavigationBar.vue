@@ -1,5 +1,13 @@
 <template>
   <nav class="center-content">
+    <div class="type-container">
+      <select name="summaryType" v-model="data.questionnaire.type">
+        <option value="do-ai">Do-AI</option>
+        <option value="do-non-ai">Do Non-AI</option>
+        <option value="chat">Chat</option>
+        <option value="survey">Survey</option>
+      </select>
+    </div>
     <ul>
       <li v-for="section in sections" class="section">
         <a
@@ -37,6 +45,8 @@ const data = useDataStore();
 const selectedSectionIndex = ref<number>(1);
 
 const indicator = useTemplateRef("indicator");
+
+const questionnaireType = ref<"chat" | "survey" | "do-non-ai" | "do-ai">("do-non-ai");
 
 let totalNumberOfQuestions = 0;
 props.sections.forEach((section) => {
@@ -86,6 +96,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.type-container {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
 nav {
   padding: 0 40px;
   justify-content: start;
