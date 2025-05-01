@@ -112,6 +112,7 @@
                             </a>
                         </div>
                         </li>
+                        <hr class="between-questions-hr" v-if="index === prevQuestion.answer.answer.length - 1"> 
                     </template>
                 </template>
                 <template
@@ -463,8 +464,8 @@
         if (name != "none") {
             companyName = name;
         }
-
-        if (answer === "Yes" && (name != "none" || wordsInAnswer.value >= 35)){
+        console.log(wordsInAnswer.value)
+        if (answer === "Yes" && (name != "none" || wordsInAnswer.value >= 60)){
             nextQuestion();
             wordsInAnswer.value = 0;
         } else {
@@ -625,7 +626,6 @@ import type { Image } from 'openai/resources.mjs';
     });
     wordsInAnswer.value += userInput.trim().split(/\s+/).length;
     currentPlaceholder = "";
-    chatFieldDisabled = true;
     }
 
     function addTitleMessage(title: string) {
@@ -1073,10 +1073,6 @@ import type { Image } from 'openai/resources.mjs';
     font-weight: 600;
     }
 
-    .message.last {
-        margin-bottom: 5rem;
-    }
-
     .form-container {
     position: relative;
     width: 100%;
@@ -1146,6 +1142,13 @@ import type { Image } from 'openai/resources.mjs';
     width: 100%;
     display: flex;
     justify-content: center;
+    }
+
+    .between-questions-hr {
+        margin: calc(2rem + 30px) 0 2rem 0;
+        background-color: var(--color-dark-grey);
+        height: 1px;
+        border: 0;
     }
 
     </style>
