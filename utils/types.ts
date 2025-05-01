@@ -25,6 +25,11 @@ export const MessageContent = z.object({
   companyName: z.string().nullable(),
 });
 
+export type brandCard = {
+    option: string;
+    oppositeOption: string;
+}
+
 export type MessageContentType = z.infer<typeof MessageContent>;
 
 export type ClientMessage = {
@@ -42,7 +47,7 @@ export type Question = {
   id: number;
   title: string;
   answer: Answer;
-  type: "text" | "color" | "moodboard" | "multiple-choice" | "branding-card" | "yes-no" | "link" | "name";
+  type: "text" | "summary" | "slider-question" | "color-question" | "moodboard-question" |"multiple-choice-question" | "branding-card-question" | "yes-no-question" | "yes-no-name-question" |"link-question";
 };
 
 export type Answer = {

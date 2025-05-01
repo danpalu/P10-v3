@@ -6,7 +6,7 @@ export const useDataStore = defineStore("data", () => {
         id: 1,
         title: "Virksomhedsoplysninger",
         questions: [
-          newQuestion(1, "Hvad er navnet på din virksomhed/organisation?", "text"),
+          newQuestion(1, "Hvad er navnet på din virksomhed/organisation?", "branding-card-question"),
           newQuestion(2, "Hvilke produkter eller tjenester udbyder din virksomhed/organisation?", "text"),
           newQuestion(
             3,
@@ -166,6 +166,11 @@ export const useDataStore = defineStore("data", () => {
     },
   ]);
 
+  const brandCards = [
+    newBrandCard("Kreativ og kunstnerisk", "Praktisk og problemløsende"),
+    newBrandCard("Ekstrovert, udadvendt og social", "Introvert, rolig og eftertænksom"),
+    newBrandCard("Ambitiøs og målrettet", "Afslappet og laid back")];
+
   return {
     questionnaire,
     currentQuestion,
@@ -173,5 +178,6 @@ export const useDataStore = defineStore("data", () => {
     toString,
     summary,
     pictures,
+    brandCards,
   };
 });

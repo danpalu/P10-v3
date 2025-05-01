@@ -102,6 +102,7 @@ html {
 }
 
 :root {
+  --color-light-grey: rgb(231, 230, 229);
   --color-grey: #888;
   --color-dark-grey: #555;
   --color-black: #333;
