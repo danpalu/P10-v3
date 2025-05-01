@@ -401,12 +401,22 @@
     incomingString.value = "";
     };
 
-    function myFunction() {
-        const element = document.activeElement ? document.activeElement.tagName : "none";
-        const demoElement = document.getElementById("demo");
-        if (demoElement) {
-            demoElement.innerHTML = element;
+    function getBrandCardOption(brandCardOption: any){
+        if (brandCardOption != null){
+            return brandCardOption;
         }
+        else {
+            return data.brandCards[0].option;
+        }      
+    }
+
+    function getOppositeBrandCardOption(brandCardOppositeOption: any){
+        if (brandCardOppositeOption != null){
+            return brandCardOppositeOption;
+        }
+        else {
+            return data.brandCards[0].oppositeOption;
+        }      
     }
 
     const selectedOptions = ref<string[]>([]); // Array to store selected options
@@ -431,24 +441,6 @@
         selectedImages.value = []; // Clear the selected images after submitting
     }
 
-    function getBrandCardOption(brandCardOption: any){
-        if (brandCardOption != null){
-            return brandCardOption;
-        }
-        else {
-            return data.brandCards[brandCardQuestionsAsked.value-1].option;
-        }      
-    }
-
-    function getOppositeBrandCardOption(brandCardOppositeOption: any){
-        if (brandCardOppositeOption != null){
-            return brandCardOppositeOption;
-        }
-        else {
-            return data.brandCards[brandCardQuestionsAsked.value-1].oppositeOption;
-        }      
-    }
-    
     const selectedYesNo = ref<string>("");
 
     function sendYesNoAnswer(answer: string, name = "none") {
@@ -471,11 +463,12 @@
         if (name != "none") {
             companyName = name;
         }
+
         if (answer === "Yes" && (name != "none" || wordsInAnswer.value >= 35)){
             nextQuestion();
             wordsInAnswer.value = 0;
         } else {
-            addUserMessage("Bed mig om at yddybe med et tekst spørgsmål.", true);
+            addUserMessage("Bed mig om at yddybe mine svar med et tekst spørgsmål.", true);
             sendMessages();
         }
     }
@@ -563,6 +556,7 @@
     const brandCardQuestionsToAsk = 3;
 
     function sendBrandCardAnswer(text: string) {
+    wordsInAnswer.value = 0;
     loading.value = true;
     if (brandCardQuestionsAsked.value < brandCardQuestionsToAsk) {
         addUserMessage(
