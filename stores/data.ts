@@ -18,7 +18,11 @@ export const useDataStore = defineStore("data", () => {
             "Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet, og hvad har formet den undervejs?",
             "text"
           ),
-          newQuestion(5, "Hvad vil du gerne have, at folk siger om din virksomhed/organisation?", "multiple-choice"),
+          newQuestion(
+            5,
+            "Hvad vil du gerne have, at folk siger om din virksomhed/organisation?",
+            "multiple-choice-question"
+          ),
         ],
       },
       {
@@ -28,23 +32,23 @@ export const useDataStore = defineStore("data", () => {
           newQuestion(
             6,
             "Hvad ønsker din virksomhed/organisation at opnå med en ny visuel identitet eller design?",
-            "multiple-choice"
+            "multiple-choice-question"
           ),
           newQuestion(
             7,
             "Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?",
-            "branding-card"
+            "branding-card-question"
           ),
           newQuestion(
             8,
             "Er der særlige symboler, ikoner eller andet visuelt, der har en særlig betydning for din virksomhed/organisation?",
-            "moodboard"
+            "moodboard-question"
           ),
-          newQuestion(9, "Hvilken farve repræsenterer bedst virksomhedens/organisations værdier?", "color"),
+          newQuestion(9, "Hvilken farve repræsenterer bedst virksomhedens/organisations værdier?", "color-question"),
           newQuestion(
             10,
             "Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?",
-            "multiple-choice"
+            "multiple-choice-question"
           ),
         ],
       },
@@ -52,7 +56,7 @@ export const useDataStore = defineStore("data", () => {
         id: 3,
         title: "Praktiske detaljer",
         questions: [
-          newQuestion(11, "Hvilke leverancer forventer du?", "multiple-choice"),
+          newQuestion(11, "Hvilke leverancer forventer du?", "multiple-choice-question"),
           newQuestion(12, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "text"),
           newQuestion(13, "Hvad er virksomhedens/organisationens budget til projektet?", "text"),
         ],
@@ -65,7 +69,9 @@ export const useDataStore = defineStore("data", () => {
       {
         id: 5,
         title: "Færdig",
-        questions: [newQuestion(15, "Tak for at deltage. Nu vil vi gerne høre lidt om dine oplevelser:", "link")],
+        questions: [
+          newQuestion(15, "Tak for at deltage. Nu vil vi gerne høre lidt om dine oplevelser:", "link-question"),
+        ],
       },
     ],
   });

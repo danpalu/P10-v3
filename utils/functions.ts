@@ -1,13 +1,23 @@
 export function newQuestion(
   id: number,
   title: string,
-  type: "text" | "multiple-choice" | "link" | "name" | "color" | "moodboard" | "branding-card" | "yes-no"
+  type:
+    | "text"
+    | "summary"
+    | "slider-question"
+    | "color-question"
+    | "moodboard-question"
+    | "multiple-choice-question"
+    | "branding-card-question"
+    | "yes-no-question"
+    | "yes-no-name-question"
+    | "link-question"
 ): Question {
   return {
     id: id,
     title: title,
     answer: { answer: [], summary: "" },
-    type: "text",
+    type: type,
   };
 }
 
