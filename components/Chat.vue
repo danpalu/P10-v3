@@ -43,11 +43,8 @@
                         <div class="moodboard-images">
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
                                 v-for="(image, index) in getImages(message.content.moodboardImages)?.slice(0, 9)"
-                                :key="index"getImages
-                                @click.prevent="toggleImageSelection(image.alt)" class="moodboard-image"
-                                :class="{ selected: selectedImages.includes(image.alt) }"
-                            >
-                                <img :src="image.url" :alt="image.alt" class="moodboard-image" />
+                                :key="index" class="moodboard-image">
+                                <img :src="image.url" class="moodboard-image" />
                                 <!-- Checkmark Circle for selected images -->
                                 <div v-if="selectedImages.includes(image.alt)" class="checkmark-circle">
                                     <span class="checkmark">✔</span>
@@ -110,12 +107,10 @@
                                 style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
                                 <input
                                     type="checkbox"
-                                    :id="'option-' + index"
                                     v-model="selectedOptions"
                                     :value="option"
                                     class="checkbox-option" :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" />
-                                <label :for="'option-' + index" 
-                                    class="clickable-option questionnaire-text"
+                                <label class="clickable-option questionnaire-text"
                                     :class="{ selected: selectedOptions.includes(option), disabled: data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content}">
                                     {{ option }}
                                 </label>
