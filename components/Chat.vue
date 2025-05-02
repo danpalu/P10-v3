@@ -5,7 +5,7 @@
 
                 <h1 class="title message">
                     {{ data.questionnaire.sections[0].title }}
-                    <hr style="margin: 0 auto; width: 100%;">
+                    <hr class="title-hr" style="margin: 0 auto; width: 100%;">
                 </h1>
 
                 <template v-for="prevQuestion in getPreviousQuestions(props.questionnaire, data.currentQuestion)">
@@ -18,7 +18,7 @@
                             <!-- Check for title type and render as h1 -->
                             <h1 v-if="message.content.isTitle === true" class = "title">
                                 {{ message.content.content }}
-                                <hr style="margin: 0 auto; width: 100%;">
+                                <hr class="title-hr" style="margin: 0 auto; width: 100%;">
                             </h1>
                             <!-- Don't render if yes-no-question -->
                             <div v-else-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'">
@@ -122,7 +122,7 @@
                      :class="`${message.content.isTitle ? 'title' : message.role} ${message.content.type} ${message.content.hiddenInChat ? 'hidden' : ''}`">
                     <h1 v-if="message.content.isTitle === true" class = "title">
                         {{ message.content.content }}
-                        <hr style="margin: 0 auto; width: 100%;">
+                        <hr class="title-hr" style="margin: 0 auto; width: 100%;">
                     </h1>
                     <!-- Don't render if yes-no-question -->
                     <div v-else-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'">
@@ -394,6 +394,9 @@
             else if (newMessage.content.type === "summary") {
                 showIncomingMessage.value = false;
             }
+            else if (newMessage.content.type === "link-question") {
+                ready.value = false;
+            }
 
             data.currentQuestion.answer.answer.push(newMessage);
             resetIncomingMessage();
@@ -462,6 +465,7 @@
     }
 
     const selectedYesNo = ref<string>("");
+    const wordLimit = computed(() => data.questionnaire.type === "chat" ? 60 : 40);
 
     function sendYesNoAnswer(answer: string, name = "none") {
         selectedYesNo.value = answer;
@@ -483,7 +487,7 @@
             companyName = name;
         }
 
-        if (answer === "Yes" && (name != "none" || wordsInAnswer.value >= 60)){
+        if (answer === "Yes" && (name != "none" || wordsInAnswer.value >= wordLimit.value)){
             nextQuestion();
             wordsInAnswer.value = 0;
         } else {
@@ -605,7 +609,7 @@
         input.value = "";
     }
 
-    let disableSubmit = computed(() => lastQuestionType.value !== "link-question" || (!ready.value || input.value.trim() === "" || showIncomingMessage.value));
+    let disableSubmit = computed(() => !ready.value || input.value.trim() === "" || showIncomingMessage.value);
 
     import { computed } from 'vue';
 
@@ -1244,6 +1248,12 @@
 
     .between-questions-hr {
         margin: calc(2rem + 30px) 0 2rem 0;
+        background-color: var(--color-dark-grey);
+        height: 1px;
+        border: 0;
+    }
+
+    .title-hr {
         background-color: var(--color-dark-grey);
         height: 1px;
         border: 0;
