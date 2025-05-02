@@ -53,7 +53,7 @@
                                 </div>
                                 <div style="display: flex; gap: 1rem;">
                                     <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                        Ingen af ovennævnte
+                                        Ingen af ovenstående
                                     </button>
                                     <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
                                         Anvend valgte
@@ -96,7 +96,7 @@
                                 <!-- Button container to align buttons side by side -->
                                 <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
                                     <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                        Ingen af ovennævnte
+                                        Ingen af ovenstående
                                     </button>
                                     <button  :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
                                         Anvend valgte
@@ -160,7 +160,7 @@
                         </div>
                         <div style="display: flex; gap: 1rem;">
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                Ingen af ovennævnte
+                                Ingen af ovenstående
                             </button>
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
                                 Anvend valgte
@@ -205,7 +205,7 @@
                         <!-- Button container to align buttons side by side -->
                         <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                Ingen af ovennævnte
+                                Ingen af ovenstående
                             </button>
                             <button  :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
                                 Anvend valgte
@@ -312,7 +312,7 @@
     inputElement.value?.focus();
     wsURL = new URL(window.location.href);
     wsURL.protocol = "ws";
-    wsURL.pathname = "/api/ws";
+    wsURL.pathname = "/api/" + data.questionnaire.type;
     wsURL.hash = "";
     ws = new WebSocket(wsURL);
 
@@ -372,7 +372,7 @@
             
             if (newMessage.content.type === "moodboard-question") {
                 const search = newMessage.content.moodboardSearchString;
-                console.log("moodboard: " + search);
+                console.log("Moodboard search string: " + search);
                 if (search) {
                     handleMoodboard(search);
                 }
@@ -401,7 +401,7 @@
         } catch (error) {
             console.error("Failed to parse JSON:", incomingString.value);
         }
-        waitAndScroll();
+        waitAndScroll(false);
         return;
         }
         if (message.data == "[ERROR]") {
@@ -410,7 +410,7 @@
             return;
         }
         incomingString.value += `${message.data}`;
-        waitAndScroll();
+        waitAndScroll(false);
     };
 });
 
@@ -449,7 +449,7 @@
     }
 
     function sendNoneOfAbove() {
-        addUserMessage('Ingen af ovennævnte, lad mig beskrive det med et tekst spørgsmål', true);
+        addUserMessage('Ingen af ovennævnte, lad mig beskrive det selv. Du SKAL sende mig et tekst-spørgsmål', true);
         sendMessages();
         selectedOptions.value = []; // Clear the selected options after submitting
         selectedImages.value = []; // Clear the selected images after submitting
@@ -481,18 +481,19 @@
             nextQuestion();
             wordsInAnswer.value = 0;
         } else {
-            addUserMessage("Bed mig om at yddybe mine svar med et tekst spørgsmål.", true);
+            addUserMessage("Bed mig om at uddybe mine svar. Du SKAL stille mig et tekst-spørgsmål.", true);
             sendMessages();
         }
     }
 
     watch(() => data.currentTitle, (newTitle) => {
         addTitleMessage(newTitle);
+        waitAndScroll(true);
     });
 
-    async function waitAndScroll() {
+    async function waitAndScroll(forceScroll: boolean) {
         await nextTick();
-        scrollToBottom();
+        scrollToBottom(forceScroll);
         setTextField();
     }
 
@@ -522,7 +523,7 @@
         console.error("Error fetching moodboard images:", error);
     }
 
-    waitAndScroll();
+    waitAndScroll(false);
 }
 
     function toggleImageSelection(imageAlt: string) {
@@ -535,8 +536,8 @@
     }
 
     // Return default images if less than nine images are found
-    function getImages(imageList: any[]){
-        if (imageList.length >= 9){
+    function getImages(imageList: any){
+        if (imageList != null && imageList.length >= 9){
             return imageList;
         }
         else {
@@ -544,7 +545,7 @@
         }
     }
 
-    function getColors(colorList: String[]){
+    function getColors(colorList: string[]){
         if (colorList.length >= 8){
             return colorList;
         }
@@ -556,13 +557,11 @@
     function setAsSelected(){
         const element = document.activeElement ? document.activeElement : null;
         element?.classList.add("selected");
-
-        console.log(element?.className);
     }
 
     function sendMoodboardSelection() {
         if (selectedImages.value.length > 0) {
-            addUserMessage("My idea is best represented by images containing: " + selectedImages.value.join(", "), true);
+            addUserMessage("My idea is best represented by images containing: " + selectedImages.value.join(", ") + "Let's proceed", true);
             sendMessages();
         }
     }
@@ -634,6 +633,7 @@
             sliderDetails: null,
             colorOptions: null,
             moodboardSearchString: null,
+            moodboardImages: null,
             brandingCardOptions: null,
             hiddenInChat: hiddenInChat,
             isTitle: false,
@@ -656,6 +656,7 @@
         sliderDetails: null,
         colorOptions: null,
         moodboardSearchString: null,
+        moodboardImages: null,
         brandingCardOptions: null,
         hiddenInChat: false,
         isTitle: true,
@@ -669,7 +670,7 @@
     function sendColorAnswer(color: string) {
         setAsSelected();
         if (colorQuestionsAsked.value == 0) {
-            addUserMessage("I think my idea is well represented by " + color + ". You may ask me a new color question, asking me about what variant of this color i prefer.", true);
+            addUserMessage("I think my idea is well represented by " + color + ". Now ask me a new color question, asking me about what variant of this color I prefer.", true);
             colorQuestionsAsked.value++;
         } else {
             addUserMessage("I think my idea is well represented by " + color, true);
@@ -689,7 +690,7 @@
             companyName: companyName.toString(),
             })
         );
-        waitAndScroll();
+        waitAndScroll(true);
     }
 
     function startConversation() {
@@ -734,7 +735,7 @@
     const chatContainer = useTemplateRef("chat-container")
 
     // Only scroll to bottom if user has not scrolled up
-    function scrollToBottom() {
+    function scrollToBottom(forceScroll: boolean) {
         if (!chatContainer) return
 
         const threshold = 100 // px from bottom — adjust as needed
@@ -743,7 +744,7 @@
             const isNearBottom =
             messageScroller.value.scrollHeight - messageScroller.value.scrollTop - messageScroller.value.clientHeight < threshold    
 
-            if (isNearBottom || lastQuestionType.value == "multiple-choice-question" || lastQuestionType.value == "branding-card-question" || lastQuestionType.value == "moodboard-question") {
+            if ((forceScroll) || (isNearBottom || lastQuestionType.value == "multiple-choice-question" || lastQuestionType.value == "branding-card-question" || lastQuestionType.value == "moodboard-question" || lastQuestionType.value == "color-question")) {
                 messageScroller.value?.scrollTo({
                     top: messageScroller.value.scrollHeight,
                     behavior: "smooth",
@@ -936,17 +937,17 @@
 
     .branding-card-container {
     display: flex;
-    gap: 2rem;
+    gap: 1.2rem;
     }
 
     .branding-option {
-        border-radius: 8px;
+        border-radius: 10px;
         font-size: 1rem;
         cursor: pointer;
         transition: background-color 0.2s ease, transform 0.1s ease-out;
         padding-top: 70px;
         padding-bottom: 70px;
-        width: 50%;
+        width: 30rem;
         box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
         margin: 20px 0;
 
