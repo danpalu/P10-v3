@@ -82,6 +82,7 @@ export const useDataStore = defineStore("data", () => {
 
   const currentQuestion = ref<Question>(questionnaire.value.sections[0].questions[0]);
   const currentTitle = ref<string>(questionnaire.value.sections[0].title);
+  const currentId = ref<number>(questionnaire.value.sections[0].id);
 
   const summary = ref<SummarySchemaType>({ sections: [] });
 
@@ -178,10 +179,23 @@ export const useDataStore = defineStore("data", () => {
     newBrandCard("Ambitiøs og målrettet", "Afslappet og laid back"),
   ];
 
+  const colors = [
+    "#FF6B6B", // Soft red
+    "#FF9F1C", // Deep orange
+    "#FFD93D", // Warm yellow
+    "#6BCB77", // Fresh green
+    "#AEEFFF", // Light blue
+    "#4D96FF", // Calm blue
+    "#9D4EDD", // Rich purple
+    "#F5A3C7"  // Gentle pink
+  ];
+
   return {
     questionnaire,
     currentQuestion,
     currentTitle,
+    currentId,
+    colors,
     toString,
     summary,
     pictures,

@@ -28,14 +28,14 @@ export function newBrandCard(option: string, oppositeOption: string): brandCard 
   };
 }
 
-export function getQuestionById(questionnaire: Questionnaire, id: number): [Question, string] {
+export function getQuestionById(questionnaire: Questionnaire, id: number): [Question, string, number] {
   for (const section of questionnaire.sections) {
     const question = section.questions.find((q) => q.id === id);
     if (question) {
-      return [question, section.title]; // Return the question and its section title;
+      return [question, section.title, section.id]; // Return the question and its section title;
     }
   }
-  return [questionnaire.sections[0].questions[0], "Default Title"]; // Return a default question if not found
+  return [questionnaire.sections[0].questions[0], "Default Title", 0]; // Return a default question if not found
 }
 
 export function getPreviousQuestions(questionnaire: Questionnaire, currentQuestion: Question): Question[] {

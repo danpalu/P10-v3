@@ -14,7 +14,7 @@
                         <li v-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'" class="message" lang="dk"
                     :class="`${ 
                             index === prevQuestion.answer.answer.length - 1 ? 'last' : ''
-                        } ${message.content.isTitle ? 'title' : message.role} ${message.content.hiddenInChat ? 'hidden' : ''}`">
+                        } ${message.content.isTitle ? 'title' : message.role} ${message.content.type} ${message.content.hiddenInChat ? 'hidden' : ''}`">
                             <!-- Check for title type and render as h1 -->
                             <h1 v-if="message.content.isTitle === true" class = "title">
                                 {{ message.content.content }}
@@ -53,7 +53,7 @@
                                 </div>
                                 <div style="display: flex; gap: 1rem;">
                                     <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                        Ingen af ovenstående
+                                        Lad mig beskrive det
                                     </button>
                                     <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
                                         Anvend valgte
@@ -96,7 +96,7 @@
                                 <!-- Button container to align buttons side by side -->
                                 <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
                                     <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                        Ingen af ovenstående
+                                        Lad mig beskrive det
                                     </button>
                                     <button  :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
                                         Anvend valgte
@@ -160,7 +160,7 @@
                         </div>
                         <div style="display: flex; gap: 1rem;">
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                Ingen af ovenstående
+                                Lad mig beskrive det
                             </button>
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
                                 Anvend valgte
@@ -205,7 +205,7 @@
                         <!-- Button container to align buttons side by side -->
                         <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                Ingen af ovenstående
+                                Lad mig beskrive det
                             </button>
                             <button  :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
                                 Anvend valgte
@@ -284,9 +284,10 @@
         );
 
         // Proceed to the next question
-        let question_and_title = getQuestionById(props.questionnaire, data.currentQuestion?.id + 1);
-        data.currentQuestion = question_and_title[0];
-        data.currentTitle = question_and_title[1];
+        let question_and_title_and_id = getQuestionById(props.questionnaire, data.currentQuestion?.id + 1);
+        data.currentQuestion = question_and_title_and_id[0];
+        data.currentTitle = question_and_title_and_id[1];
+        data.currentId = question_and_title_and_id[2];
 
         if (data.currentQuestion.answer.answer.length == 0) {
             continueConversation();
@@ -314,6 +315,9 @@
             inputElement.value.style.height = inputElement.value.scrollHeight + "px";
         }
     }
+
+    const wordLimitDefault = data.questionnaire.type === "chat" ? 40 : 40; // Word limit is currently the same regardless of type
+    let wordLimit = ref<number>(wordLimitDefault);
 
     onMounted(() => {
     inputElement.value?.focus();
@@ -398,6 +402,19 @@
                 ready.value = false;
             }
 
+            if (data.currentId === 3){
+                wordLimit.value = 20;
+            }
+            else if (data.currentId === 4){
+                wordLimit.value = 0;
+            }
+            else if (newMessage.content.type === "color-question" || newMessage.content.type === "branding-card-question" || newMessage.content.type === "moodboard-question"){
+                wordLimit.value = 50;   
+            }
+            else {
+                wordLimit.value = wordLimitDefault;
+            }
+
             data.currentQuestion.answer.answer.push(newMessage);
             resetIncomingMessage();
             showIncomingMessage.value = false;
@@ -465,8 +482,7 @@
     }
 
     const selectedYesNo = ref<string>("");
-    const wordLimit = computed(() => data.questionnaire.type === "chat" ? 60 : 40);
-
+    
     function sendYesNoAnswer(answer: string, name = "none") {
         selectedYesNo.value = answer;
 
@@ -563,7 +579,7 @@
     }
 
     function getColors(colorList: string[]){
-        if (colorList.length >= 8){
+        if (colorList !== null && colorList.length >= 8){
             return colorList;
         }
         else {
@@ -599,12 +615,13 @@
             brandCardQuestionsAsked.value++;
         } else {
             addUserMessage(
-            "My idea is best represented by " +
-            text,
-            true
-        );
+                "My idea is best represented by " +
+                text + "Now ask me a text question.",
+                true
+            );
             brandCardQuestionsAsked.value = 0;
         }
+
         sendMessages();
         input.value = "";
     }
@@ -849,6 +866,12 @@
 
         &.branding-option {
             outline: 5px solid var(--color-grey);
+        }
+
+        &.color {
+            outline: 3px solid var(--color-black);
+            outline-offset: 3px;
+            z-index: 1;
         }
     }
 
@@ -1122,7 +1145,7 @@
 
     &.assistant {
         align-self: flex-start;
-        border-radius: 20px 20px 20px 0;
+        border-radius: 30px 30px 30px 0;
         background: #f1f1f1;
     }
 
@@ -1138,11 +1161,11 @@
     }
 
     .color-container {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
     .color {
@@ -1158,7 +1181,7 @@
     .message.user {
     align-self: flex-end;
     text-align: right;
-    border-radius: 20px 20px 0px 20px;
+    border-radius: 30px 30px 0px 30px;
     background: #333;
     color: var(--color-background);
     }
