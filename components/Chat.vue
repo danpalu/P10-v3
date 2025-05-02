@@ -11,7 +11,7 @@
                 <template v-for="prevQuestion in getPreviousQuestions(props.questionnaire, data.currentQuestion)">
                     <template
                     v-for="(message, index) in prevQuestion.answer.answer">
-                        <li v-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'" class="message"
+                        <li v-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'" class="message" lang="dk"
                     :class="`${ 
                             index === prevQuestion.answer.answer.length - 1 ? 'last' : ''
                         } ${message.content.isTitle ? 'title' : message.role} ${message.content.hiddenInChat ? 'hidden' : ''}`">
@@ -118,7 +118,7 @@
                 <template
                     v-for="message in data.currentQuestion.answer.answer">
                     <!-- Check for title type and render as h1 -->
-                     <li v-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'" class="message"
+                     <li v-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'" class="message" lang="dk"
                      :class="`${message.content.isTitle ? 'title' : message.role} ${message.content.type} ${message.content.hiddenInChat ? 'hidden' : ''}`">
                     <h1 v-if="message.content.isTitle === true" class = "title">
                         {{ message.content.content }}
@@ -239,18 +239,18 @@
                         <span> Næste spørgsmål <i class="arrow right"></i></span>
                     </button>
                     <div class="form-container">
-                    <form @submit.prevent="handleSubmit(input)" class="input">
+                    <form id="input-form" @submit.prevent="handleSubmit(input)" class="input">
                         <textarea 
                             oninput="
                                 this.style.height = 'auto';
                                 this.style.height = this.scrollHeight + 'px';
                         "
                             v-model="input"
-                            ref="inputElement"
+                            ref="input-element"
                             :placeholder="currentPlaceholder"
                             :disabled="chatFieldDisabled"
                             rows="1"
-                            class="textarea"
+                            id="input-element"
                         ></textarea>
                         <button type="submit" :disabled="disableSubmit" class="send" :class="`${loading ? 'loading' : ''}`">
                             <span>Send</span>
@@ -302,7 +302,7 @@
 
     const showIncomingMessage = ref(false);
     const incomingString = ref<string>("");
-    const inputElement = useTemplateRef("inputElement");
+    const inputElement = useTemplateRef("input-element");
 
     onMounted(() => {
     inputElement.value?.focus();
@@ -320,6 +320,20 @@
         ready.value = true;
         loading.value = false;
         }
+
+        // Submit on enter
+        if (inputElement.value) {
+            inputElement.value.addEventListener('keydown', (event: KeyboardEvent) => {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                const trimmed = inputElement.value?.value.trim()
+                event.preventDefault()
+                if (trimmed) {
+                    const form = document.querySelector("#input-form") as HTMLFormElement
+                    form.requestSubmit() // 0 is the drop-down, 1 is the text field
+                }
+                }
+            })
+            }
     };
 
     ws.onmessage = (message) => {
@@ -471,7 +485,7 @@
         if (name != "none") {
             companyName = name;
         }
-        console.log(wordsInAnswer.value)
+
         if (answer === "Yes" && (name != "none" || wordsInAnswer.value >= 60)){
             nextQuestion();
             wordsInAnswer.value = 0;
@@ -618,21 +632,25 @@ import type { Image } from 'openai/resources.mjs';
     let lastQuestionType = ref<string>("text");
 
     function addUserMessage(userInput: string, hiddenInChat: boolean = false) {
-    data.currentQuestion.answer.answer.push({
-        role: "user",
-        content: {
-        content: userInput.trim(),
-        type: "text",
-        sliderDetails: null,
-        colorOptions: null,
-        moodboardSearchString: null,
-        brandingCardOptions: null,
-        hiddenInChat: hiddenInChat,
-        isTitle: false,
-        },
-    });
-    wordsInAnswer.value += userInput.trim().split(/\s+/).length;
-    currentPlaceholder = "";
+        data.currentQuestion.answer.answer.push({
+            role: "user",
+            content: {
+            content: userInput.trim(),
+            type: "text",
+            sliderDetails: null,
+            colorOptions: null,
+            moodboardSearchString: null,
+            brandingCardOptions: null,
+            hiddenInChat: hiddenInChat,
+            isTitle: false,
+            },
+        });
+        wordsInAnswer.value += getNumberOfWords(userInput.trim());
+        currentPlaceholder = "";
+    }
+
+    function getNumberOfWords(string: string){
+        return string.trim().split(/\s+/).length;
     }
 
     function addTitleMessage(title: string) {
@@ -718,7 +736,9 @@ import type { Image } from 'openai/resources.mjs';
         sendMessages();
         input.value = "";
     }
+
     const messageScroller = useTemplateRef("message-scroller");
+
     function scrollToButtom() {
     messageScroller.value?.scrollTo({
         top: messageScroller.value.scrollHeight,
@@ -734,12 +754,13 @@ import type { Image } from 'openai/resources.mjs';
         .replace(/\\"/g, '"');
     }
 
+
     </script>
 
     <style>
     textarea {
         font-size: 1rem;
-        padding: 1rem 1rem;
+        padding: 1rem 1.4rem;
         overflow: hidden;
         width: 100%;
         border: none;
@@ -873,10 +894,10 @@ import type { Image } from 'openai/resources.mjs';
     }
 
     .questionnaire-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
     }
 
     .questionnaire-text {
@@ -1033,15 +1054,17 @@ import type { Image } from 'openai/resources.mjs';
     }
 
     .message {
-    margin-top: 30px;
-    width: fit-content;
-    max-width: 60ch;
-    padding: 10px 20px;
-    white-space: pre-line;
-    min-height: 45px;
+        margin-top: 30px;
+        width: fit-content;
+        max-width: 60ch;
+        padding: 10px 20px;
+        white-space: pre-line;
+        min-height: 45px;
+        word-wrap: break-word;
+        hyphens: auto;
 
-    &.user.hidden {
-        display: none;
+        &.user.hidden {
+            display: none;
     }
 
     &.assistant {
@@ -1116,7 +1139,6 @@ import type { Image } from 'openai/resources.mjs';
     }
 
     .send {
-        cursor: not-allowed;
         align-self: end;
     }
 
