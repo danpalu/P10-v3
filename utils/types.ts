@@ -26,9 +26,9 @@ export const MessageContent = z.object({
 });
 
 export type brandCard = {
-    option: string;
-    oppositeOption: string;
-}
+  option: string;
+  oppositeOption: string;
+};
 
 export type MessageContentType = z.infer<typeof MessageContent>;
 
@@ -47,7 +47,17 @@ export type Question = {
   id: number;
   title: string;
   answer: Answer;
-  type: "text" | "summary" | "slider-question" | "color-question" | "moodboard-question" |"multiple-choice-question" | "branding-card-question" | "yes-no-question" | "yes-no-name-question" |"link-question";
+  type:
+    | "text"
+    | "summary"
+    | "slider-question"
+    | "color-question"
+    | "moodboard-question"
+    | "multiple-choice-question"
+    | "branding-card-question"
+    | "yes-no-question"
+    | "yes-no-name-question"
+    | "link-question";
 };
 
 export type Answer = {
@@ -62,9 +72,11 @@ export type QuestionSection = {
 };
 
 export type Questionnaire = {
-  type: "chat" | "survey" | "do-non-ai" | "do-ai";
+  type: QuestionnaireType;
   sections: QuestionSection[];
 };
+
+export type QuestionnaireType = "chat" | "survey" | "do-non-ai" | "do-ai";
 
 export const SummarySchema = z.object({ sections: z.array(z.object({ title: z.string(), content: z.string() })) });
 export type SummarySchemaType = z.infer<typeof SummarySchema>;

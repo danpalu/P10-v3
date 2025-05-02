@@ -77,3 +77,21 @@ export function formDataToObjectWithArrays(
 
   return result;
 }
+
+export function setStartTime() {
+  const startTime = Date.now();
+  localStorage.setItem("startTime", startTime.toString());
+}
+
+export async function saveData(dataToSave: object) {
+  const startTime = Number(localStorage.getItem("startTime"));
+  const endTime = Date.now();
+  const timeSpent = endTime - startTime;
+  const response = await $fetch("/api/saveData", {
+    method: "POST",
+    body: {
+      timeSpent: timeSpent,
+      dataToSave: JSON.stringify(dataToSave),
+    },
+  });
+}

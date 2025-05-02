@@ -1,13 +1,14 @@
-import { writeFile, openSync, access } from "fs";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
 
 export default defineEventHandler(async (event) => {
-  const data = await readBody(event);
-  const timestamp: number = Date.now();
-  writeFile(`./logs/saveData-${timestamp}.json`, data, (err) => {
-    if (err) {
-      console.error("Error writing file:", err);
-      return "Error writing file";
-    }
-  });
+  const supabase = createClient(supabaseUrl!, supabaseKey!);
+  const body = await readBody(event);
+  const timeSpent = body.timeSpent;
+  const dataToSave = body.dataToSave;
+  console.log(timeSpent, dataToSave);
+  //await supabase.from("logs").insert({});
   return "Save successful";
 });

@@ -1,28 +1,39 @@
 <script setup lang="ts">
 import "~/assets/styles/main.css";
 const data = useDataStore();
-const startTime = Date.now();
 
-async function saveOnExit() {
-  console.log("Saving data on exit...");
-
-  const saveData = JSON.stringify({ questionnaire: data.questionnaire, startTime: startTime, endTime: Date.now() });
-  console.log("Data to save:", saveData);
-  navigator.sendBeacon("/api/saveData", saveData);
-}
+const questionnaireType = ref<QuestionnaireType>("do-non-ai");
+const typeIsSet = ref(false);
+const showIntroduction = ref(true);
 
 onMounted(() => {
-  window.addEventListener("beforeunload", () => saveOnExit());
+  const params = new URLSearchParams(document.location.search);
+  const type = params.get("type") || "none";
+  console.log(type);
+
+  if (type == "survey" || type == "do-ai" || type == "chat" || type == "do-non-ai") {
+    questionnaireType.value = type;
+    typeIsSet.value = true;
+    data.questionnaire.type = type;
+  }
 });
+
+function start() {
+  showIntroduction.value = false;
+  setStartTime();
+}
 </script>
 
 <template>
-  <NavigationBar :sections="data.questionnaire.sections"></NavigationBar>
-  <Questionnaire :questionnaire="data.questionnaire">
-    <QuestionnaireSection v-for="section in data.questionnaire.sections" :section="section">
-      <Question v-for="question in section.questions" :question="question"></Question>
-    </QuestionnaireSection>
-  </Questionnaire>
+  <Introduction v-if="showIntroduction" @start="start" :typeIsSet="typeIsSet"></Introduction>
+  <template v-else>
+    <NavigationBar :sections="data.questionnaire.sections"></NavigationBar>
+    <Questionnaire :questionnaire="data.questionnaire">
+      <QuestionnaireSection v-for="section in data.questionnaire.sections" :section="section">
+        <Question v-for="question in section.questions" :question="question"></Question>
+      </QuestionnaireSection>
+    </Questionnaire>
+  </template>
 </template>
 
 <style></style>
