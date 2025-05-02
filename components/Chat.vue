@@ -5,7 +5,7 @@
 
                 <h1 class="title message">
                     {{ data.questionnaire.sections[0].title }}
-                    <hr style="margin: 0 auto; width: 100%;">
+                    <hr class="title-hr" style="margin: 0 auto; width: 100%;">
                 </h1>
 
                 <template v-for="prevQuestion in getPreviousQuestions(props.questionnaire, data.currentQuestion)">
@@ -18,7 +18,7 @@
                             <!-- Check for title type and render as h1 -->
                             <h1 v-if="message.content.isTitle === true" class = "title">
                                 {{ message.content.content }}
-                                <hr style="margin: 0 auto; width: 100%;">
+                                <hr class="title-hr" style="margin: 0 auto; width: 100%;">
                             </h1>
                             <!-- Don't render if yes-no-question -->
                             <div v-else-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'">
@@ -53,7 +53,7 @@
                                 </div>
                                 <div style="display: flex; gap: 1rem;">
                                     <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                        Ingen af ovennævnte
+                                        Ingen af ovenstående
                                     </button>
                                     <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
                                         Anvend valgte
@@ -96,7 +96,7 @@
                                 <!-- Button container to align buttons side by side -->
                                 <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
                                     <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                        Ingen af ovennævnte
+                                        Ingen af ovenstående
                                     </button>
                                     <button  :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
                                         Anvend valgte
@@ -122,7 +122,7 @@
                      :class="`${message.content.isTitle ? 'title' : message.role} ${message.content.type} ${message.content.hiddenInChat ? 'hidden' : ''}`">
                     <h1 v-if="message.content.isTitle === true" class = "title">
                         {{ message.content.content }}
-                        <hr style="margin: 0 auto; width: 100%;">
+                        <hr class="title-hr" style="margin: 0 auto; width: 100%;">
                     </h1>
                     <!-- Don't render if yes-no-question -->
                     <div v-else-if="message.content.type !== 'yes-no-question' && message.content.type !== 'yes-no-name-question' && message.content.type !== 'summary'">
@@ -160,7 +160,7 @@
                         </div>
                         <div style="display: flex; gap: 1rem;">
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                Ingen af ovennævnte
+                                Ingen af ovenstående
                             </button>
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
                                 Anvend valgte
@@ -205,7 +205,7 @@
                         <!-- Button container to align buttons side by side -->
                         <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                Ingen af ovennævnte
+                                Ingen af ovenstående
                             </button>
                             <button  :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
                                 Anvend valgte
@@ -235,8 +235,8 @@
         </div>
 
         <ClientOnly>
-            <button :disabled="chatFieldDisabled" class="next-question button" @click.prevent="nextQuestion()">
-                        <span> Næste spørgsmål <i class="arrow right"></i></span>
+            <button :disabled="checkDisabled()" class="next-question button" @click.prevent="nextQuestion()">
+                        <span> Spring over <i class="arrow right"></i></span>
                     </button>
                     <div class="form-container">
                     <form id="input-form" @submit.prevent="handleSubmit(input)" class="input">
@@ -267,6 +267,13 @@
     }>();
 
     const data = useDataStore();
+
+    function checkDisabled(){
+        if (lastQuestionType.value === "link-question"){
+            return true;
+        }   
+        else return loading.value;
+    }
 
     function nextQuestion() {
         loading.value = true;
@@ -312,7 +319,7 @@
     inputElement.value?.focus();
     wsURL = new URL(window.location.href);
     wsURL.protocol = "ws";
-    wsURL.pathname = "/api/ws";
+    wsURL.pathname = "/api/" + data.questionnaire.type;
     wsURL.hash = "";
     ws = new WebSocket(wsURL);
 
@@ -387,6 +394,9 @@
             else if (newMessage.content.type === "summary") {
                 showIncomingMessage.value = false;
             }
+            else if (newMessage.content.type === "link-question") {
+                ready.value = false;
+            }
 
             data.currentQuestion.answer.answer.push(newMessage);
             resetIncomingMessage();
@@ -400,7 +410,7 @@
         } catch (error) {
             console.error("Failed to parse JSON:", incomingString.value);
         }
-        waitAndScroll();
+        waitAndScroll(false);
         return;
         }
         if (message.data == "[ERROR]") {
@@ -409,7 +419,7 @@
             return;
         }
         incomingString.value += `${message.data}`;
-        waitAndScroll();
+        waitAndScroll(false);
     };
 });
 
@@ -444,18 +454,18 @@
         if (selectedOptions.value.length > 0) {
             addUserMessage("My idea is best respresented by " + selectedOptions.value.join(", "), true);
             sendMessages();
-            selectedOptions.value = []; // Clear the selected options after submitting
         }
     }
 
     function sendNoneOfAbove() {
-        addUserMessage('Ingen af ovennævnte, lad mig beskrive det med et tekst spørgsmål', true);
+        addUserMessage('Ingen af ovennævnte, lad mig beskrive det selv. Du SKAL sende mig et tekst-spørgsmål', true);
         sendMessages();
         selectedOptions.value = []; // Clear the selected options after submitting
         selectedImages.value = []; // Clear the selected images after submitting
     }
 
     const selectedYesNo = ref<string>("");
+    const wordLimit = computed(() => data.questionnaire.type === "chat" ? 60 : 40);
 
     function sendYesNoAnswer(answer: string, name = "none") {
         selectedYesNo.value = answer;
@@ -477,25 +487,33 @@
             companyName = name;
         }
 
-        if (answer === "Yes" && (name != "none" || wordsInAnswer.value >= 60)){
+        if (answer === "Yes" && (name != "none" || wordsInAnswer.value >= wordLimit.value)){
             nextQuestion();
             wordsInAnswer.value = 0;
         } else {
-            addUserMessage("Bed mig om at yddybe mine svar med et tekst spørgsmål.", true);
+            addUserMessage("Bed mig om at uddybe mine svar. Du SKAL stille mig et tekst-spørgsmål.", true);
             sendMessages();
         }
     }
 
     watch(() => data.currentTitle, (newTitle) => {
         addTitleMessage(newTitle);
+        waitAndScroll(true);
     });
 
-    async function waitAndScroll() {
+    async function waitAndScroll(forceScroll: boolean) {
         await nextTick();
-        scrollToBottom();
+        scrollToBottom(forceScroll);
         setTextField();
     }
 
+    function openInNewTab(url: string) {
+        var win = window.open(url, '_blank');
+        if (win) {
+            win.focus();
+        }
+    }
+    
     let companyName = "virksomhed/organisation";
 
     async function handleMoodboard(search: string) {
@@ -522,7 +540,7 @@
         console.error("Error fetching moodboard images:", error);
     }
 
-    waitAndScroll();
+    waitAndScroll(false);
 }
 
     function toggleImageSelection(imageAlt: string) {
@@ -535,8 +553,8 @@
     }
 
     // Return default images if less than nine images are found
-    function getImages(imageList: any[]){
-        if (imageList.length >= 9){
+    function getImages(imageList: any){
+        if (imageList != null && imageList.length >= 9){
             return imageList;
         }
         else {
@@ -544,7 +562,7 @@
         }
     }
 
-    function getColors(colorList: String[]){
+    function getColors(colorList: string[]){
         if (colorList.length >= 8){
             return colorList;
         }
@@ -555,12 +573,12 @@
 
     function setAsSelected(){
         const element = document.activeElement ? document.activeElement : null;
-        //element?.classList.add("selected");
+        element?.classList.add("selected");
     }
 
     function sendMoodboardSelection() {
         if (selectedImages.value.length > 0) {
-            addUserMessage("My idea is best represented by images containing: " + selectedImages.value.join(", "), true);
+            addUserMessage("My idea is best represented by images containing: " + selectedImages.value.join(", ") + "Let's proceed", true);
             sendMessages();
         }
     }
@@ -569,12 +587,13 @@
     const brandCardQuestionsToAsk = 3;
 
     function sendBrandCardAnswer(text: string) {
+        setAsSelected();
         wordsInAnswer.value = 0;
         if (brandCardQuestionsAsked.value < brandCardQuestionsToAsk) {
             addUserMessage(
                 "My idea is best represented by " +
                 text +
-                ". Now ask me a new branding card question, but don't any of the same options you have already used.",
+                ". Now provide two wildly different branding card options.",
                 true
             );
             brandCardQuestionsAsked.value++;
@@ -615,6 +634,9 @@
                 currentPlaceholder.value = "Vælg en af de to muligheder";
             } else if (lastQuestionType.value === 'moodboard-question') {
                 currentPlaceholder.value = "Vælg et af billederne";
+            } else if (lastQuestionType.value === 'link-question') {
+                currentPlaceholder.value = "Svar på spørgeskemaet";
+                chatFieldDisabled.value = true;
             } else {
                 currentPlaceholder.value = ""; // no placeholder
             }
@@ -631,6 +653,7 @@
             sliderDetails: null,
             colorOptions: null,
             moodboardSearchString: null,
+            moodboardImages: null,
             brandingCardOptions: null,
             hiddenInChat: hiddenInChat,
             isTitle: false,
@@ -653,6 +676,7 @@
         sliderDetails: null,
         colorOptions: null,
         moodboardSearchString: null,
+        moodboardImages: null,
         brandingCardOptions: null,
         hiddenInChat: false,
         isTitle: true,
@@ -666,7 +690,7 @@
     function sendColorAnswer(color: string) {
         setAsSelected();
         if (colorQuestionsAsked.value == 0) {
-            addUserMessage("I think my idea is well represented by " + color + ". You may ask me a new color question, asking me about what variant of this color i prefer.", true);
+            addUserMessage("I think my idea is well represented by " + color + ". Now provide a new color question, asking me in the content text about what variant of " + color + " I prefer.", true);
             colorQuestionsAsked.value++;
         } else {
             addUserMessage("I think my idea is well represented by " + color, true);
@@ -686,7 +710,7 @@
             companyName: companyName.toString(),
             })
         );
-        waitAndScroll();
+        waitAndScroll(true);
     }
 
     function startConversation() {
@@ -731,7 +755,7 @@
     const chatContainer = useTemplateRef("chat-container")
 
     // Only scroll to bottom if user has not scrolled up
-    function scrollToBottom() {
+    function scrollToBottom(forceScroll: boolean) {
         if (!chatContainer) return
 
         const threshold = 100 // px from bottom — adjust as needed
@@ -740,7 +764,7 @@
             const isNearBottom =
             messageScroller.value.scrollHeight - messageScroller.value.scrollTop - messageScroller.value.clientHeight < threshold    
 
-            if (isNearBottom || lastQuestionType.value == "multiple-choice-question") {
+            if ((forceScroll) || (isNearBottom || lastQuestionType.value == "multiple-choice-question" || lastQuestionType.value == "branding-card-question" || lastQuestionType.value == "moodboard-question" || lastQuestionType.value == "color-question")) {
                 messageScroller.value?.scrollTo({
                     top: messageScroller.value.scrollHeight,
                     behavior: "smooth",
@@ -797,6 +821,10 @@
         justify-content: space-between;
     }
 
+    .color-question {
+        width: 60rem;
+    }
+
     .checkmark-circle {
         position: absolute;
         top: 5px;
@@ -818,13 +846,21 @@
 
     .selected {
         opacity: 1; /* Fully opaque when selected */
+
+        &.branding-option {
+            outline: 5px solid var(--color-grey);
+        }
+    }
+
+    .branding-option:active {
+        transform:scale(0.95);
     }
 
     .moodboard-image:hover {
         opacity: 0.9; /* Slightly transparent on hover */
     }
 
-    button:hover:not(:disabled) {
+    button:hover:not(:disabled):not(.branding-option) {
         background-color: var(--color-dark-grey); /* Slightly lighter background on hover */
 
         &.next-question {
@@ -851,8 +887,10 @@
     .clickable-option {
         transition: color 0.2s ease, background-color 0.2s ease;
         padding: 0.5rem 1rem;
-        border-radius: 0.375rem;
-        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        color: var(--color-grey);
+        background-color: white;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -864,27 +902,36 @@
 
     /* Selected option styles */
     .clickable-option.selected {
-    background-color: rgba(0, 0, 0, 0.2);
+        border-color: var(--color-black);
+        color: var(--color-black);
+        position: relative;
+        display: inline-block; /* Ensure positioning context works with inline elements */
+        padding-right: 3rem; /* Add space for the checkmark */
     }
 
     /* Add a checkmark icon in a circle on the right side */
     .clickable-option.selected::after {
-    content: "✔"; /* Unicode for checkmark */
-    display: inline-block;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    background-color: #333; /* Circle color */
-    color: var(--color-background); /* Checkmark color */
-    text-align: center;
-    line-height: 20px; /* Centers the checkmark */
-    font-size: 14px; /* Size of the checkmark */
-    margin-left: 10px; /* Space between text and checkmark */
+        content: "✔";
+        position: absolute;
+        right: 5px; /* Distance from the right edge of the element */
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #333;
+        color: var(--color-background);
+        font-size: 14px;
+        margin-right: 0.5rem;
     }
 
     /* Hover effect for clickable text */
     .clickable-option:hover:not(.disabled) {
-    background-color: rgba(0, 0, 0, 0.1); /* subtle dark grey on hover */
+        border-color: var(--color-black);
+        color: var(--color-black);
     }
 
     /* Smaller text for the submit button */
@@ -914,28 +961,28 @@
 
     .branding-card-container {
     display: flex;
-    gap: 2rem;
+    gap: 1.2rem;
     }
 
     .branding-option {
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    padding-top: 70px;
-    padding-bottom: 70px;
-    width: 50%;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-    margin: 20px 0;
+        border-radius: 10px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease-out;
+        padding-top: 70px;
+        padding-bottom: 70px;
+        width: 30rem;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        margin: 20px 0;
 
-    &.dark {
-        background: #363636;
-        color: #fefefe;
-    }
-    &.light {
-        background: #fefefe;
-        color: #333;
-    }
+        &.dark {
+            background: #363636;
+            color: #fefefe;
+        }
+        &.light {
+            background: #fefefe;
+            color: #333;
+        }
     }
 
     .moodboard-image {
@@ -1058,13 +1105,16 @@
 
     .message {
         margin-top: 30px;
-        width: fit-content;
         max-width: 60ch;
         padding: 10px 20px;
         white-space: pre-line;
         min-height: 45px;
         word-wrap: break-word;
         hyphens: auto;
+
+        &:not(.color-question){
+            width: fit-content;
+        }
 
         &.user.hidden {
             display: none;
@@ -1198,6 +1248,12 @@
 
     .between-questions-hr {
         margin: calc(2rem + 30px) 0 2rem 0;
+        background-color: var(--color-dark-grey);
+        height: 1px;
+        border: 0;
+    }
+
+    .title-hr {
         background-color: var(--color-dark-grey);
         height: 1px;
         border: 0;
