@@ -235,7 +235,7 @@
         </div>
 
         <ClientOnly>
-            <button class="next-question button" @click.prevent="nextQuestion()">
+            <button :disabled="chatFieldDisabled" class="next-question button" @click.prevent="nextQuestion()">
                         <span> Næste spørgsmål <i class="arrow right"></i></span>
                     </button>
                     <div class="form-container">
@@ -269,6 +269,8 @@
     const data = useDataStore();
 
     function nextQuestion() {
+        loading.value = true;
+        input.value = "";
         // Keep title messages and filter hidden ones
         data.currentQuestion.answer.answer = data.currentQuestion.answer.answer.filter(
             (message) => !message.content.hiddenInChat
@@ -290,8 +292,6 @@
     let ws: WebSocket;
     let wsURL: URL;
     let loading = ref(true);
-
-    let placeholderText = ref("Skriv dit svar her...");
 
     const showSaveButton = ref(false);
 
@@ -318,11 +318,10 @@
 
     ws.onopen = () => {
         if (data.currentQuestion.answer.answer.length == 0) {
-        startConversation();
-        
+            startConversation();
         } else {
-        ready.value = true;
-        loading.value = false;
+            ready.value = true;
+            loading.value = false;
         }
 
         // Submit on enter
@@ -343,14 +342,14 @@
     ws.onmessage = (message) => {
         if (message.data == "[START]") {
         showIncomingMessage.value = true;
-        loading.value = true;
         return;
         }
         if (message.data == "[DONE]") {
-        if (!ready.value) {
-            ready.value = true;
-        }
-        loading.value = false;
+            if (!ready.value) {
+                ready.value = true;
+            }
+
+            loading.value = false;
         try {
             const parsedContent = JSON.parse(incomingString.value.trim());
             
@@ -365,9 +364,13 @@
             }
 
             if (newMessage.content.type === "text") {
-                chatFieldDisabled = false;
+                chatFieldDisabled.value = false;
             }
-            else if (newMessage.content.type === "moodboard-question") {
+            else {
+                chatFieldDisabled.value = true;
+            }
+            
+            if (newMessage.content.type === "moodboard-question") {
                 const search = newMessage.content.moodboardSearchString;
                 if (search) {
                     handleMoodboard(search);
@@ -401,30 +404,17 @@
         return;
         }
         if (message.data == "[ERROR]") {
-        data.currentQuestion.answer.answer.push({
-            role: "assistant",
-            content: {
-            content: `Error: ${message.data}`,
-            type: "text",
-            sliderDetails: null,
-            colorOptions: null,
-            moodboardSearchString: null,
-            brandingCardOptions: null,
-            hiddenInChat: false,
-            isTitle: false,
-            },
-        });
-        showIncomingMessage.value = false;
-        resetIncomingMessage();
-        return;
+            addUserMessage("Det forstod jeg ikke helt, kan du sige det på en anden måde?", true);
+            showIncomingMessage.value = false;
+            return;
         }
         incomingString.value += `${message.data}`;
         waitAndScroll();
     };
-    });
+});
 
     function resetIncomingMessage() {
-    incomingString.value = "";
+        incomingString.value = "";
     };
 
     function getBrandCardOption(brandCardOption: any){
@@ -452,7 +442,6 @@
     // Send the selected multiple-choice answers when the button is clicked
     function sendMultipleChoiceAnswer() {
         if (selectedOptions.value.length > 0) {
-            loading.value = true;
             addUserMessage("My idea is best respresented by " + selectedOptions.value.join(", "), true);
             sendMessages();
             selectedOptions.value = []; // Clear the selected options after submitting
@@ -460,7 +449,6 @@
     }
 
     function sendNoneOfAbove() {
-        loading.value = true;
         addUserMessage('Ingen af ovennævnte, lad mig beskrive det med et tekst spørgsmål', true);
         sendMessages();
         selectedOptions.value = []; // Clear the selected options after submitting
@@ -471,7 +459,6 @@
 
     function sendYesNoAnswer(answer: string, name = "none") {
         selectedYesNo.value = answer;
-        loading.value = true;
 
         // Find the latest assistant yes-no-question message
         const messageElements = document.querySelectorAll('.message.assistant.yes-no-question');
@@ -498,14 +485,14 @@
             sendMessages();
         }
     }
-    
+
     watch(() => data.currentTitle, (newTitle) => {
         addTitleMessage(newTitle);
     });
 
     async function waitAndScroll() {
         await nextTick();
-        scrollToButtom();
+        scrollToBottom();
         setTextField();
     }
 
@@ -573,7 +560,6 @@
 
     function sendMoodboardSelection() {
         if (selectedImages.value.length > 0) {
-            loading.value = true;
             addUserMessage("My idea is best represented by images containing: " + selectedImages.value.join(", "), true);
             sendMessages();
         }
@@ -583,60 +569,60 @@
     const brandCardQuestionsToAsk = 3;
 
     function sendBrandCardAnswer(text: string) {
-    wordsInAnswer.value = 0;
-    loading.value = true;
-    if (brandCardQuestionsAsked.value < brandCardQuestionsToAsk) {
-        addUserMessage(
+        wordsInAnswer.value = 0;
+        if (brandCardQuestionsAsked.value < brandCardQuestionsToAsk) {
+            addUserMessage(
+                "My idea is best represented by " +
+                text +
+                ". Now ask me a new branding card question, but don't any of the same options you have already used.",
+                true
+            );
+            brandCardQuestionsAsked.value++;
+        } else {
+            addUserMessage(
             "My idea is best represented by " +
-            text +
-            ". Now ask me a new branding card question, but don't any of the same options you have already used.",
+            text,
             true
         );
-        brandCardQuestionsAsked.value++;
-    } else {
-        addUserMessage(
-        "My idea is best represented by " +
-        text,
-        true
-    );
-        brandCardQuestionsAsked.value = 0;
-    }
-    sendMessages();
-    input.value = "";
+            brandCardQuestionsAsked.value = 0;
+        }
+        sendMessages();
+        input.value = "";
     }
 
     let disableSubmit = computed(() => !ready.value || input.value.trim() === "" || showIncomingMessage.value);
 
-import type { Image } from 'openai/resources.mjs';
     import { computed } from 'vue';
 
-    let chatFieldDisabled = computed(() => {
-        const lastMessage = data.currentQuestion.answer.answer.at(-1);
-        return lastMessage?.content.type !== 'text';
+    let chatFieldDisabled = ref(true);
+    let wordsInAnswer = ref<number>(0);
+    const lastQuestionType = ref<string>("");
+    const currentPlaceholder = ref<string>("");
+
+    watch(() => loading.value, () => {
+        if (loading.value == true) {
+            chatFieldDisabled.value = true;
+            currentPlaceholder.value = "";
+        }
+        else { // Set question type
+            if (lastQuestionType.value === 'text') {
+                currentPlaceholder.value = "Skriv dit svar her...";
+            } else if (lastQuestionType.value === 'multiple-choice-question') {
+                currentPlaceholder.value = "Vælg en eller flere af ovenstående muligheder";
+            } else if (lastQuestionType.value === 'color-question') {
+                currentPlaceholder.value = "Vælg en af farverne";
+            } else if (lastQuestionType.value === 'branding-card-question') {
+                currentPlaceholder.value = "Vælg en af de to muligheder";
+            } else if (lastQuestionType.value === 'moodboard-question') {
+                currentPlaceholder.value = "Vælg et af billederne";
+            } else {
+                currentPlaceholder.value = ""; // no placeholder
+            }
+        }
     });
 
-    let currentPlaceholder = computed(() => {
-        const lastMessage = data.currentQuestion.answer.answer.at(-1);
-
-        if (lastMessage?.content.type === 'text') {
-            return "Skriv dit svar her...";
-            } else if (lastMessage?.content.type === 'multiple-choice-question') {
-                return "Vælg en eller flere af ovenstående muligheder";
-            } else if (lastMessage?.content.type === 'color-question') {
-                return "Vælg en af farverne";
-            } else if (lastMessage?.content.type === 'branding-card-question') {
-                return "Vælg en af de to muligheder";
-            } else if (lastMessage?.content.type === 'moodboard-question') {
-                return "Vælg et af billederne";
-            }else {
-                return ""; // no placeholder
-            }
-        });
-
-    let wordsInAnswer = ref<number>(0);
-    let lastQuestionType = ref<string>("text");
-
     function addUserMessage(userInput: string, hiddenInChat: boolean = false) {
+        currentPlaceholder.value = "";
         data.currentQuestion.answer.answer.push({
             role: "user",
             content: {
@@ -650,8 +636,8 @@ import type { Image } from 'openai/resources.mjs';
             isTitle: false,
             },
         });
+        loading.value = true;
         wordsInAnswer.value += getNumberOfWords(userInput.trim());
-        currentPlaceholder = "";
     }
 
     function getNumberOfWords(string: string){
@@ -679,8 +665,6 @@ import type { Image } from 'openai/resources.mjs';
     
     function sendColorAnswer(color: string) {
         setAsSelected();
-
-        loading.value = true;
         if (colorQuestionsAsked.value == 0) {
             addUserMessage("I think my idea is well represented by " + color + ". You may ask me a new color question, asking me about what variant of this color i prefer.", true);
             colorQuestionsAsked.value++;
@@ -747,16 +731,16 @@ import type { Image } from 'openai/resources.mjs';
     const chatContainer = useTemplateRef("chat-container")
 
     // Only scroll to bottom if user has not scrolled up
-    function scrollToButtom() {
+    function scrollToBottom() {
         if (!chatContainer) return
 
-        const threshold = 200 // px from bottom — adjust as needed
+        const threshold = 100 // px from bottom — adjust as needed
         
         if (messageScroller.value){
             const isNearBottom =
             messageScroller.value.scrollHeight - messageScroller.value.scrollTop - messageScroller.value.clientHeight < threshold    
 
-            if (isNearBottom) {
+            if (isNearBottom || lastQuestionType.value == "multiple-choice-question") {
                 messageScroller.value?.scrollTo({
                     top: messageScroller.value.scrollHeight,
                     behavior: "smooth",
@@ -840,7 +824,7 @@ import type { Image } from 'openai/resources.mjs';
         opacity: 0.9; /* Slightly transparent on hover */
     }
 
-    button:hover {
+    button:hover:not(:disabled) {
         background-color: var(--color-dark-grey); /* Slightly lighter background on hover */
 
         &.next-question {
@@ -874,7 +858,7 @@ import type { Image } from 'openai/resources.mjs';
         justify-content: space-between;
 
         &:not(.disabled){
-            cursor: pointer;;
+            cursor: pointer;
         }
     }
 
