@@ -1,5 +1,5 @@
 <template>
-    <main class="chat-container">
+    <main class="chat-container" id="chat-container">
         <div class="messages-container" id="message-scroller" ref="message-scroller">
             <ul class="messages">
 
@@ -241,10 +241,7 @@
                     <div class="form-container">
                     <form id="input-form" @submit.prevent="handleSubmit(input)" class="input">
                         <textarea 
-                            oninput="
-                                this.style.height = 'auto';
-                                this.style.height = this.scrollHeight + 'px';
-                        "
+                            @input="setTextField()"
                             v-model="input"
                             ref="input-element"
                             :placeholder="currentPlaceholder"
@@ -303,6 +300,13 @@
     const showIncomingMessage = ref(false);
     const incomingString = ref<string>("");
     const inputElement = useTemplateRef("input-element");
+
+    function setTextField() {
+        if (inputElement.value) {
+            inputElement.value.style.height = "auto";
+            inputElement.value.style.height = inputElement.value.scrollHeight + "px";
+        }
+    }
 
     onMounted(() => {
     inputElement.value?.focus();
@@ -502,6 +506,7 @@
     async function waitAndScroll() {
         await nextTick();
         scrollToButtom();
+        setTextField();
     }
 
     let companyName = "virksomhed/organisation";
@@ -730,6 +735,7 @@ import type { Image } from 'openai/resources.mjs';
         })
     );
     }
+
     function handleSubmit(text: string) {
         loading.value = true;
         addUserMessage(text);
@@ -738,12 +744,25 @@ import type { Image } from 'openai/resources.mjs';
     }
 
     const messageScroller = useTemplateRef("message-scroller");
+    const chatContainer = useTemplateRef("chat-container")
 
+    // Only scroll to bottom if user has not scrolled up
     function scrollToButtom() {
-    messageScroller.value?.scrollTo({
-        top: messageScroller.value.scrollHeight,
-        behavior: "smooth",
-    });
+        if (!chatContainer) return
+
+        const threshold = 200 // px from bottom — adjust as needed
+        
+        if (messageScroller.value){
+            const isNearBottom =
+            messageScroller.value.scrollHeight - messageScroller.value.scrollTop - messageScroller.value.clientHeight < threshold    
+
+            if (isNearBottom) {
+                messageScroller.value?.scrollTo({
+                    top: messageScroller.value.scrollHeight,
+                    behavior: "smooth",
+                });
+            }
+        }
     }
 
     function cleanIncomingString(input: string): string {
