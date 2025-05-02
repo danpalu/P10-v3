@@ -84,7 +84,9 @@ export const useDataStore = defineStore("data", () => {
   const currentTitle = ref<string>(questionnaire.value.sections[0].title);
   const currentId = ref<number>(questionnaire.value.sections[0].id);
 
-  const summary = ref<SummarySchemaType>({ sections: [] });
+  const summary = ref<SummarySchemaType>({ sections: [], type: "raw" });
+
+  const isFinished = ref(false);
 
   const pictures = ref([
     {
@@ -200,5 +202,6 @@ export const useDataStore = defineStore("data", () => {
     summary,
     pictures,
     brandCards,
+    isFinished,
   };
 });

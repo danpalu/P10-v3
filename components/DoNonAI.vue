@@ -27,53 +27,43 @@
         </h3>
         <label
           >Vi drømmer om en verden, hvor...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi drømmer om en verden, hvor.." />
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi drømmer om en verden, hvor.." />
         </label>
         <label
           >Vi tror på, at det vigtigste er...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi tror på, at det vigtigste er..." />
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi tror på, at det vigtigste er...?" />
         </label>
         <label
           >Vi arbejder for at...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi arbejder for at..." />
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi arbejder for at...?" />
         </label>
         <label
           >Vi vil være dem, der...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi vil være dem, der..." />
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi vil være dem, der...?" />
         </label>
         <label
           >Vores mål er at gøre det muligt for...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vores mål er at gøre det muligt for..." />
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vores mål er at gøre det muligt for...?" />
         </label>
         <label
           >Vi ønsker at ændre måden, folk tænker om...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi ønsker at ændre måden, folk tænker om.." />
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi ønsker at ændre måden, folk tænker om.." />
         </label>
         <label
           >Vi er drevet af en tro på, at...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi er drevet af en tro på, at..." />
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi er drevet af en tro på, at...?" />
         </label>
         <label
           >Vi står op om morgenen for at...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi står op om morgenen for at.." />
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi står op om morgenen for at.." />
         </label>
         <label
           >Vi håber, at vores arbejde vil føre til...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi håber, at vores arbejde vil føre til..." />
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi håber, at vores arbejde vil føre til...?" />
         </label>
         <label
           >Vi prøver ikke at være de største - men de mest...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I
-          stræber efter? Vi prøver ikke at være de største - men de mest..." />
+            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi prøver ikke at være de største - men de mest...?" />
         </label>
       </div>
       <div class="question">
@@ -324,33 +314,33 @@
       <div class="question">
         <h3>Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem?</h3>
         <label>
-          Vores primære konkurrenter er…
+          Vores primære konkurrenter er...
           <textarea
-            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vores primære konkurrenter er…" />
+            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vores primære konkurrenter er...?" />
         </label>
 
         <label>
-          Den største forskel mellem vores virksomhed og vores konkurrenter er…
+          Den største forskel mellem vores virksomhed og vores konkurrenter er...
           <textarea
-            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Den største forskel mellem vores virksomhed og vores konkurrenter er…" />
+            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Den største forskel mellem vores virksomhed og vores konkurrenter er...?" />
         </label>
 
         <label>
-          Vi skiller os ud fra konkurrenterne ved at…
+          Vi skiller os ud fra konkurrenterne ved at...
           <textarea
-            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi skiller os ud fra konkurrenterne ved at…" />
+            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi skiller os ud fra konkurrenterne ved at..." />
         </label>
 
         <label>
-          Kunder vælger os frem for vores konkurrenter, fordi…
+          Kunder vælger os frem for vores konkurrenter, fordi...
           <textarea
-            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Kunder vælger os frem for vores konkurrenter, fordi…" />
+            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Kunder vælger os frem for vores konkurrenter, fordi..." />
         </label>
 
         <label>
-          Vi har en fordel i forhold til vores konkurrenter, fordi…
+          Vi har en fordel i forhold til vores konkurrenter, fordi...
           <textarea
-            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi har en fordel i forhold til vores konkurrenter, fordi…" />
+            name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi har en fordel i forhold til vores konkurrenter, fordi..." />
         </label>
       </div>
       <div class="question target-group">
@@ -662,8 +652,7 @@
           virksomhed/organisation?
         </label>
         <textarea
-          name="Er der særlige symboler, ikoner, farver eller andet visuelt, der har en særlig betydning for din
-          virksomhed/organisation?"
+          name="Er der særlige symboler, ikoner, farver eller andet visuelt, der har en særlig betydning for din virksomhed/organisation?"
           id="symbols" />
       </div>
       <div class="question">
@@ -873,28 +862,14 @@
           designeren eller noter til dig selv.
         </label>
         <textarea
-          name="Er der andet, du gerne vil tilføje? - Det kan fx være noget, du synes designeren bør vide, spørgsmål til
-          designeren eller noter til dig selv."
+          name="Er der andet, du gerne vil tilføje? - Det kan fx være noget, du synes designeren bør vide, spørgsmål til designeren eller noter til dig selv."
           id="other" />
-        <h3>Opsummering</h3>
-        <Summary></Summary>
       </div>
     </section>
     <section id="section-5">
+      <h2>Næsten færdig...</h2>
       <div class="question finish-section">
-        <h2>Færdig</h2>
-        <p>
-          Tak for at deltage i vores test 🥰🥰 Svar venligst på vores spørgeskema. <br />
-          <br />Tryk "Næste" på første side - versionen er valgt på forhånd 😎
-        </p>
-        <iframe
-          :src="`https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?embedded=true&entry.813770840=${data.questionnaire.type}`"
-          frameborder="0"
-          marginheight="0"
-          marginwidth="0"
-          class="google-form"
-          >Indlæser…</iframe
-        >
+        <Summary></Summary>
       </div>
     </section>
   </div>
@@ -1031,9 +1006,6 @@ h2 {
 }
 
 .question.finish-section {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .google-form {

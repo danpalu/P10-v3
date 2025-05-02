@@ -60,6 +60,10 @@ const props = defineProps<{
   max-width: 80ch;
   line-height: 1.8;
 
+  & h1 {
+    margin-bottom: 2rem;
+  }
+
   li {
     list-style: disc;
     margin-left: 2rem;

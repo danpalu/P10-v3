@@ -79,5 +79,8 @@ export type Questionnaire = {
 
 export type QuestionnaireType = "chat" | "survey" | "do-non-ai" | "do-ai";
 
-export const SummarySchema = z.object({ sections: z.array(z.object({ title: z.string(), content: z.string() })) });
+export const SummarySchema = z.object({
+  type: z.enum(["raw", "basic", "interpretation", "questionSuggestions"]),
+  sections: z.array(z.object({ title: z.string(), content: z.string() })),
+});
 export type SummarySchemaType = z.infer<typeof SummarySchema>;

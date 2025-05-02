@@ -101,6 +101,10 @@ html {
   overflow: hidden;
 }
 
+.invisible {
+  visibility: hidden;
+}
+
 :root {
   --color-light-grey: rgb(231, 230, 229);
   --color-grey: #888;
@@ -118,7 +122,8 @@ html {
   color: white;
 }
 
-button {
+button,
+.button {
   border: none;
   padding: 15px 25px;
   border-radius: 999px;
