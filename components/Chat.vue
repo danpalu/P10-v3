@@ -238,21 +238,28 @@
             <button class="next-question button" @click.prevent="nextQuestion()">
                         <span> Næste spørgsmål <i class="arrow right"></i></span>
                     </button>
-            <div class="form-container">
-                <form @submit.prevent="handleSubmit(input)" class="input">
-                    <input 
-                        v-model="input" 
-                        ref="inputElement" 
-                        :placeholder="currentPlaceholder" :disabled="chatFieldDisabled" 
-                        />
-                    <button type="submit" :disabled="disableSubmit" class="send" :class="`${loading ? 'loading' : ''}`">
-                        <span> Send </span>
-                        <div class="spinner" v-if="loading">
-                            <LoadingSpinner></LoadingSpinner>
-                        </div>
-                    </button>
-                </form>
-            </div>
+                    <div class="form-container">
+                    <form @submit.prevent="handleSubmit(input)" class="input">
+                        <textarea 
+                            oninput="
+                                this.style.height = 'auto';
+                                this.style.height = this.scrollHeight + 'px';
+                        "
+                            v-model="input"
+                            ref="inputElement"
+                            :placeholder="currentPlaceholder"
+                            :disabled="chatFieldDisabled"
+                            rows="1"
+                            class="textarea"
+                        ></textarea>
+                        <button type="submit" :disabled="disableSubmit" class="send" :class="`${loading ? 'loading' : ''}`">
+                            <span>Send</span>
+                            <div class="spinner" v-if="loading">
+                                <LoadingSpinner></LoadingSpinner>
+                            </div>
+                        </button>
+                    </form>
+                </div>
         </ClientOnly>
     </main>
 </template>
@@ -730,6 +737,21 @@ import type { Image } from 'openai/resources.mjs';
     </script>
 
     <style>
+    textarea {
+        font-size: 1rem;
+        padding: 1rem 1rem;
+        overflow: hidden;
+        width: 100%;
+        border: none;
+        background: #fff;
+        resize: none;
+        height: 41px;
+
+        &:focus-visible{
+            outline: none;
+        }
+    }
+
     .arrow {
         border: solid var(--color-grey);
         border-width: 0 1px 1px 0;
@@ -1093,13 +1115,18 @@ import type { Image } from 'openai/resources.mjs';
     }
     }
 
+    .send {
+        cursor: not-allowed;
+        align-self: end;
+    }
+
     .input {
     width: 100%;
     height: fit-content;
     max-width: 100%;
     display: flex;
     flex-direction: row;
-    border-radius: 999px;
+    border-radius: 30px;
     border: 1px solid #ccc;
     overflow: hidden;
     background-color: white;
