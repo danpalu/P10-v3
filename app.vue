@@ -9,7 +9,6 @@ const showIntroduction = ref(true);
 onMounted(() => {
   const params = new URLSearchParams(document.location.search);
   const type = params.get("type") || "none";
-  console.log(type);
 
   if (type == "survey" || type == "do-ai" || type == "chat" || type == "do-non-ai") {
     questionnaireType.value = type;

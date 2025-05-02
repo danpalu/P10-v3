@@ -235,7 +235,7 @@
         </div>
 
         <ClientOnly>
-            <button :disabled="loading.valueOf()" class="next-question button" @click.prevent="nextQuestion()">
+            <button :disabled="checkDisabled()" class="next-question button" @click.prevent="nextQuestion()">
                         <span> Spring over <i class="arrow right"></i></span>
                     </button>
                     <div class="form-container">
@@ -267,6 +267,13 @@
     }>();
 
     const data = useDataStore();
+
+    function checkDisabled(){
+        if (lastQuestionType.value === "link-question"){
+            return true;
+        }   
+        else return loading.value;
+    }
 
     function nextQuestion() {
         loading.value = true;
@@ -372,7 +379,6 @@
             
             if (newMessage.content.type === "moodboard-question") {
                 const search = newMessage.content.moodboardSearchString;
-                console.log("Moodboard search string: " + search);
                 if (search) {
                     handleMoodboard(search);
                 }
@@ -497,6 +503,13 @@
         setTextField();
     }
 
+    function openInNewTab(url: string) {
+        var win = window.open(url, '_blank');
+        if (win) {
+            win.focus();
+        }
+    }
+    
     let companyName = "virksomhed/organisation";
 
     async function handleMoodboard(search: string) {
@@ -592,7 +605,7 @@
         input.value = "";
     }
 
-    let disableSubmit = computed(() => !ready.value || input.value.trim() === "" || showIncomingMessage.value);
+    let disableSubmit = computed(() => lastQuestionType.value !== "link-question" || (!ready.value || input.value.trim() === "" || showIncomingMessage.value));
 
     import { computed } from 'vue';
 
@@ -617,6 +630,9 @@
                 currentPlaceholder.value = "Vælg en af de to muligheder";
             } else if (lastQuestionType.value === 'moodboard-question') {
                 currentPlaceholder.value = "Vælg et af billederne";
+            } else if (lastQuestionType.value === 'link-question') {
+                currentPlaceholder.value = "Svar på spørgeskemaet";
+                chatFieldDisabled.value = true;
             } else {
                 currentPlaceholder.value = ""; // no placeholder
             }
@@ -670,7 +686,7 @@
     function sendColorAnswer(color: string) {
         setAsSelected();
         if (colorQuestionsAsked.value == 0) {
-            addUserMessage("I think my idea is well represented by " + color + ". Now ask me a new color question, asking me about what variant of this color I prefer.", true);
+            addUserMessage("I think my idea is well represented by " + color + ". Now provide a new color question, asking me in the content text about what variant of " + color + " I prefer.", true);
             colorQuestionsAsked.value++;
         } else {
             addUserMessage("I think my idea is well represented by " + color, true);
@@ -799,6 +815,10 @@
     .color-options {
         display: flex;
         justify-content: space-between;
+    }
+
+    .color-question {
+        width: 60rem;
     }
 
     .checkmark-circle {
@@ -1081,13 +1101,16 @@
 
     .message {
         margin-top: 30px;
-        width: fit-content;
         max-width: 60ch;
         padding: 10px 20px;
         white-space: pre-line;
         min-height: 45px;
         word-wrap: break-word;
         hyphens: auto;
+
+        &:not(.color-question){
+            width: fit-content;
+        }
 
         &.user.hidden {
             display: none;

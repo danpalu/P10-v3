@@ -8,7 +8,6 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const timeSpent = body.timeSpent;
   const dataToSave = body.dataToSave;
-  console.log(timeSpent, dataToSave);
   //await supabase.from("logs").insert({});
   return "Save successful";
 });

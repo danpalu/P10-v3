@@ -13,6 +13,7 @@ export default defineWebSocketHandler({
     const previousAnswers: string = messageParsed.previousAnswers;
     let companyName: string = messageParsed.companyName;
     if (companyName === undefined) companyName = "virksomhed/organisation"; // Default value if companyName is not provided
+    if (question.type !== "text" && question.type !== "link-question") question.type = "text";
     const messageHistory: ChatMessage[] = [];
     messages.forEach((msg) => {
       messageHistory.push({
@@ -41,7 +42,7 @@ export default defineWebSocketHandler({
           
           If applicable, use the previous answers to help the user reflect over the current question.
 
-          You should ask the question as a "text" question.
+          You should ask the question as a "${question.type}" question.
 
           Yes-no question can only be answered with yes or no.
 
