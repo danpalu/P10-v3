@@ -99,7 +99,7 @@
                                         Lad mig beskrive det
                                     </button>
                                     <button  :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
-                                        Anvend valgte
+                                        Anvend valgte   
                                     </button>
                                 </div>
                             </div>
@@ -162,7 +162,7 @@
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
                                 Lad mig beskrive det
                             </button>
-                            <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
+                            <button :disabled="selectedImages.length <= numberOfImagesSelected.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
                                 Anvend valgte
                             </button>
                         </div>
@@ -207,7 +207,7 @@
                             <button :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
                                 Lad mig beskrive det
                             </button>
-                            <button  :disabled="data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
+                            <button @click.prevent="sendMultipleChoiceAnswer" :disabled="selectedOptions.length<=numberOfOptionsSelected.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" class="questionnaire-button">
                                 Anvend valgte
                             </button>
                         </div>
@@ -465,39 +465,30 @@
     const selectedOptions = ref<string[]>([]); // Array to store selected options
     const selectedImages = ref<string[]>([]); // Array to store selected images
 
+    const numberOfOptionsSelected = ref<number>(0);
+    const numberOfImagesSelected = ref<number>(0);
+
     // Method to send the selected multiple-choice answers
     // Send the selected multiple-choice answers when the button is clicked
     function sendMultipleChoiceAnswer() {
         if (selectedOptions.value.length > 0) {
             addUserMessage("My idea is best respresented by " + selectedOptions.value.join(", "), true);
             sendMessages();
+            numberOfOptionsSelected.value += selectedOptions.value.length;
         }
     }
 
     function sendNoneOfAbove() {
         addUserMessage('Ingen af ovennævnte, lad mig beskrive det selv. Du SKAL sende mig et tekst-spørgsmål', true);
         sendMessages();
-        selectedOptions.value = []; // Clear the selected options after submitting
-        selectedImages.value = []; // Clear the selected images after submitting
+        selectedOptions.value = selectedOptions.value.slice(0, numberOfOptionsSelected.value);
+        selectedImages.value = selectedImages.value.slice(0, numberOfImagesSelected.value);
     }
 
     const selectedYesNo = ref<string>("");
     
     function sendYesNoAnswer(answer: string, name = "none") {
         selectedYesNo.value = answer;
-
-        // Find the latest assistant yes-no-question message
-        const messageElements = document.querySelectorAll('.message.assistant.yes-no-question');
-
-        if (messageElements.length > 0) {
-            const lastYesNoMessage = messageElements[messageElements.length - 1];
-            lastYesNoMessage.classList.remove('green', 'red');
-            if (answer === 'Yes') {
-                lastYesNoMessage.classList.add('green');
-            } else {
-                lastYesNoMessage.classList.add('red');
-            }
-        }
 
         if (name != "none") {
             companyName = name;
@@ -570,8 +561,9 @@
 
     // Return default images if less than nine images are found
     function getImages(imageList: any){
-        if (imageList != null && imageList.length >= 9){
-            return imageList;
+        if (imageList != null){
+            var newImageList = Array.from(new Set(imageList));
+            if (newImageList.length >= 9) return newImageList;
         }
         else {
             return data.pictures;
@@ -596,20 +588,23 @@
         if (selectedImages.value.length > 0) {
             addUserMessage("My idea is best represented by images containing: " + selectedImages.value.join(", ") + "Let's proceed", true);
             sendMessages();
+            numberOfImagesSelected.value += selectedImages.value.length;
         }
     }
 
     let brandCardQuestionsAsked = ref<number>(1);
     const brandCardQuestionsToAsk = 3;
+    const brandCardOptionsUsed = ref<string[]>([]);
 
     function sendBrandCardAnswer(text: string) {
         setAsSelected();
+        brandCardOptionsUsed.value.push(text);
         wordsInAnswer.value = 0;
         if (brandCardQuestionsAsked.value < brandCardQuestionsToAsk) {
             addUserMessage(
                 "My idea is best represented by " +
                 text +
-                ". Now provide two wildly different branding card options.",
+                ". Now give me a new branding card question. The options can be anything except: " + brandCardOptionsUsed.value.join(),
                 true
             );
             brandCardQuestionsAsked.value++;
@@ -775,7 +770,7 @@
     function scrollToBottom(forceScroll: boolean) {
         if (!chatContainer) return
 
-        const threshold = 100 // px from bottom — adjust as needed
+        const threshold = 200 // px from bottom — adjust as needed
         
         if (messageScroller.value){
             const isNearBottom =
@@ -831,6 +826,7 @@
 
     :disabled, .disabled{
         opacity: 0.7;
+        cursor:default;
     }
 
     .color-options {
@@ -881,6 +877,10 @@
 
     .moodboard-image:hover {
         opacity: 0.9; /* Slightly transparent on hover */
+    }
+
+    button:disabled {
+        cursor: default;
     }
 
     button:hover:not(:disabled):not(.branding-option) {
@@ -977,10 +977,13 @@
     flex-grow: 1;
     }
 
-    .questionnaire-button:hover {
-    background-color: #000; /* Slightly lighter black on hover */
+    .questionnaire-button:hover:not(:disabled) {
+        background-color: #000; /* Slightly lighter black on hover */
     }
 
+    .questionnaire-button:hover:disabled {
+        cursor:default;
+    }
 
     .branding-card-container {
     display: flex;
@@ -1100,7 +1103,7 @@
     color: var(--color-black);
     }
 
-    .next-question {
+    button.next-question {
         padding: 5px 20px;
         width: fit-content;
         height: fit-content;
@@ -1115,6 +1118,10 @@
         font-weight: normal;
         transition: none;
         margin-top: 0.5rem;
+    }
+
+    .button.next-question:disabled {
+        cursor: default;
     }
 
     .messages {
@@ -1218,6 +1225,10 @@
         align-self: end;
     }
 
+    .send:hover:disabled {
+        cursor: default;
+    }
+
     .input {
     width: 100%;
     height: fit-content;
@@ -1249,18 +1260,18 @@
     }
 
     button.send {
-    position: relative;
+        position: relative;
 
-    & .spinner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
+        & .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-    &.loading span {
-        visibility: hidden;
-    }
+        &.loading span {
+            visibility: hidden;
+        }
     }
 
     .button-container {

@@ -18,7 +18,7 @@
         <li>Et fiktivt projekt, du nemt kan forestille dig at være en del af</li>
       </ul>
       <p>
-        Forestil dig, at din valgte organisation har besluttet at investere mere i markedsføring og er interessereti at
+        Forestil dig, at din valgte organisation har besluttet at investere mere i markedsføring og er interesseret i at
         få professionel hjælp til visuel identitet og branding. Du skal derfor mødes med en designer i morgen. Som
         forberedelse til mødet, har designeren bedt dig om at gennemgå et program med en række spørgsmål og overvejelser
         om din organisation. <br /><br />

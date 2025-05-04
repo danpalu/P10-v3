@@ -45,7 +45,7 @@ export default defineWebSocketHandler({
 
           The multiple-choice-question is a question where the user can select one or more options from a list of options. For this, you should provide a list of options that are relevant to the user's previous answers. Each option should be a sentence of at least 7 words. Never write the questions in the content text.
 
-          The branding-card-question is a question where the user can select an emotion of feel of their brand. For this, you should provide two options that are polar opposites and are each only one word. The options should be relevant to the user's company and previous answers. They should not end in a period. You should ask 3-5 of these questions in a row. Do not write the options in the content text.
+          The branding-card-question is a question where the user can select an emotion of feel of their brand. For this, you should provide two options that are polar opposites and are each only one word. Both options should be inherently good qualities. The options should be relevant to the user's company and previous answers. They should not end in a period. Do not write the options in the content text.
 
           The moodboard-question is a question where the user can select a number of images from a list. For this, you should provide an appropriate search string to find images that reflect the user's company and previous answers. Do not put the search string in the content text. You should ask moodboard questions when talking about company values or the feel of a company.
 
