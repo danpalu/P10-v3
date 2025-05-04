@@ -176,10 +176,22 @@ export const useDataStore = defineStore("data", () => {
   ]);
 
   const brandCards = [
-    newBrandCard("Kreativ og kunstnerisk", "Praktisk og problemløsende"),
-    newBrandCard("Ekstrovert, udadvendt og social", "Introvert, rolig og eftertænksom"),
-    newBrandCard("Ambitiøs og målrettet", "Afslappet og laid back"),
+    newBrandCard("Bæredygtighed og miljøvenlighed", "Komfort og luksus"),
+    newBrandCard("Innovation og teknologi", "Tradition og kvalitet"),
+    newBrandCard("Effektivitet og produktivitet", "Socialt ansvar og fællesskab"),
+    newBrandCard("Apple, Nike, Tesla", "Patagonia, IKEA, Whole Foods"),
+    newBrandCard("Luksusbrands som Chanel, Louis Vuitton", "H&M, Zara, ASOS"),
+    newBrandCard("Aktiv, sportsorienteret", "Fokuseret på hjemmet og familie"),
+    newBrandCard("Karriereorienteret", "Socialt bevidst og engageret"),
+    newBrandCard("Rejse- og eventyrlysten", "Teknologiinteresseret og gadgetorienteret"),
+    newBrandCard("Tidspres og stress", "Mangel på inspiration eller ideer"),
+    newBrandCard("Økonomisk usikkerhed", "Forbrugernes overvældelse af valg"),
+    newBrandCard("Manglende tid til familieliv og hobbyer", "Manglende viden om et bestemt område"),
+    newBrandCard("Pris og værdi", "Eksklusivitet og status"),
+    newBrandCard("Kvalitet og holdbarhed", "Kundeanmeldelser og anbefalinger")
   ];
+
+
 
   const colors = [
     "#FF6B6B", // Soft red

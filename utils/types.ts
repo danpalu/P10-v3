@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const MessageContent = z.object({
   content: z.string(),
-  id: z.number(),
   type: z.enum([
     "text",
     "summary",
@@ -19,12 +18,13 @@ export const MessageContent = z.object({
   colorOptions: z.array(z.string()),
   moodboardSearchString: z.string().nullable(),
   moodboardImages: z.array(z.object({alt: z.string(), url: z.string()})).nullable(),
-  brandingCardOptions: z.object({ option: z.string(), oppositeOption: z.string() }).nullable(),
+  brandingCardOptions: z.object({ option: z.string().nullable(), oppositeOption: z.string().nullable() }).nullable(),
   multipleChoiceOptions: z.array(z.string()).nullable(),
   link: z.string().nullable(),
   hiddenInChat: z.boolean().nullable(),
   isTitle: z.boolean().nullable(),
   companyName: z.string().nullable(),
+  id: z.number(),
 });
 
 export type brandCard = {

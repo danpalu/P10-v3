@@ -34,21 +34,21 @@
                                     class="color"
                                     :class="{ selected: selectedColors.includes(color) }"
                                     :style="{ background: color }"
-                                    :disabled="message.content.id !== messageIdTracker.valueOf()"
+                                    :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
                                     ></button>
                                 </div>
                                 <div style="display: flex; gap: 1rem;">
                                     <button
                                     class="questionnaire-button"
                                     @click.prevent="sendNoneOfAbove"
-                                    :disabled="message.content.id !== messageIdTracker.valueOf()"
+                                    :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
                                     >
                                     Ingen af disse
                                     </button>
                                     <button
                                     class="questionnaire-button"
                                     @click.prevent="sendColorAnswer"
-                                    :disabled="selectedColors.length === 0 || message.content.id !== messageIdTracker.valueOf()"
+                                    :disabled="selectedColors.length === 0 || message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
                                     >
                                     Anvend valgte
                                     </button>
@@ -56,7 +56,7 @@
                                 </div>
                             <div v-if="message.content.type === 'moodboard-question'" style="padding-top: 0.5rem;">
                                 <div class="moodboard-images">
-                                    <button :disabled="message.content.id !== messageIdTracker.valueOf()"
+                                    <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
                                         v-for="(image, index) in getImages(message.content.moodboardImages)?.slice(0, 9)"
                                         :key="index" class="moodboard-image">
                                         <img :src="image.url" class="moodboard-image" />
@@ -67,10 +67,10 @@
                                     </button>
                                 </div>
                                 <div style="display: flex; gap: 1rem;">
-                                    <button :disabled="message.content.id !== messageIdTracker.valueOf()" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
+                                    <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
                                         Lad mig beskrive det
                                     </button>
-                                    <button :disabled="message.content.id !== messageIdTracker.valueOf()" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
+                                    <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
                                         Anvend valgte
                                     </button>
                                 </div>
@@ -78,15 +78,15 @@
                             <div
                                 v-if="message.content.type === 'branding-card-question'"
                                 class="branding-card-container">
-                                <button :disabled="message.content.id !== messageIdTracker.valueOf()"
-                                    @click.prevent="sendBrandCardAnswer(getBrandCardOption(message.content.brandingCardOptions?.option))"
+                                <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
+                                    @click.prevent="message.content.brandingCardOptions && sendBrandCardAnswer(message.content.brandingCardOptions.option)"
                                     class="branding-option dark">
-                                    {{ getBrandCardOption(message.content.brandingCardOptions?.option) }}
+                                    {{ message.content.brandingCardOptions?.option }}
                                 </button>
-                                <button :disabled="message.content.id !== messageIdTracker.valueOf()"
-                                    @click.prevent="sendBrandCardAnswer(getOppositeBrandCardOption(message.content.brandingCardOptions?.oppositeOption))"
+                                <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
+                                    @click.prevent="message.content.brandingCardOptions && sendBrandCardAnswer(message.content.brandingCardOptions.oppositeOption)"
                                     class="branding-option light">
-                                    {{ getOppositeBrandCardOption(message.content.brandingCardOptions?.oppositeOption) }}
+                                    {{ message.content.brandingCardOptions?.oppositeOption }}
                                 </button>
                             </div>
                             <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
@@ -100,9 +100,9 @@
                                             type="checkbox"
                                             v-model="selectedOptions"
                                             :value="option"
-                                            class="checkbox-option" :disabled="message.content.id !== messageIdTracker.valueOf()" />
+                                            class="checkbox-option" :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" />
                                         <label class="clickable-option questionnaire-text"
-                                            :class="{ selected: selectedOptions.includes(option), disabled: message.content.id !== messageIdTracker.valueOf()}">
+                                            :class="{ selected: selectedOptions.includes(option), disabled: message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content}">
                                             {{ option }}
                                         </label>
                                     </li>
@@ -110,10 +110,10 @@
 
                                 <!-- Button container to align buttons side by side -->
                                 <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
-                                    <button :disabled="message.content.id !== messageIdTracker.valueOf()" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
+                                    <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
                                         Lad mig beskrive det
                                     </button>
-                                    <button  :disabled="message.content.id !== messageIdTracker.valueOf()" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
+                                    <button  :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMultipleChoiceAnswer" class="questionnaire-button">
                                         Anvend valgte   
                                     </button>
                                 </div>
@@ -153,21 +153,21 @@
                         class="color"
                         :class="{ selected: selectedColors.includes(color) }"
                         :style="{ background: color }"
-                        :disabled="message.content.id !== messageIdTracker.valueOf()"
+                        :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
                         ></button>
                     </div>
                     <div style="display: flex; gap: 1rem;">
                         <button
                         class="questionnaire-button"
                         @click.prevent="sendNoneOfAbove"
-                        :disabled="message.content.id !== messageIdTracker.valueOf()"
+                        :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
                         >
                         Ingen af disse
                         </button>
                         <button
                         class="questionnaire-button"
                         @click.prevent="sendColorAnswer"
-                        :disabled="selectedColors.length === 0 || message.content.id !== messageIdTracker.valueOf()"
+                        :disabled="selectedColors.length === 0 || message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
                         >
                         Anvend valgte
                         </button>
@@ -175,7 +175,7 @@
                     </div>
                     <div v-if="message.content.type === 'moodboard-question'" style="padding-top: 0.5rem;">
                         <div class="moodboard-images">
-                            <button :disabled="message.content.id !== messageIdTracker.valueOf()"
+                            <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
                                 v-for="(image, index) in getImages(message.content.moodboardImages)?.slice(0, 9)"
                                 :key="index"
                                 @click.prevent="toggleImageSelection(image.alt)" class="moodboard-image"
@@ -189,28 +189,28 @@
                             </button>
                         </div>
                         <div style="display: flex; gap: 1rem;">
-                            <button :disabled="message.content.id !== messageIdTracker.valueOf()" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
+                            <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
                                 Lad mig beskrive det
                             </button>
-                            <button :disabled="selectedImages.length <= numberOfImagesSelected.valueOf() || message.content.id !== messageIdTracker.valueOf()" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
+                            <button :disabled="selectedImages.length <= numberOfImagesSelected.valueOf() || message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
                                 Anvend valgte
                             </button>
                         </div>
                     </div>
-                    <div
-                        v-if="message.content.type === 'branding-card-question'"
-                        class="branding-card-container">
-                        <button :disabled="message.content.id !== messageIdTracker.valueOf()"
-                            @click.prevent="sendBrandCardAnswer(getBrandCardOption(message.content.brandingCardOptions?.option))"
-                            class="branding-option dark">
-                            {{ getBrandCardOption(message.content.brandingCardOptions?.option) }}
-                        </button>
-                        <button :disabled="message.content.id !== messageIdTracker.valueOf()"
-                            @click.prevent="sendBrandCardAnswer(getOppositeBrandCardOption(message.content.brandingCardOptions?.oppositeOption))"
-                            class="branding-option light">
-                            {{ getOppositeBrandCardOption(message.content.brandingCardOptions?.oppositeOption) }}
-                        </button>
-                    </div>
+                        <div
+                            v-if="message.content.type === 'branding-card-question'"
+                            class="branding-card-container">
+                            <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
+                                @click.prevent="message.content.brandingCardOptions && sendBrandCardAnswer(message.content.brandingCardOptions.option)"
+                                class="branding-option dark">
+                                {{ message.content.brandingCardOptions?.option }}
+                            </button>
+                            <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
+                                @click.prevent="message.content.brandingCardOptions && sendBrandCardAnswer(message.content.brandingCardOptions.oppositeOption)"
+                                class="branding-option light">
+                                {{ message.content.brandingCardOptions?.oppositeOption }}
+                            </button>
+                        </div>
                     <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
                         <ul>
                             <li
@@ -223,21 +223,20 @@
                                     :id="'option-' + index"
                                     v-model="selectedOptions"
                                     :value="option"
-                                    class="checkbox-option" :disabled="message.content.id !== messageIdTracker.valueOf()"  />
+                                    class="checkbox-option" :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"  />
                                     <label :for="'option-' + index" 
                                     class="clickable-option questionnaire-text"
-                                    :class="{ selected: selectedOptions.includes(option), disabled: message.content.id !== messageIdTracker.valueOf()}">
+                                    :class="{ selected: selectedOptions.includes(option), disabled: message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content}">
                                     {{ option }}
                                 </label>
                             </li>
                         </ul>
-
                         <!-- Button container to align buttons side by side -->
                         <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
-                            <button :disabled="message.content.id !== messageIdTracker.valueOf()" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
+                            <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">f
                                 Lad mig beskrive det
                             </button>
-                            <button @click.prevent="sendMultipleChoiceAnswer" :disabled="selectedOptions.length<=numberOfOptionsSelected.valueOf() || message.content.id !== messageIdTracker.valueOf()" class="questionnaire-button">
+                            <button @click.prevent="sendMultipleChoiceAnswer" :disabled="selectedOptions.length<=numberOfOptionsSelected.valueOf() || message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" class="questionnaire-button">
                                 Anvend valgte
                             </button>
                         </div>
@@ -349,6 +348,14 @@
     const wordLimitDefault = data.questionnaire.type === "chat" ? 40 : 40; // Word limit is currently the same regardless of type
     let wordLimit = ref<number>(wordLimitDefault);
 
+    // Automatically focus the input when loading is false
+    watch(loading, async (newVal) => {
+        if (!newVal) {
+            await nextTick();
+            inputElement.value?.focus();
+        }
+    });
+
     onMounted(() => {
     inputElement.value?.focus();
     wsURL = new URL(window.location.href);
@@ -393,7 +400,7 @@
             loading.value = false;
         try {
             const parsedContent = JSON.parse(incomingString.value.trim());
-            
+
             const newMessage: ClientMessage = {
                 role: "assistant",
                 content: parsedContent,
@@ -413,7 +420,22 @@
                 chatFieldDisabled.value = true;
             }
 
-            if (newMessage.content.type === "color-question"){
+            if (newMessage.content.type === "branding-card-question"){
+                if (newMessage.content.brandingCardOptions?.option && 
+                    newMessage.content.brandingCardOptions?.oppositeOption &&
+                    !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.option) && 
+                    !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.oppositeOption)){
+                    // Do nothing
+                }
+                else {
+                    newMessage.content.brandingCardOptions = data.brandCards[Math.ceil(brandCardOptionsUsed.value.length / 2)];
+                }
+                if (newMessage.content.brandingCardOptions.option && newMessage.content.brandingCardOptions.oppositeOption) {
+                    brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.option);
+                    brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.oppositeOption);
+                }
+            }
+            else if (newMessage.content.type === "color-question"){
                 var colors = getColors(newMessage.content.colorOptions);
                 newMessage.content.colorOptions = colors;
                 colors.forEach(color => {
@@ -484,28 +506,6 @@
         incomingString.value = "";
     };
 
-    function getBrandCardOption(brandCardOption: any){
-        if (brandCardOption != null){
-            brandCardOptionsUsed.value.push(brandCardOption);
-            return brandCardOption;
-        }
-        else {
-            brandCardOptionsUsed.value.push(data.brandCards[0].option);
-            return data.brandCards[0].option;
-        }      
-    }
-
-    function getOppositeBrandCardOption(brandCardOppositeOption: any){
-        if (brandCardOppositeOption != null){
-            brandCardOptionsUsed.value.push(brandCardOppositeOption);
-            return brandCardOppositeOption;
-        }
-        else {
-            brandCardOptionsUsed.value.push(data.brandCards[0].oppositeOption);
-            return data.brandCards[0].oppositeOption;
-        }      
-    }
-
     const selectedOptions = ref<string[]>([]); // Array to store selected options
     const selectedImages = ref<string[]>([]); // Array to store selected images
 
@@ -515,10 +515,13 @@
     // Method to send the selected multiple-choice answers
     // Send the selected multiple-choice answers when the button is clicked
     function sendMultipleChoiceAnswer() {
+        console.log("Total :" + numberOfOptionsSelected.value);
+        console.log("Selected :" + numberOfOptionsSelected.value);
+        var options = selectedOptions.value.slice(numberOfOptionsSelected.value, selectedOptions.value.length);
         if (selectedOptions.value.length > 0) {
-            addUserMessage("My idea is best respresented by " + selectedOptions.value.join(", "), true);
+            addUserMessage("My idea is best respresented by " + options.join(", "), true);
             sendMessages();
-            numberOfOptionsSelected.value += selectedOptions.value.length;
+            numberOfOptionsSelected.value += options.length;
         }
     }
 
@@ -630,10 +633,11 @@
     }
 
     function sendMoodboardSelection() {
+        var images = selectedImages.value.slice(numberOfImagesSelected.value, selectedImages.value.length);
         if (selectedImages.value.length > 0) {
-            addUserMessage("My idea is best represented by images containing: " + selectedImages.value.join(", ") + "Let's proceed", true);
+            addUserMessage("My idea is best represented by images containing: " + images.join(", ") + "Let's proceed", true);
             sendMessages();
-            numberOfImagesSelected.value += selectedImages.value.length;
+            numberOfImagesSelected.value += images.length;
         }
     }
 
@@ -642,7 +646,9 @@
     const brandCardOptionsUsed = ref<string[]>([]);
 
     function sendBrandCardAnswer(text: string) {
+        console.log(text);
         setAsSelected();
+        brandCardOptionsUsed.value.push(text);
         wordsInAnswer.value = 0;
         if (brandCardQuestionsAsked.value < brandCardQuestionsToAsk) {
             addUserMessage(
