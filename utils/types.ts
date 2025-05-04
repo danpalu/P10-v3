@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const MessageContent = z.object({
   content: z.string(),
+  id: z.number(),
   type: z.enum([
     "text",
     "summary",

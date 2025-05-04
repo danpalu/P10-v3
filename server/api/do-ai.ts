@@ -47,9 +47,9 @@ export default defineWebSocketHandler({
 
           The branding-card-question is a question where the user can select an emotion of feel of their brand. For this, you should provide two options that are polar opposites and are each only one word. Both options should be inherently good qualities. The options should be relevant to the user's company and previous answers. They should not end in a period. Do not write the options in the content text.
 
-          The moodboard-question is a question where the user can select a number of images from a list. For this, you should provide an appropriate search string to find images that reflect the user's company and previous answers. Do not put the search string in the content text. You should ask moodboard questions when talking about company values or the feel of a company.
+          The moodboard-question is a question where the user can select a number of images from a list. For this, you should provide an appropriate search string to find images that reflect the user's company and previous answers. Do not put the search string in the content text. Never includes words such as 'design' or 'moodboard' in the search string.
 
-          The color-question is a question where the user can select a color from a list of 8 colors in hex format. For this, you should provide a list of colors based on the user's previous answers. Never this list in the content text.
+          The color-question is a question where the user can select a color from a list of many colors in hex format. For this, you should provide a list of at least 20 colors based on the user's previous answers. Never write this list in the content text.
 
           Yes-no question can only be answered with yes or no.
 

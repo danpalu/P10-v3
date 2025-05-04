@@ -7,11 +7,12 @@ export const useDataStore = defineStore("data", () => {
         title: "Virksomhedsoplysninger",
         questions: [
           newQuestion(1, "Hvad er navnet på din virksomhed/organisation?", "text"),
-          newQuestion(2, "Hvilke produkter eller tjenester udbyder din virksomhed/organisation?", "color-question"),
+          newQuestion(2, "Hvilken farve repræsenterer bedst virksomhedens/organisations værdier?", "color-question"),
+          newQuestion(2, "Hvilke produkter eller tjenester udbyder din virksomhed/organisation?", "text"),
           newQuestion(
             3,
             "Hvad er historien bag din virksomhed/organisation - hvorfor blev det startet, og hvad har formet det undervejs?",
-            "color-question"
+            "text"
           ),
           newQuestion(
             4,
