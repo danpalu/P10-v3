@@ -54,27 +54,30 @@
                                     </button>
                                 </div>
                                 </div>
-                            <div v-if="message.content.type === 'moodboard-question'" style="padding-top: 0.5rem;">
-                                <div class="moodboard-images">
-                                    <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                                        v-for="(image, index) in getImages(message.content.moodboardImages)?.slice(0, 9)"
-                                        :key="index" class="moodboard-image">
-                                        <img :src="image.url" class="moodboard-image" />
-                                        <!-- Checkmark Circle for selected images -->
-                                        <div v-if="selectedImages.includes(image.alt)" class="checkmark-circle">
-                                            <span class="checkmark">✔</span>
-                                        </div>
-                                    </button>
+                                <div v-if="message.content.type === 'moodboard-question'" style="padding-top: 0.5rem;">
+                                    <div class="moodboard-images">
+                                        <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
+                                            v-for="(image, index) in getImages(message.content.moodboardImages)?.slice(0, 16)"
+                                            :key="index"
+                                            @click.prevent="toggleImageSelection(image.alt)" class="moodboard-image"
+                                            :class="{ selected: selectedImages.includes(image.alt) }"
+                                        >
+                                            <img :src="image.url" :alt="image.alt" class="moodboard-image" />
+                                            <!-- Checkmark Circle for selected images -->
+                                            <div v-if="selectedImages.includes(image.alt)" class="checkmark-circle">
+                                                <span class="checkmark">✔</span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <div style="display: flex; gap: 1rem;">
+                                        <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
+                                            Lad mig beskrive det
+                                        </button>
+                                        <button :disabled="selectedImages.length <= numberOfImagesSelected.valueOf() || message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
+                                            Anvend valgte
+                                        </button>
+                                    </div>
                                 </div>
-                                <div style="display: flex; gap: 1rem;">
-                                    <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
-                                        Lad mig beskrive det
-                                    </button>
-                                    <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendMoodboardSelection" class="questionnaire-button">
-                                        Anvend valgte
-                                    </button>
-                                </div>
-                            </div>
                             <div
                                 v-if="message.content.type === 'branding-card-question'"
                                 class="branding-card-container">
@@ -176,7 +179,7 @@
                     <div v-if="message.content.type === 'moodboard-question'" style="padding-top: 0.5rem;">
                         <div class="moodboard-images">
                             <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content"
-                                v-for="(image, index) in getImages(message.content.moodboardImages)?.slice(0, 9)"
+                                v-for="(image, index) in getImages(message.content.moodboardImages)?.slice(0, 16)"
                                 :key="index"
                                 @click.prevent="toggleImageSelection(image.alt)" class="moodboard-image"
                                 :class="{ selected: selectedImages.includes(image.alt) }"
@@ -233,7 +236,7 @@
                         </ul>
                         <!-- Button container to align buttons side by side -->
                         <div class="multiple-choice-buttons" style="display: flex; gap: 1rem;">
-                            <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">f
+                            <button :disabled="message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" @click.prevent="sendNoneOfAbove" class="questionnaire-button">
                                 Lad mig beskrive det
                             </button>
                             <button @click.prevent="sendMultipleChoiceAnswer" :disabled="selectedOptions.length<=numberOfOptionsSelected.valueOf() || message.content.id !== messageIdTracker.valueOf() || data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content" class="questionnaire-button">
@@ -515,8 +518,6 @@
     // Method to send the selected multiple-choice answers
     // Send the selected multiple-choice answers when the button is clicked
     function sendMultipleChoiceAnswer() {
-        console.log("Total :" + numberOfOptionsSelected.value);
-        console.log("Selected :" + numberOfOptionsSelected.value);
         var options = selectedOptions.value.slice(numberOfOptionsSelected.value, selectedOptions.value.length);
         if (selectedOptions.value.length > 0) {
             addUserMessage("My idea is best respresented by " + options.join(", "), true);
@@ -619,7 +620,7 @@
 
     function getColors(colorList: string[]){
         var filteredList = colorList.filter(color => !colorOptionsUsed.value.includes(color));
-        if (filteredList !== null && filteredList.length >= 8){
+        if (filteredList !== null && filteredList.length >= 16){
             return filteredList;
         }
         else {
@@ -646,7 +647,6 @@
     const brandCardOptionsUsed = ref<string[]>([]);
 
     function sendBrandCardAnswer(text: string) {
-        console.log(text);
         setAsSelected();
         brandCardOptionsUsed.value.push(text);
         wordsInAnswer.value = 0;
@@ -1102,7 +1102,7 @@
 
     .moodboard-images {
     display: grid; /* Ensure images are placed in a grid */
-    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    grid-template-columns: repeat(4, 1fr); /* 3 equal columns */
     gap: 10px; /* Space between images */
     width: 100%; /* Ensure the container uses the full width */
     padding-bottom: 1rem;
