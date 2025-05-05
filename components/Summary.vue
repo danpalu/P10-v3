@@ -138,11 +138,11 @@ onMounted(() => {
 async function getSummaries() {
   loading.value = true;
 
-  if (data.questionnaire.type == "do-non-ai") {
-    await saveData(formDataToObjectWithArrays(form));
-  } else {
-    await saveData(data.questionnaire);
-  }
+  // if (data.questionnaire.type == "do-non-ai") {
+  //   await saveData(formDataToObjectWithArrays(form));
+  // } else {
+  //   await saveData(data.questionnaire);
+  // }
   const fetchPromises = summaries.value.map(async (summary) => {
     return await getSummary(summary.type);
   });

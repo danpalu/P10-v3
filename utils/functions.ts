@@ -76,6 +76,7 @@ export function setStartTime() {
 }
 
 export async function saveData(dataToSave: object) {
+  return;
   const startTime = Number(localStorage.getItem("startTime"));
   const endTime = Date.now();
   const timeSpent = endTime - startTime;
