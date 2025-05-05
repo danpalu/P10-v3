@@ -28,18 +28,13 @@ export default defineEventHandler(async (event) => {
 
       break;
     case "basic":
-      typeText = `Do a thorough summary of the following form sent. The form is used to prepare a client for a first talk with a brand / graphical designer. 
+      typeText = `Do a thorough summary of the following form sent. 
     
       The client has answered the form. `;
       break;
     case "questionSuggestions":
-      typeText = `Do a thorough summary of the following form sent. The form is used to prepare a client for a first talk with a brand / graphical designer. 
-    
-      The client has answered the form. 
-
-      In the summary, you can reflect and interpret the answers to make it more meta or abstract. Mention the feel, vibe and values of the company.
-      
-      Also add a list of questions that the client should reflect on before meeting the designer. They can be provocative and thought provoking.`;
+      typeText = `      
+      Give a list of questions that the client should reflect on before meeting the designer. They can be provocative and thought provoking. The title of the question should be the question itself. The content should be a short explanation of why this is important to reflect on.`;
       break;
     default:
       typeText = "raw";
@@ -56,13 +51,13 @@ export default defineEventHandler(async (event) => {
     input: `
     ${typeText}
 
+    The form is used to prepare a client for a first talk with a brand / graphical designer. 
+
     Answer in danish. The form is in danish as well. 
     
     Do not use # or ** 
 
     The summaryType is ${summaryType}
-
-    Output max 10 words.
 
     The form is as follows, with questions and answers in JSON format:
 

@@ -138,14 +138,15 @@ onMounted(() => {
 async function getSummaries() {
   loading.value = true;
 
+  if (data.questionnaire.type == "do-non-ai") {
+    await saveData(formDataToObjectWithArrays(form));
+  } else {
+    await saveData(data.questionnaire);
+  }
   const fetchPromises = summaries.value.map(async (summary) => {
     return await getSummary(summary.type);
   });
-  const timeStart = Date.now();
   const fetchedSummaries = await Promise.all(fetchPromises);
-  const timeEnd = Date.now();
-  const timeElapsed = timeEnd - timeStart;
-  console.log("Time elapsed: ", timeElapsed);
   summaries.value = fetchedSummaries;
 
   loading.value = false;
@@ -203,7 +204,7 @@ button {
     color: var(--color-black);
     &:hover {
       color: black;
-      background: none;
+      background-color: none;
     }
   }
 }

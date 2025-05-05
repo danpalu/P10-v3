@@ -79,6 +79,8 @@ export async function saveData(dataToSave: object) {
   const startTime = Number(localStorage.getItem("startTime"));
   const endTime = Date.now();
   const timeSpent = endTime - startTime;
+  console.log("Time spent in milliseconds:", timeSpent);
+  console.log("Data to save:", dataToSave);
   const response = await $fetch("/api/saveData", {
     method: "POST",
     body: {
