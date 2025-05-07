@@ -8,6 +8,14 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const timeSpent = body.timeSpent;
   const dataToSave = body.dataToSave;
-  await supabase.from("logs").insert([{ data: dataToSave, time_spent: timeSpent }]);
+  const type = body.type;
+  try {
+    await supabase.from("logs").insert([{ data: dataToSave, time_spent: timeSpent, type: type }]);
+  } catch (error) {
+    console.error("Error saving data:", error);
+    return "Save failed";
+  }
+  console.log("Data saved to Supabase");
+
   return "Save successful";
 });

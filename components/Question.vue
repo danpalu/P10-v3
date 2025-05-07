@@ -1,7 +1,10 @@
 <template>
-  <div class="question">
-    <label :for="`question-${question.id}`"> {{ question.id }}. {{ question.title }} </label>
-    <textarea v-if="data.questionnaire.type == 'survey'" :id="`question-${question.id}`" @input="saveAnswer($event)" />
+  <div class="question" :class="`${isLastQuestion ? 'last-question' : ''}`">
+    <template v-if="data.questionnaire.type == 'survey' && !isLastQuestion">
+      <label :for="`question-${question.id}`"> {{ question.id }}. {{ question.title }} </label>
+      <textarea :id="`question-${question.id}`" @input="saveAnswer($event)" />
+    </template>
+    <div></div>
     <div v-if="isLastQuestion">
       <Summary></Summary>
     </div>
@@ -266,7 +269,7 @@ textarea {
   font-size: 1rem;
 }
 
-.question > :first-child {
+.question:not(.last-question) > :first-child {
   font-weight: 500;
   font-size: 1.2rem;
   margin-bottom: 1rem;
