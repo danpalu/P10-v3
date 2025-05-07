@@ -6,9 +6,15 @@ const questionnaireType = ref<QuestionnaireType>("do-non-ai");
 const typeIsSet = ref(false);
 const showIntroduction = ref(true);
 
-onMounted(() => {
+onMounted(async () => {
+  let type: string;
   const params = new URLSearchParams(document.location.search);
-  const type = params.get("type") || "none";
+  if (params.has("type")) {
+    type = params.get("type") || "survey";
+  } else {
+    type = await getQuestionnaireType();
+  }
+  console.log("Questionnaire type:", type);
 
   if (type == "survey" || type == "do-ai" || type == "chat" || type == "do-non-ai") {
     questionnaireType.value = type;

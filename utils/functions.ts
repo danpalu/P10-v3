@@ -88,3 +88,10 @@ export async function saveData(dataToSave: object, type: QuestionnaireType) {
     },
   });
 }
+
+export async function getQuestionnaireType(): Promise<string> {
+  const data: string = await $fetch("api/getQuestionnaireType", {
+    method: "GET",
+  });
+  return data;
+}
