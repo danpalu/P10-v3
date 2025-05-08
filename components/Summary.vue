@@ -1,14 +1,16 @@
 <template>
   <div class="center-content summary-container" ref="summary">
     <p>
-      Du har nu oplyst forskellige informationer om din organisation. Vi har lavet fire forslag til måder, du kan vælge
-      at gemme disse oplysninger på, så du kan medbringe dem til mødet med designeren eller bruge dem som reference for
-      dig selv. <br />
+      Du har nu oplyst forskellige informationer om din organisation. Vi har
+      lavet fire forslag til måder, du kan vælge at gemme disse oplysninger på,
+      så du kan medbringe dem til mødet med designeren eller bruge dem som
+      reference for dig selv. <br />
       <br />
-      Du præsenteres nu for de forskellige forslag og bedes om lidt give feedback på, hvad du synes om de forskellige
-      versioner, efter du har gennemgået dem.
+      Du præsenteres nu for de forskellige forslag og bedes om lidt give
+      feedback på, hvad du synes om de forskellige versioner, efter du har
+      gennemgået dem.
       <br /><br />
-      Knappen, for at gå til spørgeskemaet, vises når du har set alle fire versioner.
+      Linket til spørgeskemaet, vises når du har set alle fire versioner.
     </p>
     <div id="form-button-container" class="center-content">
       <a
@@ -16,7 +18,8 @@
         class="button google-form-button"
         :class="`${!seenAllSummaries ? 'invisible' : ''}`"
         :href="`https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=${data.questionnaire.type}`"
-        target="_blank">
+        target="_blank"
+      >
         Åbn spørgeskema
       </a>
     </div>
@@ -25,45 +28,75 @@
         <button
           class="nav"
           @click.prevent="scrollToSummary(--selectedSummaryIndex)"
-          :class="`${selectedSummaryIndex == 0 ? 'invisible' : ''}`">
+          :class="`${selectedSummaryIndex == 0 ? 'invisible' : ''}`"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 19.5 8.25 12l7.5-7.5"
+            />
           </svg>
         </button>
         <div>
           <h2 class="current-summary-type">
-            {{ getSummaryTypeName(summaries[selectedSummaryIndex].type) }}
+            {{ getSummaryTypeName(summaries, selectedSummaryIndex) }}
           </h2>
           <div class="explanation center-content">
             <p>
-              {{ getSummaryTypeExplanation(summaries[selectedSummaryIndex].type) }}
+              {{ getSummaryTypeExplanation(summaries, selectedSummaryIndex) }}
             </p>
           </div>
         </div>
         <button
           class="nav"
           @click.prevent="scrollToSummary(++selectedSummaryIndex)"
-          :class="`${selectedSummaryIndex == 3 ? 'invisible' : ''}`">
+          :class="`${selectedSummaryIndex == 4 ? 'invisible' : ''}`"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m8.25 4.5 7.5 7.5-7.5 7.5"
+            />
           </svg>
         </button>
       </div>
       <div class="summary-scroller" ref="summary-scroller">
-        <div v-for="(summary, index) in summaries" class="summary" :id="`${summary}-${index}`">
+        <div
+          v-for="(summary, index) in summaries"
+          class="summary"
+          :id="`${summary}-${index}`"
+        >
           <div v-for="section in summary.sections">
             <h3>{{ section.title }}</h3>
             <p>{{ section.content }}</p>
+          </div>
+        </div>
+        <div class="summary">
+          <div>
+            <div id="form-button-container" class="center-content">
+              <a
+                v-if="summariesLoaded"
+                class="button google-form-button"
+                :href="`https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=${data.questionnaire.type}`"
+                target="_blank"
+              >
+                Åbn spørgeskema
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -100,18 +133,21 @@ const loading = ref(false);
 const seenAllSummaries = ref(false);
 const selectedSummaryIndex = ref(-1);
 
-watch(selectedSummaryIndex, (newValue) => {
-  if (newValue == 3) {
-    seenAllSummaries.value = true;
-    scrollElementIntoContainerTop(
-      document.querySelector("#section-5"),
-      document.querySelector("#form-button-container")
-    );
-  }
-});
+// watch(selectedSummaryIndex, (newValue) => {
+//   if (newValue == 3) {
+//     seenAllSummaries.value = true;
+//     scrollElementIntoContainerTop(
+//       document.querySelector("#section-5"),
+//       document.querySelector("#form-button-container")
+//     );
+//   }
+// });
 
-function getSummaryTypeName(summaryType: string) {
-  switch (summaryType) {
+function getSummaryTypeName(summaries: SummarySchemaType[], index: number) {
+  if (index == summaries.length) {
+    return "Spørgeskema";
+  }
+  switch (summaries[index].type) {
     case "basic":
       return "Opsummeret information";
     case "interpretation":
@@ -121,12 +157,18 @@ function getSummaryTypeName(summaryType: string) {
     case "raw":
       return "Alle informationer";
     default:
-      return "";
+      return "Spørgeskema";
   }
 }
 
-function getSummaryTypeExplanation(summaryType: string) {
-  switch (summaryType) {
+function getSummaryTypeExplanation(
+  summaries: SummarySchemaType[],
+  index: number
+) {
+  if (index == summaries.length) {
+    return "Du kan åbne spørgeskemaet her, så du kan give feedback på de forskellige versioner.";
+  }
+  switch (summaries[index].type) {
     case "basic":
       return "I denne version kan du gemme et dokument, der indeholder en opsummering af dine oplysninger, opdelt i overskrifter og emner.";
     case "interpretation":
@@ -156,7 +198,9 @@ function scrollToSummary(index: number) {
     left: summaryScroller.value.clientWidth * index,
   });
   if (summaryScroller.value) {
-    summaryScroller.value.style.height = `${summariesElements![index].clientHeight}px`;
+    summaryScroller.value.style.height = `${
+      summariesElements![index].clientHeight
+    }px`;
   }
 }
 
@@ -186,11 +230,17 @@ async function getSummaries() {
     scrollToSummary(selectedSummaryIndex.value);
   });
   setTimeout(() => {
-    scrollElementIntoContainerTop(document.querySelector("#section-5"), document.querySelector("main"));
+    scrollElementIntoContainerTop(
+      document.querySelector("#section-5"),
+      document.querySelector("main")
+    );
   }, 200);
 }
 
-function scrollElementIntoContainerTop(container: HTMLElement | null, target: HTMLElement | null): void {
+function scrollElementIntoContainerTop(
+  container: HTMLElement | null,
+  target: HTMLElement | null
+): void {
   if (!container || !target) return;
 
   const containerRect = container.getBoundingClientRect();
@@ -310,7 +360,7 @@ button {
 
 .summary-scroller {
   display: grid;
-  grid-template-columns: repeat(4, 100%);
+  grid-template-columns: repeat(5, 100%);
   overflow: hidden;
   transition: height 0.5s ease-in-out;
 
