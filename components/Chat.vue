@@ -51,7 +51,7 @@
                       message.content.id !== messageIdTracker.valueOf() ||
                       data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content
                     ">
-                    Ingen af disse
+                    Lad mig beskrive det
                   </button>
                   <button
                     class="questionnaire-button"
@@ -242,7 +242,7 @@
                     message.content.id !== messageIdTracker.valueOf() ||
                     data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content
                   ">
-                  Ingen af disse
+                  Lad mig beskrive det
                 </button>
                 <button
                   class="questionnaire-button"
@@ -419,7 +419,7 @@
             @input="setTextField()"
             v-model="input"
             ref="input-element"
-            :placeholder="currentPlaceholder"
+            :placeholder="currentPlaceholder.valueOf()"
             :disabled="chatFieldDisabled"
             rows="1"
             id="input-element"></textarea>
@@ -443,13 +443,14 @@ const props = defineProps<{
 const data = useDataStore();
 
 function checkDisabled() {
-  if (lastQuestionType.value === "link-question") {
+  if (data.currentType === "link-question") {
     return true;
   } else return loading.value;
 }
 
 function nextQuestion() {
   characterLimit.value = characterLimitDefault.value;
+  forceText.value = false;
 
   loading.value = true;
   input.value = "";
@@ -505,6 +506,7 @@ watch(loading, async (newVal) => {
 });
 
 let shouldAskNextQuestion = ref<boolean>(false);
+let forceText = ref<boolean>(false);
 
 onMounted(() => {
   inputElement.value?.focus();
@@ -569,47 +571,47 @@ onMounted(() => {
             messageIdTracker.value++;
             newMessage.content.id = messageIdTracker.value;
 
-            if (newMessage.content.type === "text") {
-            chatFieldDisabled.value = false;
-            } else {
-            chatFieldDisabled.value = true;
-            }
-
             if (newMessage.content.companyName !== null){
                 companyName = newMessage.content.companyName;
             }
 
-            if (newMessage.content.type === "branding-card-question") {
-            if (
-                newMessage.content.brandingCardOptions?.option &&
-                newMessage.content.brandingCardOptions?.oppositeOption &&
-                !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.option) &&
-                !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.oppositeOption)
-            ) {
-                // Do nothing
+            if (newMessage.content.type === "text" || forceText.value == true) {
+                newMessage.content.type = "text";
+                chatFieldDisabled.value = false;
             } else {
-                newMessage.content.brandingCardOptions = data.brandCards[Math.ceil(brandCardOptionsUsed.value.length / 2)];
-            }
-            if (newMessage.content.brandingCardOptions.option && newMessage.content.brandingCardOptions.oppositeOption) {
-                brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.option);
-                brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.oppositeOption);
-            }
-            } else if (newMessage.content.type === "color-question") {
-            var colors = getColors(newMessage.content.colorOptions);
-            newMessage.content.colorOptions = colors;
-            colors.forEach((color) => {
-                colorOptionsUsed.value.push(color);
-            });
-            } else if (newMessage.content.type === "moodboard-question") {
-            const search = newMessage.content.moodboardSearchString;
-            console.log(search);
-            if (search) {
-                handleMoodboard(search);
-            }
-            } else if (newMessage.content.type === "link-question") {
-                data.isFinished = true;
                 chatFieldDisabled.value = true;
-                ready.value = false;
+                if (newMessage.content.type === "branding-card-question") {
+                if (
+                    newMessage.content.brandingCardOptions?.option &&
+                    newMessage.content.brandingCardOptions?.oppositeOption &&
+                    !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.option) &&
+                    !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.oppositeOption)
+                ) {
+                    // Do nothing
+                } else {
+                    newMessage.content.brandingCardOptions = data.brandCards[Math.ceil(brandCardOptionsUsed.value.length / 2)];
+                }
+                if (newMessage.content.brandingCardOptions.option && newMessage.content.brandingCardOptions.oppositeOption) {
+                    brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.option);
+                    brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.oppositeOption);
+                }
+                } else if (newMessage.content.type === "color-question") {
+                var colors = getColors(newMessage.content.colorOptions);
+                newMessage.content.colorOptions = colors;
+                colors.forEach((color) => {
+                    colorOptionsUsed.value.push(color);
+                });
+                } else if (newMessage.content.type === "moodboard-question") {
+                const search = newMessage.content.moodboardSearchString;
+                console.log(search);
+                if (search) {
+                    handleMoodboard(search);
+                }
+                } else if (newMessage.content.type === "link-question") {
+                    data.isFinished = true;
+                    chatFieldDisabled.value = true;
+                    ready.value = false;
+                }
             }
 
             if (data.currentId === 3 || data.currentId === 4 ) { // Sidste to punkter
@@ -661,9 +663,11 @@ function sendMultipleChoiceAnswer() {
 }
 
 function sendNoneOfAbove() {
-  addUserMessage("Ingen af ovennævnte", true, "Lad mig beskrive det selv. Du SKAL sende mig et tekst-spørgsmål", true);
-  selectedOptions.value = selectedOptions.value.slice(0, numberOfOptionsSelected.value);
-  selectedImages.value = selectedImages.value.slice(0, numberOfImagesSelected.value);
+  addUserMessage("Lad mig beskrive det selv", true, "Du SKAL gøre det som et tekst-spørgsmål", true);
+    selectedOptions.value = selectedOptions.value.slice(0, numberOfOptionsSelected.value);
+    selectedImages.value = selectedImages.value.slice(0, numberOfImagesSelected.value);
+    selectedColors.value = [];
+    forceText.value = true;
 }
 
 watch(
@@ -725,11 +729,17 @@ function toggleImageSelection(imageAlt: string) {
   }
 }
 
-// Return default images if less than nine images are found
+// Return default images if less than 12 images are found
 function getImages(imageList: any) {
   if (imageList != null) {
-    var newImageList = Array.from(new Set(imageList));
-    if (newImageList.length >= 9) return newImageList;
+    const seen = new Set();
+    const newImageList = imageList.filter((img: any) => { // Remove duplicate images (same alt text)
+      const key = img.alt;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    if (newImageList.length >= 12) return newImageList;
   } else {
     return data.pictures;
   }
@@ -796,17 +806,17 @@ watch(
       currentPlaceholder.value = "";
     } else {
       // Set question type
-      if (lastQuestionType.value === "text") {
+      if (data.currentType === "text") {
         currentPlaceholder.value = "Skriv dit svar her...";
-      } else if (lastQuestionType.value === "multiple-choice-question") {
+      } else if (data.currentType === "multiple-choice-question") {
         currentPlaceholder.value = "Vælg en eller flere af ovenstående muligheder";
-      } else if (lastQuestionType.value === "color-question") {
+      } else if (data.currentType === "color-question") {
         currentPlaceholder.value = "Vælg en eller flere af farverne";
-      } else if (lastQuestionType.value === "branding-card-question") {
+      } else if (data.currentType === "branding-card-question") {
         currentPlaceholder.value = "Vælg en af de to muligheder";
-      } else if (lastQuestionType.value === "moodboard-question") {
+      } else if (data.currentType === "moodboard-question") {
         currentPlaceholder.value = "Vælg et eller flere af billederne";
-      } else if (lastQuestionType.value === "link-question") {
+      } else if (data.currentType === "link-question") {
         currentPlaceholder.value = "Svar på spørgeskemaet";
       } else {
         currentPlaceholder.value = ""; // no placeholder
@@ -824,11 +834,7 @@ function addUserMessage(userInput: string, hiddenInChat: boolean = false, hidden
 
   if (!ignoreProceed) wordsInAnswer.value += content.length;
 
-  console.log("Answer: " + characterLimit.value);
-  console.log("Answer: " + wordsInAnswer.value);
-
   if (!ignoreProceed && wordsInAnswer.value >= characterLimit.value) {
-    console.log("Proceed");
     shouldAskNextQuestion.value = true;
     wordsInAnswer.value = 0;
     hiddenContent = "Svar kun med 'ok'" // Sørg for at svaret er kort, for at mindske ventetid
@@ -929,14 +935,16 @@ function startConversation() {
 }
 
 function continueConversation() {
+  var type = data.currentType;
+  if (data.questionnaire.type == 'chat') type = "text";
   ws.send(
     JSON.stringify({
       messages: [
         {
           role: "user",
           content: {
-            content: "We just started on the next question. Continue the conversation by asking it as a " + data.currentType + " Follow the guidelines for this question type closely.",
-            type: "text",
+            content: "We just started on the next question. Continue the conversation by asking it as a " + type + " Follow the guidelines for this question type closely.",
+            type: type,
           },
         },
       ],
