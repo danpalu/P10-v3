@@ -4,14 +4,11 @@ export const MessageContent = z.object({
   content: z.string(),
   type: z.enum([
     "text",
-    "summary",
     "slider-question",
     "color-question",
     "moodboard-question",
     "multiple-choice-question",
     "branding-card-question",
-    "yes-no-question",
-    "yes-no-name-question",
     "link-question",
   ]),
   sliderDetails: z.object({ xAxis: z.object({ minLabel: z.string(), maxLabel: z.string() }) }).nullable(),
@@ -38,6 +35,7 @@ export type ClientMessage = {
   role: "system" | "user" | "assistant";
   content: MessageContentType;
   name: String;
+  hiddenContent: string;
 };
 
 export type ChatMessage = {
@@ -51,14 +49,11 @@ export type Question = {
   answer: Answer;
   type:
     | "text"
-    | "summary"
     | "slider-question"
     | "color-question"
     | "moodboard-question"
     | "multiple-choice-question"
     | "branding-card-question"
-    | "yes-no-question"
-    | "yes-no-name-question"
     | "link-question";
 };
 

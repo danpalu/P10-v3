@@ -3,14 +3,11 @@ export function newQuestion(
   title: string,
   type:
     | "text"
-    | "summary"
     | "slider-question"
     | "color-question"
     | "moodboard-question"
     | "multiple-choice-question"
     | "branding-card-question"
-    | "yes-no-question"
-    | "yes-no-name-question"
     | "link-question"
 ): Question {
   return {
@@ -28,14 +25,14 @@ export function newBrandCard(option: string, oppositeOption: string): brandCard 
   };
 }
 
-export function getQuestionById(questionnaire: Questionnaire, id: number): [Question, string, number] {
+export function getQuestionById(questionnaire: Questionnaire, id: number): [Question, string, number, string] {
   for (const section of questionnaire.sections) {
     const question = section.questions.find((q) => q.id === id);
     if (question) {
-      return [question, section.title, section.id]; // Return the question and its section title;
+      return [question, section.title, section.id, question.type]; // Return the question and its section title;
     }
   }
-  return [questionnaire.sections[0].questions[0], "Default Title", 0]; // Return a default question if not found
+  return [questionnaire.sections[0].questions[0], "Default Title", 0, "text"]; // Return a default question if not found
 }
 
 export function getPreviousQuestions(questionnaire: Questionnaire, currentQuestion: Question): Question[] {

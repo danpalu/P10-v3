@@ -57,8 +57,8 @@ export const useDataStore = defineStore("data", () => {
         title: "Praktiske detaljer",
         questions: [
           newQuestion(11, "Hvilke leverancer forventer du?", "multiple-choice-question"),
-          newQuestion(12, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "text"),
-          newQuestion(13, "Hvad er virksomhedens/organisationens budget til projektet?", "text"),
+          newQuestion(12, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "multiple-choice-question"),
+          newQuestion(13, "Hvad er virksomhedens/organisationens budget til projektet?", "multiple-choice-question"),
         ],
       },
       {
@@ -83,6 +83,7 @@ export const useDataStore = defineStore("data", () => {
   const currentQuestion = ref<Question>(questionnaire.value.sections[0].questions[0]);
   const currentTitle = ref<string>(questionnaire.value.sections[0].title);
   const currentId = ref<number>(questionnaire.value.sections[0].id);
+  const currentType = ref<string>(questionnaire.value.sections[0].questions[0].type);
 
   const summary = ref<SummarySchemaType>({ sections: [], type: "raw" });
 
@@ -209,6 +210,7 @@ export const useDataStore = defineStore("data", () => {
     currentQuestion,
     currentTitle,
     currentId,
+    currentType,
     colors,
     toString,
     summary,

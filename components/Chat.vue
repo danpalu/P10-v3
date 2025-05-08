@@ -13,11 +13,7 @@
         <template v-for="prevQuestion in getPreviousQuestions(props.questionnaire, data.currentQuestion)">
           <template v-for="(message, index) in prevQuestion.answer.answer">
             <li
-              v-if="
-                message.content.type !== 'yes-no-question' &&
-                message.content.type !== 'yes-no-name-question' &&
-                message.content.type !== 'summary'
-              "
+
               class="message"
               lang="dk"
               :class="`${index === prevQuestion.answer.answer.length - 1 ? 'last' : ''} ${
@@ -28,14 +24,9 @@
                 {{ message.content.content }}
                 <hr class="title-hr" style="margin: 0 auto; width: 100%" />
               </h1>
-              <!-- Don't render if yes-no-question -->
-              <div
-                v-else-if="
-                  message.content.type !== 'yes-no-question' &&
-                  message.content.type !== 'yes-no-name-question' &&
-                  message.content.type !== 'summary'
-                ">
-                {{ message.content.content }}
+              <!-- Render normal text -->
+              <div v-else>
+                {{ message.content.content.split('~')[0].trim() }}
               </div>
               <!-- Handle additional message types like color, moodboard, etc. -->
               <div v-if="message.content.type === 'color-question'" class="color-container">
@@ -215,11 +206,6 @@
         <template v-for="message in data.currentQuestion.answer.answer">
           <!-- Check for title type and render as h1 -->
           <li
-            v-if="
-              message.content.type !== 'yes-no-question' &&
-              message.content.type !== 'yes-no-name-question' &&
-              message.content.type !== 'summary'
-            "
             class="message"
             lang="dk"
             :class="`${message.content.isTitle ? 'title' : message.role} ${message.content.type} ${
@@ -229,14 +215,9 @@
               {{ message.content.content }}
               <hr class="title-hr" style="margin: 0 auto; width: 100%" />
             </h1>
-            <!-- Don't render if yes-no-question -->
-            <div
-              v-else-if="
-                message.content.type !== 'yes-no-question' &&
-                message.content.type !== 'yes-no-name-question' &&
-                message.content.type !== 'summary'
-              ">
-              {{ message.content.content }}
+            <!-- Render normal text -->
+            <div v-else>
+                {{ message.content.content.split('~')[0].trim() }}
             </div>
             <!-- Handle additional message types like color, moodboard, etc. -->
             <div v-if="message.content.type === 'color-question'" class="color-container">
@@ -429,7 +410,7 @@
     </div>
 
     <ClientOnly>
-      <button class="next-question button" @click.prevent="nextQuestion()">
+      <button class="next-question button" :disabled="checkDisabled()" @click.prevent="nextQuestion()">
         <span> Spring over <i class="arrow right"></i></span>
       </button>
       <div class="form-container">
@@ -468,6 +449,8 @@ function checkDisabled() {
 }
 
 function nextQuestion() {
+  characterLimit.value = characterLimitDefault.value;
+
   loading.value = true;
   input.value = "";
   // Keep title messages and filter hidden ones
@@ -476,10 +459,11 @@ function nextQuestion() {
   );
 
   // Proceed to the next question
-  let question_and_title_and_id = getQuestionById(props.questionnaire, data.currentQuestion?.id + 1);
-  data.currentQuestion = question_and_title_and_id[0];
-  data.currentTitle = question_and_title_and_id[1];
-  data.currentId = question_and_title_and_id[2];
+  let question_and_title_and_id_and_type = getQuestionById(props.questionnaire, data.currentQuestion?.id + 1);
+  data.currentQuestion = question_and_title_and_id_and_type[0];
+  data.currentTitle = question_and_title_and_id_and_type[1];
+  data.currentId = question_and_title_and_id_and_type[2];
+  data.currentType = question_and_title_and_id_and_type[3];
 
   if (data.currentQuestion.answer.answer.length == 0) {
     continueConversation();
@@ -508,8 +492,9 @@ function setTextField() {
   }
 }
 
-const wordLimitDefault = data.questionnaire.type === "chat" ? 40 : 40; // Word limit is currently the same regardless of type
-let wordLimit = ref<number>(wordLimitDefault);
+let characterLimitDefault = ref<number>(60);
+let characterLimit = ref<number>(0);
+const characterLimitLow = 0; // Set to 0 so no follow-ups are asked on non-text questions
 
 // Automatically focus the input when loading is false
 watch(loading, async (newVal) => {
@@ -518,6 +503,8 @@ watch(loading, async (newVal) => {
     inputElement.value?.focus();
   }
 });
+
+let shouldAskNextQuestion = ref<boolean>(false);
 
 onMounted(() => {
   inputElement.value?.focus();
@@ -549,117 +536,107 @@ onMounted(() => {
       });
     }
   };
-
+  
   ws.onmessage = (message) => {
-    if (message.data == "[START]") {
-      showIncomingMessage.value = true;
-      return;
-    }
-    if (message.data == "[DONE]") {
-      if (!ready.value) {
-        ready.value = true;
-      }
-
-      loading.value = false;
-      try {
-        const parsedContent = JSON.parse(incomingString.value.trim());
-
-        const newMessage: ClientMessage = {
-          role: "assistant",
-          content: parsedContent,
-          name: companyName,
-        };
-        messageIdTracker.value++;
-        newMessage.content.id = messageIdTracker.value;
-
-        if (newMessage.content.type !== "yes-no-question" && newMessage.content.type !== "yes-no-name-question") {
-          lastQuestionType.value = newMessage.content.type;
-        }
-
-        if (newMessage.content.type === "text") {
-          chatFieldDisabled.value = false;
-        } else {
-          chatFieldDisabled.value = true;
-        }
-
-        if (newMessage.content.type === "branding-card-question") {
-          if (
-            newMessage.content.brandingCardOptions?.option &&
-            newMessage.content.brandingCardOptions?.oppositeOption &&
-            !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.option) &&
-            !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.oppositeOption)
-          ) {
-            // Do nothing
-          } else {
-            newMessage.content.brandingCardOptions = data.brandCards[Math.ceil(brandCardOptionsUsed.value.length / 2)];
-          }
-          if (newMessage.content.brandingCardOptions.option && newMessage.content.brandingCardOptions.oppositeOption) {
-            brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.option);
-            brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.oppositeOption);
-          }
-        } else if (newMessage.content.type === "color-question") {
-          var colors = getColors(newMessage.content.colorOptions);
-          newMessage.content.colorOptions = colors;
-          colors.forEach((color) => {
-            colorOptionsUsed.value.push(color);
-          });
-        } else if (newMessage.content.type === "moodboard-question") {
-          const search = newMessage.content.moodboardSearchString;
-          console.log(search);
-          if (search) {
-            handleMoodboard(search);
-          }
-        } else if (newMessage.content.type === "yes-no-name-question") {
-          showIncomingMessage.value = false;
-          sendYesNoAnswer("Yes", newMessage.content.companyName?.valueOf());
-        } else if (newMessage.content.type === "yes-no-question") {
-          showIncomingMessage.value = false;
-          sendYesNoAnswer("Yes");
-        } else if (newMessage.content.type === "summary") {
-          showIncomingMessage.value = false;
-        } else if (newMessage.content.type === "link-question") {
-          ready.value = false;
-        }
-
-        if (data.currentId === 3) {
-          wordLimit.value = 20;
-        } else if (data.currentId === 4) {
-          wordLimit.value = 0;
-        } else if (
-          newMessage.content.type === "color-question" ||
-          newMessage.content.type === "branding-card-question" ||
-          newMessage.content.type === "moodboard-question"
-        ) {
-          wordLimit.value = 50;
-        } else {
-          wordLimit.value = wordLimitDefault;
-        }
-
-        data.currentQuestion.answer.answer.push(newMessage);
+    // Don't render reponse if the next question should be asked instead
+    if (shouldAskNextQuestion.value){
         resetIncomingMessage();
-        showIncomingMessage.value = false;
-
-        if (newMessage.content.type === "summary") {
-          showSaveButton.value = true;
-          data.currentQuestion.answer.summary = newMessage.content.content;
+        if (message.data == "[DONE]"){
+            nextQuestion();
+            shouldAskNextQuestion.value = false;
         }
-      } catch (error) {
-        console.error("ERROR CAUGHT: Failed to parse JSON:", incomingString.value);
-        addUserMessage("Det forstod jeg ikke helt, kan du sige det på en anden måde?", true);
-        showIncomingMessage.value = false;
         return;
-      }
-      waitAndScroll(false);
-      return;
     }
-    if (message.data == "[ERROR]") {
-      addUserMessage("Det forstod jeg ikke helt, kan du sige det på en anden måde?", true);
-      showIncomingMessage.value = false;
-      return;
+    else {
+        if (message.data == "[START]") {
+        showIncomingMessage.value = true;
+        return;
+        }
+        if (message.data == "[DONE]") {
+        if (!ready.value) {
+            ready.value = true;
+        }
+
+        loading.value = false;
+        try {
+            const parsedContent = JSON.parse(incomingString.value.trim());
+    
+            const newMessage: ClientMessage = {
+            role: "assistant",
+            content: parsedContent,
+            name: companyName,
+            };
+            messageIdTracker.value++;
+            newMessage.content.id = messageIdTracker.value;
+
+            if (newMessage.content.type === "text") {
+            chatFieldDisabled.value = false;
+            } else {
+            chatFieldDisabled.value = true;
+            }
+
+            if (newMessage.content.companyName !== null){
+                companyName = newMessage.content.companyName;
+            }
+
+            if (newMessage.content.type === "branding-card-question") {
+            if (
+                newMessage.content.brandingCardOptions?.option &&
+                newMessage.content.brandingCardOptions?.oppositeOption &&
+                !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.option) &&
+                !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.oppositeOption)
+            ) {
+                // Do nothing
+            } else {
+                newMessage.content.brandingCardOptions = data.brandCards[Math.ceil(brandCardOptionsUsed.value.length / 2)];
+            }
+            if (newMessage.content.brandingCardOptions.option && newMessage.content.brandingCardOptions.oppositeOption) {
+                brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.option);
+                brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.oppositeOption);
+            }
+            } else if (newMessage.content.type === "color-question") {
+            var colors = getColors(newMessage.content.colorOptions);
+            newMessage.content.colorOptions = colors;
+            colors.forEach((color) => {
+                colorOptionsUsed.value.push(color);
+            });
+            } else if (newMessage.content.type === "moodboard-question") {
+            const search = newMessage.content.moodboardSearchString;
+            console.log(search);
+            if (search) {
+                handleMoodboard(search);
+            }
+            } else if (newMessage.content.type === "link-question") {
+                data.isFinished = true;
+                chatFieldDisabled.value = true;
+                ready.value = false;
+            }
+
+            if (data.currentId === 3 || data.currentId === 4 ) { // Sidste to punkter
+                characterLimit.value = 0;
+            }
+
+            data.currentQuestion.answer.answer.push(newMessage);
+            resetIncomingMessage();
+            showIncomingMessage.value = false;
+            } catch (error) {
+                console.error("ERROR CAUGHT: Failed to parse JSON:", incomingString.value);
+                addUserMessage("Det forstod jeg ikke helt, kan du sige det på en anden måde?", true);
+                showIncomingMessage.value = false;
+                return;
+            }
+            waitAndScroll(false);
+            return;
+            }
+            if (message.data == "[ERROR]") {
+            addUserMessage("Det forstod jeg ikke helt, kan du sige det på en anden måde?", true);
+            showIncomingMessage.value = false;
+            return;
+            }
+            incomingString.value += `${message.data}`;
+            waitAndScroll(false);
+        };
     }
-    incomingString.value += `${message.data}`;
-    waitAndScroll(false);
-  };
 });
 
 function resetIncomingMessage() {
@@ -675,37 +652,18 @@ const numberOfImagesSelected = ref<number>(0);
 // Method to send the selected multiple-choice answers
 // Send the selected multiple-choice answers when the button is clicked
 function sendMultipleChoiceAnswer() {
+  characterLimit.value = characterLimitLow;
   var options = selectedOptions.value.slice(numberOfOptionsSelected.value, selectedOptions.value.length);
   if (selectedOptions.value.length > 0) {
     addUserMessage("My idea is best respresented by " + options.join(", "), true);
-    sendMessages();
     numberOfOptionsSelected.value += options.length;
   }
 }
 
 function sendNoneOfAbove() {
-  addUserMessage("Ingen af ovennævnte, lad mig beskrive det selv. Du SKAL sende mig et tekst-spørgsmål", true);
-  sendMessages();
+  addUserMessage("Ingen af ovennævnte", true, "Lad mig beskrive det selv. Du SKAL sende mig et tekst-spørgsmål", true);
   selectedOptions.value = selectedOptions.value.slice(0, numberOfOptionsSelected.value);
   selectedImages.value = selectedImages.value.slice(0, numberOfImagesSelected.value);
-}
-
-const selectedYesNo = ref<string>("");
-
-function sendYesNoAnswer(answer: string, name = "none") {
-  selectedYesNo.value = answer;
-
-  if (name != "none") {
-    companyName = name;
-  }
-
-  if (answer === "Yes" && (name != "none" || wordsInAnswer.value >= wordLimit.value)) {
-    nextQuestion();
-    wordsInAnswer.value = 0;
-  } else {
-    addUserMessage("Bed mig om at uddybe mine svar. Du SKAL stille mig et tekst-spørgsmål.", true);
-    sendMessages();
-  }
 }
 
 watch(
@@ -718,7 +676,7 @@ watch(
 
 async function waitAndScroll(forceScroll: boolean) {
   await nextTick();
-  scrollToBottom(forceScroll);
+  scrollToBottom();
   setTextField();
 }
 
@@ -792,10 +750,10 @@ function setAsSelected() {
 }
 
 function sendMoodboardSelection() {
+  characterLimit.value = characterLimitLow;
   var images = selectedImages.value.slice(numberOfImagesSelected.value, selectedImages.value.length);
   if (selectedImages.value.length > 0) {
-    addUserMessage("My idea is best represented by images containing: " + images.join(", ") + "Let's proceed", true);
-    sendMessages();
+    addUserMessage(images.join(", "), true, "My idea is best represented by images containing: " + images.join(", "));
     numberOfImagesSelected.value += images.length;
   }
 }
@@ -805,35 +763,30 @@ const brandCardQuestionsToAsk = 3;
 const brandCardOptionsUsed = ref<string[]>([]);
 
 function sendBrandCardAnswer(text: string) {
+  characterLimit.value = characterLimitLow;
   setAsSelected();
   brandCardOptionsUsed.value.push(text);
   wordsInAnswer.value = 0;
   if (brandCardQuestionsAsked.value < brandCardQuestionsToAsk) {
     addUserMessage(
-      "My idea is best represented by " +
-        text +
-        ". Now give me a new branding card question. The options can be anything except: " +
-        brandCardOptionsUsed.value.join(),
-      true
+      "My idea is best represented by " + text, true, "Now ask a follow-up branding-card question with very little text. The options can be anything except: " + brandCardOptionsUsed.value.join(), true
     );
     brandCardQuestionsAsked.value++;
   } else {
-    addUserMessage("My idea is best represented by " + text + "Now ask me a text question.", true);
+    addUserMessage("My idea is best represented by " + text, true);
     brandCardQuestionsAsked.value = 0;
   }
-
-  sendMessages();
-  input.value = "";
 }
 
 let disableSubmit = computed(() => !ready.value || input.value.trim() === "" || showIncomingMessage.value);
 
 import { computed } from "vue";
 
-let chatFieldDisabled = ref(true);
+let chatFieldDisabled = ref<boolean>(true);
 let wordsInAnswer = ref<number>(0);
 const lastQuestionType = ref<string>("");
 const currentPlaceholder = ref<string>("");
+
 
 watch(
   () => loading.value,
@@ -848,15 +801,13 @@ watch(
       } else if (lastQuestionType.value === "multiple-choice-question") {
         currentPlaceholder.value = "Vælg en eller flere af ovenstående muligheder";
       } else if (lastQuestionType.value === "color-question") {
-        currentPlaceholder.value = "Vælg en af farverne";
+        currentPlaceholder.value = "Vælg en eller flere af farverne";
       } else if (lastQuestionType.value === "branding-card-question") {
         currentPlaceholder.value = "Vælg en af de to muligheder";
       } else if (lastQuestionType.value === "moodboard-question") {
-        currentPlaceholder.value = "Vælg et af billederne";
+        currentPlaceholder.value = "Vælg et eller flere af billederne";
       } else if (lastQuestionType.value === "link-question") {
         currentPlaceholder.value = "Svar på spørgeskemaet";
-        data.isFinished = true;
-        chatFieldDisabled.value = true;
       } else {
         currentPlaceholder.value = ""; // no placeholder
       }
@@ -864,15 +815,34 @@ watch(
   }
 );
 
-function addUserMessage(userInput: string, hiddenInChat: boolean = false) {
+let defaultHiddenString = "Bed mig om at uddybe mit svar. Gå ikke videre til næste spørgsmål. Du SKAL stille mig et tekst-spørgsmål.";
+
+function addUserMessage(userInput: string, hiddenInChat: boolean = false, hiddenContent: string = defaultHiddenString, ignoreProceed: boolean = false) {
+  input.value = "";
   currentPlaceholder.value = "";
+  var content = userInput.trim();
+
+  if (!ignoreProceed) wordsInAnswer.value += content.length;
+
+  console.log("Answer: " + characterLimit.value);
+  console.log("Answer: " + wordsInAnswer.value);
+
+  if (!ignoreProceed && wordsInAnswer.value >= characterLimit.value) {
+    console.log("Proceed");
+    shouldAskNextQuestion.value = true;
+    wordsInAnswer.value = 0;
+    hiddenContent = "Svar kun med 'ok'" // Sørg for at svaret er kort, for at mindske ventetid
+  }
+
+  content += "~" + hiddenContent;
+  
   data.currentQuestion.answer.answer.push({
     role: "user",
     content: {
-      content: userInput.trim(),
+      content: content,
       type: "text",
       sliderDetails: null,
-      colorOptions: null,
+      colorOptions: [],
       moodboardSearchString: null,
       moodboardImages: null,
       brandingCardOptions: null,
@@ -880,8 +850,9 @@ function addUserMessage(userInput: string, hiddenInChat: boolean = false) {
       isTitle: false,
     },
   });
+
   loading.value = true;
-  wordsInAnswer.value += getNumberOfWords(userInput.trim());
+  sendMessages();
 }
 
 function getNumberOfWords(string: string) {
@@ -895,7 +866,7 @@ function addTitleMessage(title: string) {
       content: title.trim(),
       type: "text",
       sliderDetails: null,
-      colorOptions: null,
+      colorOptions: [],
       moodboardSearchString: null,
       moodboardImages: null,
       brandingCardOptions: null,
@@ -920,23 +891,17 @@ function toggleColorSelection(color: string) {
 }
 
 function sendColorAnswer() {
+  characterLimit.value = characterLimitLow;
   setAsSelected();
   if (colorQuestionsAsked.value == 0) {
     addUserMessage(
-      "I think my idea is well represented by " +
-        selectedColors.value.join() +
-        ". Now give me a new color question, asking what variant of" +
-        selectedColors.value[0] +
-        " I prefer",
-      true
+      "I think my idea is well represented by " + selectedColors.value.join(), true, "Now give me a new color question with 20 new hex codes, asking what variant of" + selectedColors.value[0] + " I prefer", true
     );
     colorQuestionsAsked.value++;
   } else {
     addUserMessage("I think my idea is well represented by " + selectedColors.value.join(), true);
     colorQuestionsAsked.value = 0;
   }
-  sendMessages();
-  input.value = "";
 }
 
 function sendMessages() {
@@ -970,7 +935,7 @@ function continueConversation() {
         {
           role: "user",
           content: {
-            content: "We just started on the next question. Continue the conversation by asking me the question.",
+            content: "We just started on the next question. Continue the conversation by asking it as a " + data.currentType + " Follow the guidelines for this question type closely.",
             type: "text",
           },
         },
@@ -986,38 +951,20 @@ function continueConversation() {
 function handleSubmit(text: string) {
   loading.value = true;
   addUserMessage(text);
-  sendMessages();
-  input.value = "";
 }
 
 const messageScroller = useTemplateRef("message-scroller");
 const chatContainer = useTemplateRef("chat-container");
 
-// Only scroll to bottom if user has not scrolled up
-function scrollToBottom(forceScroll: boolean) {
+function scrollToBottom() {
   if (!chatContainer) return;
 
-  const threshold = 200; // px from bottom — adjust as needed
-
   if (messageScroller.value) {
-    const isNearBottom =
-      messageScroller.value.scrollHeight - messageScroller.value.scrollTop - messageScroller.value.clientHeight <
-      threshold;
-
-    if (
-      forceScroll ||
-      isNearBottom ||
-      lastQuestionType.value == "multiple-choice-question" ||
-      lastQuestionType.value == "branding-card-question" ||
-      lastQuestionType.value == "moodboard-question" ||
-      lastQuestionType.value == "color-question"
-    ) {
       messageScroller.value?.scrollTo({
         top: messageScroller.value.scrollHeight,
         behavior: "smooth",
       });
     }
-  }
 }
 
 function cleanIncomingString(input: string): string {

@@ -14,8 +14,9 @@
       Åbn spørgeskema
     </a>
   </div>
-  <p v-if="!summariesLoaded">
-    Tryk på knappen ovenfor for at hente informationen du har indsendt 👆 <br />
+  <br/>
+  <p v-if="!summariesLoaded"> <br/>
+    Tryk på knappen ovenfor for at hente informationen du har indsendt 👆
     <br />
   </p>
   <p>

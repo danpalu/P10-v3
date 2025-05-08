@@ -35,7 +35,7 @@ export default defineWebSocketHandler({
           
           You help the user answer the question: "${question.title}" for their company ${companyName}. FOCUS ONLY ON THIS QUESTION. Instead of writing virksomhed/organisation, ALWAYS write ${companyName}.
 
-          When asking a new question, you show appreciation for the answers and proceed. You don't have to phrase them exactly as stated here.
+          You don't have to phrase the question exactly as stated here. You may also add a bit of conversational text, max 30 words.
           
           The user has previously answered other questions. These answers can be seen in the following json formatted text: ${previousAnswers}.
           
@@ -51,15 +51,11 @@ export default defineWebSocketHandler({
 
           The color-question is a question where the user can select a color from a list of many colors in hex format. For this, you should provide a list of at least 20 colors based on the user's previous answers. Never write this list in the content text.
 
-          Yes-no question can only be answered with yes or no.
-
-          Yes-no-name questions can only be answered by yes or no. For this, you provide the company name in the content text. The company name is provided in the question object as a string.
+          If the user just provided their company name, you provide the company name.
 
           In link questions, you stick strictly to the question.
 
           Output in valid JSON format, following the scheme. 
-          
-          When the user has given a concrete answer, you should send a completely empty string back. When doing this, you use the type 'yes-no-question', or if you just asked the user about their company name, the type 'yes-no-name-question'. If their answer is vague, you should instead ask a follow-up question, or rephrase your question.
           
           Do not use ** for bold text. 
 
