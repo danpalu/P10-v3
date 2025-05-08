@@ -17,18 +17,21 @@ const props = defineProps<{
   overflow: hidden scroll;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
   width: 100%;
   padding: 20px;
   &:not(:last-child) {
     margin-bottom: 10rem;
   }
 
-  & > :first-child {
+  &:not(#section-5) {
+    gap: 3rem;
+  }
+
+  &:not(#section-5) > :first-child {
     margin-top: 4rem;
   }
 
-  & > :last-child {
+  &:not(#section-5) > :last-child {
     margin-bottom: 4rem;
   }
 }

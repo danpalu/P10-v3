@@ -1202,7 +1202,7 @@ textarea {
   font-size: 1rem;
 }
 
-.question > :first-child {
+.question:not(.finish-section) > :first-child {
   font-weight: 500;
   font-size: 1.2rem;
   margin-bottom: 1rem;

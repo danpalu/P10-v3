@@ -509,7 +509,7 @@ let shouldAskNextQuestion = ref<boolean>(false);
 onMounted(() => {
   inputElement.value?.focus();
   wsURL = new URL(window.location.href);
-  wsURL.protocol = "ws";
+  wsURL.protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
   wsURL.pathname = "/api/" + data.questionnaire.type;
   wsURL.hash = "";
   ws = new WebSocket(wsURL);

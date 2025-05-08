@@ -72,18 +72,23 @@ export function setStartTime() {
   localStorage.setItem("startTime", startTime.toString());
 }
 
-export async function saveData(dataToSave: object) {
-  return;
+export async function saveData(dataToSave: object, type: QuestionnaireType) {
   const startTime = Number(localStorage.getItem("startTime"));
   const endTime = Date.now();
   const timeSpent = endTime - startTime;
-  console.log("Time spent in milliseconds:", timeSpent);
-  console.log("Data to save:", dataToSave);
   const response = await $fetch("/api/saveData", {
     method: "POST",
     body: {
       timeSpent: timeSpent,
       dataToSave: JSON.stringify(dataToSave),
+      type: type,
     },
   });
+}
+
+export async function getQuestionnaireType(): Promise<string> {
+  const data: string = await $fetch("api/getQuestionnaireType", {
+    method: "GET",
+  });
+  return data;
 }
