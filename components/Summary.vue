@@ -1,6 +1,7 @@
 <template>
   <div class="center-content summary-container" ref="summary">
-    <p>
+    <main>
+        <p style="padding-top: 4rem;">
       Du har nu oplyst forskellige informationer om din organisation. Vi har
       lavet fire forslag til måder, du kan vælge at gemme disse oplysninger på,
       så du kan medbringe dem til mødet med designeren eller bruge dem som
@@ -9,21 +10,8 @@
       Du præsenteres nu for de forskellige forslag og bedes om lidt give
       feedback på, hvad du synes om de forskellige versioner, efter du har
       gennemgået dem.
-      <br /><br />
-      Linket til spørgeskemaet, vises når du har set alle fire versioner.
     </p>
-    <div id="form-button-container" class="center-content">
-      <a
-        v-if="summariesLoaded"
-        class="button google-form-button"
-        :class="`${!seenAllSummaries ? 'invisible' : ''}`"
-        :href="`https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=${data.questionnaire.type}`"
-        target="_blank"
-      >
-        Åbn spørgeskema
-      </a>
-    </div>
-    <main v-if="summariesLoaded && !loading">
+    <div v-if="summariesLoaded && !loading">
       <div class="navigator">
         <button
           class="nav"
@@ -100,10 +88,11 @@
           </div>
         </div>
       </div>
-    </main>
-    <div class="spinner center-content" v-else>
-      <LoadingSpinner></LoadingSpinner>
     </div>
+      <div class="spinner center-content" v-else>
+        <LoadingSpinner></LoadingSpinner>
+        </div>
+    </main>
   </div>
 </template>
 
@@ -367,7 +356,7 @@ button {
   & .summary {
     height: fit-content;
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: hidden;
   }
 }
 p {

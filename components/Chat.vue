@@ -1489,8 +1489,17 @@ button.send {
 }
 
 .summary-container {
-  padding: 4rem 20px;
+  padding: 0 20px;
   overflow-y: scroll;
   height: 100%;
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  margin-bottom: 4rem;
 }
+
+.summary-container::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+
 </style>
