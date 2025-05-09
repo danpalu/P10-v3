@@ -861,10 +861,6 @@ function addUserMessage(userInput: string, hiddenInChat: boolean = false, hidden
   sendMessages();
 }
 
-function getNumberOfWords(string: string) {
-  return string.trim().split(/\s+/).length;
-}
-
 function addTitleMessage(title: string) {
   data.currentQuestion.answer.answer.push({
     role: "user",
