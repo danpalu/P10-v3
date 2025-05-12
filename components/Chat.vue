@@ -457,10 +457,6 @@ function nextQuestion() {
 
   loading.value = true;
   input.value = "";
-  // Keep title messages and filter hidden ones
-  data.currentQuestion.answer.answer = data.currentQuestion.answer.answer.filter(
-    (message) => !message.content.hiddenInChat
-  );
 
   // Proceed to the next question
   let question_and_title_and_id_and_type = getQuestionById(props.questionnaire, data.currentQuestion?.id + 1);
