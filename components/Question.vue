@@ -97,11 +97,11 @@ section {
     margin-bottom: 100vh;
   }
 
-  &:not(#section-5) > :first-child {
+  &:not(#section-6) > :first-child {
     margin-top: 4rem;
   }
 
-  &:not(#section-5) > :last-child {
+  &:not(#section-6) > :last-child {
     margin-bottom: 4rem;
   }
 }

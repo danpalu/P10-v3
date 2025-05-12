@@ -23,15 +23,15 @@ const props = defineProps<{
     margin-bottom: 10rem;
   }
 
-  &:not(#section-5) {
+  &:not(#section-6) {
     gap: 3rem;
   }
 
-  &:not(#section-5) > :first-child {
+  &:not(#section-6) > :first-child {
     margin-top: 4rem;
   }
 
-  &:not(#section-5) > :last-child {
+  &:not(#section-6) > :last-child {
     margin-bottom: 4rem;
   }
 }

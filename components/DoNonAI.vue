@@ -223,6 +223,211 @@
       </div>
     </section>
     <section id="section-2">
+      <h2>Målgruppe</h2>
+      <div class="question">
+        <div class="question target-group">
+          <h3>Hvem er jeres målgruppe?</h3>
+          <button
+            ref="previous"
+            class="previous hidden"
+            @click.prevent="scrollToTargetGroupSection(--selectedIndexTargetGroup)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+          </button>
+          <button ref="next" class="next" @click.prevent="scrollToTargetGroupSection(++selectedIndexTargetGroup)">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </button>
+          <div class="scroller" ref="target-group-scroller">
+            <fieldset>
+              <legend>Aldersgruppe</legend>
+              <label><input type="radio" name="Målgruppe alder" value="0-2" />Spædbørn (0-2 år)</label>
+              <label><input type="radio" name="Målgruppe alder" value="3-5" />Småbørn (3-5 år)</label>
+              <label><input type="radio" name="Målgruppe alder" value="6-12" />Børn (6-12 år)</label>
+              <label><input type="radio" name="Målgruppe alder" value="13-17" />Teenager (13-17 år)</label>
+              <label><input type="radio" name="Målgruppe alder" value="18-24" />18-24 år</label>
+              <label><input type="radio" name="Målgruppe alder" value="25-34" />25-34 år</label>
+              <label><input type="radio" name="Målgruppe alder" value="35-44" />35-44 år</label>
+              <label><input type="radio" name="Målgruppe alder" value="45-54" />45-54 år</label>
+              <label><input type="radio" name="Målgruppe alder" value="55-64" />55-64 år</label>
+              <label><input type="radio" name="Målgruppe alder" value="65+" />65+ år</label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Køn</legend>
+              <label><input type="radio" name="Målgruppe køn" value="mand" />Mand</label>
+              <label><input type="radio" name="Målgruppe køn" value="kvinde" />Kvinde</label>
+              <label><input type="radio" name="Målgruppe køn" value="begge" />Begge</label>
+              <label><input type="radio" name="Målgruppe køn" value="nonbinaer" />Non-binær</label>
+              <label><input type="radio" name="Målgruppe køn" value="irrelevant" />Ikke relevant</label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Bopæl</legend>
+              <label><input type="radio" name="Målgruppe bosted" value="storby" />Storby</label>
+              <label><input type="radio" name="Målgruppe bosted" value="forstad" />Forstad</label>
+              <label><input type="radio" name="Målgruppe bosted" value="mindreby" />Mindre byer</label>
+              <label><input type="radio" name="Målgruppe bosted" value="landet" />På landet</label>
+              <label><input type="radio" name="Målgruppe bosted" value="internationalt" />Internationalt</label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Beskæftigelse</legend>
+              <label><input type="radio" name="Målgruppe beskæftigelse" value="studerende" />Studerende</label>
+              <label><input type="radio" name="Målgruppe beskæftigelse" value="fuldtid" />Fuldtidsansat</label>
+              <label><input type="radio" name="Målgruppe beskæftigelse" value="selvstaendig" />Selvstændig</label>
+              <label><input type="radio" name="Målgruppe beskæftigelse" value="arbejdsloes" />Arbejdsløs</label>
+              <label><input type="radio" name="Målgruppe beskæftigelse" value="pensionist" />Pensionist</label>
+              <label><input type="radio" name="Målgruppe beskæftigelse" value="andet" />Andet</label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Personlighed</legend>
+              <label
+                ><input type="radio" name="Målgruppe personlighed" value="ekstrovert" />Ekstrovert, udadvendt og
+                social</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe personlighed" value="introvert" />Introvert, rolig og
+                eftertænksom</label
+              >
+              <label><input type="radio" name="Målgruppe personlighed" value="kreativ" />Kreativ og kunstnerisk</label>
+              <label
+                ><input type="radio" name="Målgruppe personlighed" value="praktisk" />Praktisk og problemløsende</label
+              >
+              <label><input type="radio" name="Målgruppe personlighed" value="ambitioes" />Ambitiøs og målrettet</label>
+              <label
+                ><input type="radio" name="Målgruppe personlighed" value="afslappet" />Afslappet og laid-back</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe personlighed" value="eventyrlysten" />Eventyrlysten og
+                nysgerrig</label
+              >
+            </fieldset>
+
+            <fieldset>
+              <legend>Værdier</legend>
+              <label
+                ><input type="radio" name="Målgruppe værdier" value="baeredygtighed" />Bæredygtighed og
+                miljøvenlighed</label
+              >
+              <label><input type="radio" name="Målgruppe værdier" value="innovation" />Innovation og teknologi</label>
+              <label><input type="radio" name="Målgruppe værdier" value="tradition" />Tradition og kvalitet</label>
+              <label><input type="radio" name="Målgruppe værdier" value="etik" />Samfundsansvar og etik</label>
+              <label><input type="radio" name="Målgruppe værdier" value="luksus" />Komfort og luksus</label>
+              <label
+                ><input type="radio" name="Målgruppe værdier" value="effektivitet" />Effektivitet og
+                produktivitet</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe værdier" value="socialt_ansvar" />Socialt ansvar og
+                fællesskab</label
+              >
+            </fieldset>
+
+            <fieldset>
+              <legend>Foretrukne brands</legend>
+              <label
+                ><input type="radio" name="Målgruppe foretrukne brands" value="apple_nike_tesla" />Apple, Nike,
+                Tesla</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe foretrukne brands" value="patagonia_ikea" />Patagonia, IKEA, Whole
+                Foods</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe foretrukne brands" value="fastfashion" />H&M, Zara, ASOS</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe foretrukne brands" value="luksusbrands" />Luksusbrands som Chanel,
+                Louis Vuitton</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe foretrukne brands" value="socialevirksomheder" />Sociale
+                virksomheder og non-profit organisationer</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe foretrukne brands" value="freelance" />Freelance- eller
+                startup-virksomheder</label
+              >
+            </fieldset>
+
+            <fieldset>
+              <legend>Livsstil</legend>
+              <label><input type="radio" name="Målgruppe livsstil" value="aktiv" />Aktiv, sportsorienteret</label>
+              <label><input type="radio" name="Målgruppe livsstil" value="rejse" />Rejse- og eventyrlysten</label>
+              <label
+                ><input type="radio" name="Målgruppe livsstil" value="familie" />Fokuseret på hjemmet og familie</label
+              >
+              <label><input type="radio" name="Målgruppe livsstil" value="karriere" />Karriereorienteret</label>
+              <label
+                ><input type="radio" name="Målgruppe livsstil" value="socialtbevidst" />Socialt bevidst og
+                engageret</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe livsstil" value="techinteresse" />Teknologiinteresseret og
+                gadgetorienteret</label
+              >
+            </fieldset>
+
+            <fieldset>
+              <legend>Udfordringer</legend>
+              <label><input type="radio" name="Målgruppe udfordringer" value="tidspres" />Tidspres og stress</label>
+              <label><input type="radio" name="Målgruppe udfordringer" value="oekonomi" />Økonomisk usikkerhed</label>
+              <label
+                ><input type="radio" name="Målgruppe udfordringer" value="familietid" />Manglende tid til familieliv og
+                hobbyer</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe udfordringer" value="manglenderviden" />Manglende viden om et
+                bestemt område</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe udfordringer" value="valg" />Forbrugernes overvældelse af
+                valg</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe udfordringer" value="inspiration" />Mangel på inspiration eller
+                ideer til livsstil</label
+              >
+            </fieldset>
+
+            <fieldset>
+              <legend>Købsprioriteter</legend>
+              <label><input type="radio" name="Målgruppe købsprioriteter" value="pris" />Pris og værdi</label>
+              <label
+                ><input type="radio" name="Målgruppe købsprioriteter" value="kvalitet" />Kvalitet og holdbarhed</label
+              >
+              <label><input type="radio" name="Målgruppe købsprioriteter" value="etik" />Bæredygtighed og etik</label>
+              <label
+                ><input type="radio" name="Målgruppe købsprioriteter" value="status" />Eksklusivitet og status</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe købsprioriteter" value="bekvemmelighed" />Bekvemmelighed og hurtig
+                levering</label
+              >
+              <label
+                ><input type="radio" name="Målgruppe købsprioriteter" value="anmeldelser" />Kundeanmeldelser og
+                anbefalinger</label
+              >
+            </fieldset>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="section-3">
       <h2>Mål og Branding</h2>
       <div class="question">
         <h3>Hvad ønsker I at opnå med en ny visuel identitet eller design?</h3>
@@ -342,197 +547,6 @@
           <textarea
             name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi har en fordel i forhold til vores konkurrenter, fordi..." />
         </label>
-      </div>
-      <div class="question target-group">
-        <h3>Hvem er jeres målgruppe?</h3>
-        <button
-          ref="previous"
-          class="previous hidden"
-          @click.prevent="scrollToTargetGroupSection(--selectedIndexTargetGroup)">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-          </svg>
-        </button>
-        <button ref="next" class="next" @click.prevent="scrollToTargetGroupSection(++selectedIndexTargetGroup)">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-          </svg>
-        </button>
-        <div class="scroller" ref="target-group-scroller">
-          <fieldset>
-            <legend>Aldersgruppe</legend>
-            <label><input type="radio" name="Målgruppe alder" value="0-2" />Spædbørn (0-2 år)</label>
-            <label><input type="radio" name="Målgruppe alder" value="3-5" />Småbørn (3-5 år)</label>
-            <label><input type="radio" name="Målgruppe alder" value="6-12" />Børn (6-12 år)</label>
-            <label><input type="radio" name="Målgruppe alder" value="13-17" />Teenager (13-17 år)</label>
-            <label><input type="radio" name="Målgruppe alder" value="18-24" />18-24 år</label>
-            <label><input type="radio" name="Målgruppe alder" value="25-34" />25-34 år</label>
-            <label><input type="radio" name="Målgruppe alder" value="35-44" />35-44 år</label>
-            <label><input type="radio" name="Målgruppe alder" value="45-54" />45-54 år</label>
-            <label><input type="radio" name="Målgruppe alder" value="55-64" />55-64 år</label>
-            <label><input type="radio" name="Målgruppe alder" value="65+" />65+ år</label>
-          </fieldset>
-
-          <fieldset>
-            <legend>Køn</legend>
-            <label><input type="radio" name="Målgruppe køn" value="mand" />Mand</label>
-            <label><input type="radio" name="Målgruppe køn" value="kvinde" />Kvinde</label>
-            <label><input type="radio" name="Målgruppe køn" value="begge" />Begge</label>
-            <label><input type="radio" name="Målgruppe køn" value="nonbinaer" />Non-binær</label>
-            <label><input type="radio" name="Målgruppe køn" value="irrelevant" />Ikke relevant</label>
-          </fieldset>
-
-          <fieldset>
-            <legend>Bopæl</legend>
-            <label><input type="radio" name="Målgruppe bosted" value="storby" />Storby</label>
-            <label><input type="radio" name="Målgruppe bosted" value="forstad" />Forstad</label>
-            <label><input type="radio" name="Målgruppe bosted" value="mindreby" />Mindre byer</label>
-            <label><input type="radio" name="Målgruppe bosted" value="landet" />På landet</label>
-            <label><input type="radio" name="Målgruppe bosted" value="internationalt" />Internationalt</label>
-          </fieldset>
-
-          <fieldset>
-            <legend>Beskæftigelse</legend>
-            <label><input type="radio" name="Målgruppe beskæftigelse" value="studerende" />Studerende</label>
-            <label><input type="radio" name="Målgruppe beskæftigelse" value="fuldtid" />Fuldtidsansat</label>
-            <label><input type="radio" name="Målgruppe beskæftigelse" value="selvstaendig" />Selvstændig</label>
-            <label><input type="radio" name="Målgruppe beskæftigelse" value="arbejdsloes" />Arbejdsløs</label>
-            <label><input type="radio" name="Målgruppe beskæftigelse" value="pensionist" />Pensionist</label>
-            <label><input type="radio" name="Målgruppe beskæftigelse" value="andet" />Andet</label>
-          </fieldset>
-
-          <fieldset>
-            <legend>Personlighed</legend>
-            <label
-              ><input type="radio" name="Målgruppe personlighed" value="ekstrovert" />Ekstrovert, udadvendt og
-              social</label
-            >
-            <label
-              ><input type="radio" name="Målgruppe personlighed" value="introvert" />Introvert, rolig og
-              eftertænksom</label
-            >
-            <label><input type="radio" name="Målgruppe personlighed" value="kreativ" />Kreativ og kunstnerisk</label>
-            <label
-              ><input type="radio" name="Målgruppe personlighed" value="praktisk" />Praktisk og problemløsende</label
-            >
-            <label><input type="radio" name="Målgruppe personlighed" value="ambitioes" />Ambitiøs og målrettet</label>
-            <label><input type="radio" name="Målgruppe personlighed" value="afslappet" />Afslappet og laid-back</label>
-            <label
-              ><input type="radio" name="Målgruppe personlighed" value="eventyrlysten" />Eventyrlysten og
-              nysgerrig</label
-            >
-          </fieldset>
-
-          <fieldset>
-            <legend>Værdier</legend>
-            <label
-              ><input type="radio" name="Målgruppe værdier" value="baeredygtighed" />Bæredygtighed og
-              miljøvenlighed</label
-            >
-            <label><input type="radio" name="Målgruppe værdier" value="innovation" />Innovation og teknologi</label>
-            <label><input type="radio" name="Målgruppe værdier" value="tradition" />Tradition og kvalitet</label>
-            <label><input type="radio" name="Målgruppe værdier" value="etik" />Samfundsansvar og etik</label>
-            <label><input type="radio" name="Målgruppe værdier" value="luksus" />Komfort og luksus</label>
-            <label
-              ><input type="radio" name="Målgruppe værdier" value="effektivitet" />Effektivitet og produktivitet</label
-            >
-            <label
-              ><input type="radio" name="Målgruppe værdier" value="socialt_ansvar" />Socialt ansvar og fællesskab</label
-            >
-          </fieldset>
-
-          <fieldset>
-            <legend>Foretrukne brands</legend>
-            <label
-              ><input type="radio" name="Målgruppe foretrukne brands" value="apple_nike_tesla" />Apple, Nike,
-              Tesla</label
-            >
-            <label
-              ><input type="radio" name="Målgruppe foretrukne brands" value="patagonia_ikea" />Patagonia, IKEA, Whole
-              Foods</label
-            >
-            <label><input type="radio" name="Målgruppe foretrukne brands" value="fastfashion" />H&M, Zara, ASOS</label>
-            <label
-              ><input type="radio" name="Målgruppe foretrukne brands" value="luksusbrands" />Luksusbrands som Chanel,
-              Louis Vuitton</label
-            >
-            <label
-              ><input type="radio" name="Målgruppe foretrukne brands" value="socialevirksomheder" />Sociale virksomheder
-              og non-profit organisationer</label
-            >
-            <label
-              ><input type="radio" name="Målgruppe foretrukne brands" value="freelance" />Freelance- eller
-              startup-virksomheder</label
-            >
-          </fieldset>
-
-          <fieldset>
-            <legend>Livsstil</legend>
-            <label><input type="radio" name="Målgruppe livsstil" value="aktiv" />Aktiv, sportsorienteret</label>
-            <label><input type="radio" name="Målgruppe livsstil" value="rejse" />Rejse- og eventyrlysten</label>
-            <label
-              ><input type="radio" name="Målgruppe livsstil" value="familie" />Fokuseret på hjemmet og familie</label
-            >
-            <label><input type="radio" name="Målgruppe livsstil" value="karriere" />Karriereorienteret</label>
-            <label
-              ><input type="radio" name="Målgruppe livsstil" value="socialtbevidst" />Socialt bevidst og
-              engageret</label
-            >
-            <label
-              ><input type="radio" name="Målgruppe livsstil" value="techinteresse" />Teknologiinteresseret og
-              gadgetorienteret</label
-            >
-          </fieldset>
-
-          <fieldset>
-            <legend>Udfordringer</legend>
-            <label><input type="radio" name="Målgruppe udfordringer" value="tidspres" />Tidspres og stress</label>
-            <label><input type="radio" name="Målgruppe udfordringer" value="oekonomi" />Økonomisk usikkerhed</label>
-            <label
-              ><input type="radio" name="Målgruppe udfordringer" value="familietid" />Manglende tid til familieliv og
-              hobbyer</label
-            >
-            <label
-              ><input type="radio" name="Målgruppe udfordringer" value="manglenderviden" />Manglende viden om et bestemt
-              område</label
-            >
-            <label
-              ><input type="radio" name="Målgruppe udfordringer" value="valg" />Forbrugernes overvældelse af valg</label
-            >
-            <label
-              ><input type="radio" name="Målgruppe udfordringer" value="inspiration" />Mangel på inspiration eller ideer
-              til livsstil</label
-            >
-          </fieldset>
-
-          <fieldset>
-            <legend>Købsprioriteter</legend>
-            <label><input type="radio" name="Målgruppe købsprioriteter" value="pris" />Pris og værdi</label>
-            <label
-              ><input type="radio" name="Målgruppe købsprioriteter" value="kvalitet" />Kvalitet og holdbarhed</label
-            >
-            <label><input type="radio" name="Målgruppe købsprioriteter" value="etik" />Bæredygtighed og etik</label>
-            <label><input type="radio" name="Målgruppe købsprioriteter" value="status" />Eksklusivitet og status</label>
-            <label
-              ><input type="radio" name="Målgruppe købsprioriteter" value="bekvemmelighed" />Bekvemmelighed og hurtig
-              levering</label
-            >
-            <label
-              ><input type="radio" name="Målgruppe købsprioriteter" value="anmeldelser" />Kundeanmeldelser og
-              anbefalinger</label
-            >
-          </fieldset>
-        </div>
       </div>
       <div class="question brand-card-section">
         <h3>Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?</h3>
@@ -660,7 +674,7 @@
         <MoodboardQuestion></MoodboardQuestion>
       </div>
     </section>
-    <section id="section-3">
+    <section id="section-4">
       <h2>Praktiske Detaljer</h2>
       <div class="question">
         <h3>Hvilke leverancer forventer du?</h3>
@@ -854,7 +868,7 @@
         <textarea name="Hvad er virksomhedens/organisationens budget til projektet?" id="budget" />
       </div>
     </section>
-    <section id="section-4">
+    <section id="section-5">
       <h2>Andet</h2>
       <div class="question">
         <label for="other"
@@ -866,8 +880,7 @@
           id="other" />
       </div>
     </section>
-    <section id="section-5">
-      <h2>Næsten færdig...</h2>
+    <section id="section-6">
       <div class="question finish-section">
         <Summary></Summary>
       </div>
@@ -1027,11 +1040,11 @@ section {
     margin-bottom: 100vh;
   }
 
-  &:not(#section-5) > :first-child {
+  &:not(#section-6) > :first-child {
     margin-top: 4rem;
   }
 
-  &:not(#section-5) > :last-child {
+  &:not(#section-6) > :last-child {
     margin-bottom: 4rem;
   }
 }
