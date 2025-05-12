@@ -2,7 +2,7 @@
   <div v-if="data.isFinished" class="summary-container">
     <Summary></Summary>
   </div>
-  <main v-else class="chat-container" id="chat-container">
+  <main v-else class="chat-container" id="chat-container" ref="chat-container">
     <div class="messages-container" id="message-scroller" ref="message-scroller">
       <ul class="messages">
         <h1 class="title message">
@@ -621,7 +621,7 @@ onMounted(() => {
             }
           }
 
-          if (data.currentId === 3 || data.currentId === 4) {
+          if (data.currentId === 4 || data.currentId === 5) {
             // Sidste to punkter
             characterLimit.value = 0;
           }
@@ -676,6 +676,7 @@ function sendNoneOfAbove() {
   selectedImages.value = selectedImages.value.slice(0, numberOfImagesSelected.value);
   selectedColors.value = [];
   forceText.value = true;
+  data.currentType = "text";
 }
 
 watch(
@@ -688,15 +689,8 @@ watch(
 
 async function waitAndScroll(forceScroll: boolean) {
   await nextTick();
-  // scrollToBottom();
+  scrollToBottom();
   setTextField();
-}
-
-function openInNewTab(url: string) {
-  var win = window.open(url, "_blank");
-  if (win) {
-    win.focus();
-  }
 }
 
 let companyName = "virksomhed/organisation";
@@ -996,18 +990,18 @@ function handleSubmit(text: string) {
 }
 
 const messageScroller = useTemplateRef("message-scroller");
-//const chatContainer = useTemplateRef("chat-container");
+const chatContainer = useTemplateRef("chat-container");
 
-// function scrollToBottom() {
-//   if (!chatContainer) return;
+function scrollToBottom() {
+  if (!chatContainer) return;
 
-//   if (messageScroller.value) {
-//       messageScroller.value?.scrollTo({
-//         top: messageScroller.value.scrollHeight,
-//         behavior: "smooth",
-//       });
-//     }
-// }
+  if (messageScroller.value) {
+      messageScroller.value?.scrollTo({
+        top: messageScroller.value.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+}
 
 function cleanIncomingString(input: string): string {
   return input
