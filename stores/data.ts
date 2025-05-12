@@ -67,7 +67,7 @@ export const useDataStore = defineStore("data", () => {
           ),
           newQuestion(12, "Hvilken farve repræsenterer bedst virksomhedens/organisations værdier?", "color-question"),
           newQuestion(
-            14,
+            13,
             "Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?",
             "multiple-choice-question"
           ),
@@ -77,21 +77,21 @@ export const useDataStore = defineStore("data", () => {
         id: 4,
         title: "Praktiske detaljer",
         questions: [
-          newQuestion(13, "Hvilke leverancer forventer du? (hvilke opgaver skal designeren hjælpe dig med?)", "multiple-choice-question"),
-          newQuestion(14, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "text"),
-          newQuestion(15, "Hvad er virksomhedens/organisationens budget til projektet?", "multiple-choice-question"),
+          newQuestion(14, "Hvilke leverancer forventer du? (hvilke opgaver skal designeren hjælpe dig med?)", "multiple-choice-question"),
+          newQuestion(15, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "multiple-choice-question"),
+          newQuestion(16, "Hvad er virksomhedens/organisationens budget til projektet?", "multiple-choice-question"),
         ],
       },
       {
         id: 5,
         title: "Andet",
-        questions: [newQuestion(16, "Er der andet, du gerne vil tilføje?", "text")],
+        questions: [newQuestion(17, "Er der andet, du gerne vil tilføje?", "text")],
       },
       {
         id: 6,
         title: "Færdig",
         questions: [
-          newQuestion(17, "Tak for at deltage. Nu vil vi gerne høre lidt om dine oplevelser:", "link-question"),
+          newQuestion(18, "Tak for at deltage. Nu vil vi gerne høre lidt om dine oplevelser:", "link-question"),
         ],
       },
     ],
