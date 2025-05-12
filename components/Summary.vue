@@ -1,14 +1,10 @@
 <template>
   <div class="center-content summary-container" ref="summary">
     <main>
-      <p style="padding-top: 4rem">
+      <p>
         Du har nu oplyst forskellige informationer om din organisation. Vi har lavet fire forslag til måder, du kan
-        vælge at gemme disse oplysninger på, så du kan medbringe dem til mødet med designeren eller bruge dem som
-        reference for dig selv. <br />
-        <br />
-        Du præsenteres nu for de forskellige forslag og bedes om lidt give feedback på, hvad du synes om de forskellige
-        versioner, efter du har gennemgået dem. <br /><br />
-        Spørgeskemaet kan tilgås på sidste side nedenfor.
+        vælge at præsentere disse oplysninger på, så du kan medbringe dem til mødet med designeren eller bruge dem som
+        reference for dig selv.
       </p>
       <div v-if="summariesLoaded && !loading" class="summary-contents">
         <div class="navigator">
@@ -53,7 +49,7 @@
           <div v-for="(summary, index) in summaries" class="summary" :id="`${summary}-${index}`">
             <div v-for="section in summary.sections">
               <h3>{{ section.title }}</h3>
-              <p>{{ section.content }}</p>
+              <p>{{ section.content.split("~")[0].trim() }}</p>
             </div>
           </div>
           <div class="summary">
@@ -134,17 +130,17 @@ function getSummaryTypeName(summaries: SummarySchemaType[], index: number) {
 
 function getSummaryTypeExplanation(summaries: SummarySchemaType[], index: number) {
   if (index == summaries.length) {
-    return "Du kan åbne spørgeskemaet her, så du kan give feedback på de forskellige versioner.";
+    return "Du kan åbne spørgeskemaet her, så du kan give feedback på programmet.";
   }
   switch (summaries[index].type) {
     case "basic":
-      return "I denne version kan du gemme et dokument, der indeholder en opsummering af dine oplysninger, opdelt i overskrifter og emner.";
+      return "Denne version indeholder en opsummering af dine oplysninger, opdelt i overskrifter og emner.";
     case "interpretation":
-      return "I denne version kan du gemme et dokument, der indeholder en fortolkning af dine oplysninger, set fra et designperspektiv, evt. med forslag til, hvordan man kunne arbejde med din case.";
+      return "Denne version indeholder en fortolkning af dine oplysninger, set fra et designperspektiv, evt. med forslag til, hvordan man kunne arbejde med din case.";
     case "questionSuggestions":
-      return "I denne version kan du gemme et dokument med spørgsmål til dine oplysninger, som du kan reflektere over eller tage med til mødet med designeren for at drøfte dem sammen.";
+      return "Denne version indeholder spørgsmål til dine oplysninger, som du kan reflektere over eller tage med til mødet med designeren for at drøfte dem sammen.";
     case "raw":
-      return "I denne version kan du gemme et dokument, der indeholder alle spørgsmål og svar præcist som de er givet.";
+      return "Denne version indeholder alle spørgsmål og svar præcist som de er givet.";
     default:
       return "";
   }
@@ -160,6 +156,7 @@ const summaries = ref<SummarySchemaType[]>([
 ]);
 
 function scrollToSummary(index: number) {
+  scrollElementIntoContainerTop(document.querySelector("#section-6"), document.querySelector(".summary-contents"));
   let summariesElements = summaryScroller.value?.querySelectorAll(".summary");
   summaryScroller.value?.scrollTo({
     behavior: "smooth",
@@ -263,7 +260,7 @@ button {
   align-items: center;
 
   &.nav {
-    margin-top: 2rem;
+    margin-top: 0.8rem;
     background: none;
     color: var(--color-black);
     &:hover {
@@ -292,15 +289,19 @@ button {
 }
 
 .navigator {
+  position: sticky;
+  top: -2rem;
+  background: var(--color-background);
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: start;
   gap: 2rem;
   border-bottom: 1px solid var(--color-black);
-  margin-bottom: 2rem;
+  border-top: 1px solid var(--color-black);
+  margin: 2rem 0;
 
-  padding-top: 2rem;
+  padding: 2rem 0;
 
   & span {
     text-transform: capitalize;
@@ -309,9 +310,12 @@ button {
 
 .explanation {
   & p {
+    font-style: italic;
+    font-size: 0.8rem;
     max-width: 35rem;
     text-wrap: balance;
     text-align: center;
+    margin-bottom: 0;
   }
 }
 

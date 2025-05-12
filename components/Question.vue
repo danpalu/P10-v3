@@ -1,7 +1,7 @@
 <template>
   <div class="question" :class="`${isLastQuestion ? 'last-question' : ''}`">
     <template v-if="data.questionnaire.type == 'survey' && !isLastQuestion">
-      <label :for="`question-${question.id}`"> {{ question.id }}. {{ question.title }} </label>
+      <label :for="`question-${question.id}`">{{ question.title }} </label>
       <textarea :id="`question-${question.id}`" @input="saveAnswer($event)" />
     </template>
     <div></div>

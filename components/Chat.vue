@@ -413,9 +413,11 @@
     </div>
 
     <ClientOnly>
-      <button class="next-question button" :disabled="checkDisabled()" @click.prevent="nextQuestion()">
-        <span> Spring over <i class="arrow right"></i></span>
-      </button>
+      <div class="next-question-container">
+        <button class="next-question button" :disabled="checkDisabled()" @click.prevent="nextQuestion()">
+          <span> Spring over <i class="arrow right"></i></span>
+        </button>
+      </div>
       <div class="form-container">
         <form id="input-form" @submit.prevent="handleSubmit(input)" class="input">
           <textarea
@@ -808,10 +810,9 @@ watch(
       currentPlaceholder.value = "";
     } else {
       // Set question type
-      if (data.questionnaire.type == "chat"){
+      if (data.questionnaire.type == "chat") {
         currentPlaceholder.value = "Skriv dit svar her...";
-      }
-      else if (data.currentType === "text") {
+      } else if (data.currentType === "text") {
         currentPlaceholder.value = "Skriv dit svar her...";
       } else if (data.currentType === "multiple-choice-question") {
         currentPlaceholder.value = "Vælg en eller flere af ovenstående muligheder";
@@ -1045,6 +1046,13 @@ textarea {
 .disabled {
   opacity: 0.7;
   cursor: default;
+}
+
+.next-question-container {
+  width: 100%;
+  max-width: 80ch;
+  display: flex;
+  justify-content: end;
 }
 
 .color-options {
@@ -1283,6 +1291,7 @@ button:hover:not(:disabled):not(.branding-option) {
 .chat-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
   position: relative;
   transition: height 0.3s ease;
@@ -1303,16 +1312,16 @@ button:hover:not(:disabled):not(.branding-option) {
   margin-bottom: auto;
 }
 
-/* Hide the scrollbar */
+/* Hide the scrollbar
 .messages-container::-webkit-scrollbar {
   display: none;
 }
 
-/* Fallback for other browsers */
+
 .messages-container {
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
-}
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+} */
 
 .button-back-container {
   height: fit-content;
@@ -1351,7 +1360,7 @@ button.next-question {
 }
 
 .messages {
-  max-width: 100%;
+  max-width: 80ch;
   width: 100%;
   list-style: none;
   padding: 20px 0;
@@ -1456,9 +1465,9 @@ button.next-question {
 }
 
 .input {
+  max-width: 80ch;
   width: 100%;
   height: fit-content;
-  max-width: 100%;
   display: flex;
   flex-direction: row;
   border-radius: 30px;
