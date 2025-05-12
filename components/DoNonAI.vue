@@ -30,20 +30,8 @@
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi drømmer om en verden, hvor.." />
         </label>
         <label
-          >Vi tror på, at det vigtigste er...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi tror på, at det vigtigste er...?" />
-        </label>
-        <label
           >Vi arbejder for at...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi arbejder for at...?" />
-        </label>
-        <label
-          >Vi vil være dem, der...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi vil være dem, der...?" />
-        </label>
-        <label
-          >Vores mål er at gøre det muligt for...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vores mål er at gøre det muligt for...?" />
         </label>
         <label
           >Vi ønsker at ændre måden, folk tænker om...<textarea
@@ -54,15 +42,7 @@
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi er drevet af en tro på, at...?" />
         </label>
         <label
-          >Vi står op om morgenen for at...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi står op om morgenen for at.." />
-        </label>
-        <label
-          >Vi håber, at vores arbejde vil føre til...<textarea
-            name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi håber, at vores arbejde vil føre til...?" />
-        </label>
-        <label
-          >Vi prøver ikke at være de største - men de mest...<textarea
+          >Vi prøver ikke at være de største - men de...<textarea
             name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi prøver ikke at være de største - men de mest...?" />
         </label>
       </div>
@@ -86,36 +66,6 @@
           Hvem stod bag opstarten, og hvilken baggrund havde de?
           <textarea
             name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvem stod bag opstarten, og hvilken baggrund havde de?" />
-        </label>
-
-        <label>
-          Er der en konkret oplevelse eller aha-øjeblik, der satte gang i det hele?
-          <textarea
-            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Er der en konkret oplevelse eller aha-øjeblik, der satte gang i det hele?" />
-        </label>
-
-        <label>
-          Hvad har været de største milepæle eller udfordringer undervejs?
-          <textarea
-            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad har været de største milepæle eller udfordringer undervejs?" />
-        </label>
-
-        <label>
-          Hvordan har virksomheden udviklet sig siden starten - og hvorfor?
-          <textarea
-            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvordan har virksomheden udviklet sig siden starten - og hvorfor?" />
-        </label>
-
-        <label>
-          Har der været vigtige samarbejder, kundetyper eller begivenheder, der har formet jer?
-          <textarea
-            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Har der været vigtige samarbejder, kundetyper eller begivenheder, der har formet jer?" />
-        </label>
-
-        <label>
-          Hvordan har jeres værdier eller mission været med til at styre jeres vej?
-          <textarea
-            name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvordan har jeres værdier eller mission været med til at styre jeres vej?" />
         </label>
 
         <label>
@@ -334,51 +284,6 @@
               <label
                 ><input type="radio" name="Målgruppe værdier" value="socialt_ansvar" />Socialt ansvar og
                 fællesskab</label
-              >
-            </fieldset>
-
-            <fieldset>
-              <legend>Foretrukne brands</legend>
-              <label
-                ><input type="radio" name="Målgruppe foretrukne brands" value="apple_nike_tesla" />Apple, Nike,
-                Tesla</label
-              >
-              <label
-                ><input type="radio" name="Målgruppe foretrukne brands" value="patagonia_ikea" />Patagonia, IKEA, Whole
-                Foods</label
-              >
-              <label
-                ><input type="radio" name="Målgruppe foretrukne brands" value="fastfashion" />H&M, Zara, ASOS</label
-              >
-              <label
-                ><input type="radio" name="Målgruppe foretrukne brands" value="luksusbrands" />Luksusbrands som Chanel,
-                Louis Vuitton</label
-              >
-              <label
-                ><input type="radio" name="Målgruppe foretrukne brands" value="socialevirksomheder" />Sociale
-                virksomheder og non-profit organisationer</label
-              >
-              <label
-                ><input type="radio" name="Målgruppe foretrukne brands" value="freelance" />Freelance- eller
-                startup-virksomheder</label
-              >
-            </fieldset>
-
-            <fieldset>
-              <legend>Livsstil</legend>
-              <label><input type="radio" name="Målgruppe livsstil" value="aktiv" />Aktiv, sportsorienteret</label>
-              <label><input type="radio" name="Målgruppe livsstil" value="rejse" />Rejse- og eventyrlysten</label>
-              <label
-                ><input type="radio" name="Målgruppe livsstil" value="familie" />Fokuseret på hjemmet og familie</label
-              >
-              <label><input type="radio" name="Målgruppe livsstil" value="karriere" />Karriereorienteret</label>
-              <label
-                ><input type="radio" name="Målgruppe livsstil" value="socialtbevidst" />Socialt bevidst og
-                engageret</label
-              >
-              <label
-                ><input type="radio" name="Målgruppe livsstil" value="techinteresse" />Teknologiinteresseret og
-                gadgetorienteret</label
               >
             </fieldset>
 
