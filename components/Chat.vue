@@ -1312,16 +1312,14 @@ button:hover:not(:disabled):not(.branding-option) {
   margin-bottom: auto;
 }
 
-/* Hide the scrollbar
 .messages-container::-webkit-scrollbar {
   display: none;
 }
 
-
 .messages-container {
   -ms-overflow-style: none; 
   scrollbar-width: none; 
-} */
+}
 
 .button-back-container {
   height: fit-content;
