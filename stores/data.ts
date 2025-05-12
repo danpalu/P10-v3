@@ -77,7 +77,7 @@ export const useDataStore = defineStore("data", () => {
         id: 4,
         title: "Praktiske detaljer",
         questions: [
-          newQuestion(14, "Hvilke leverancer forventer du? (hvilke opgaver skal designeren hjælpe dig med?)", "multiple-choice-question"),
+          newQuestion(14, "Hvilke leverancer forventer du? (hvad skal designeren producere for virksomheden/organisationen?)", "multiple-choice-question"),
           newQuestion(15, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "multiple-choice-question"),
           newQuestion(16, "Hvad er virksomhedens/organisationens budget til projektet?", "multiple-choice-question"),
         ],
