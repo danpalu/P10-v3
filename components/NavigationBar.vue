@@ -62,7 +62,7 @@ watch(
       });
       progress[index] =
         (numberQuestionsCompleted / section.questions.length) * (1 / (data.questionnaire.sections.length - 1));
-      if (progress[index] > 0.249) {
+      if (progress[index] >= 0.2) {
         selectedSectionIndex.value = section.id + 1;
       }
     });

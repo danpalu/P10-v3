@@ -778,7 +778,7 @@ function sendMoodboardSelection() {
 }
 
 let brandCardQuestionsAsked = ref<number>(1);
-const brandCardQuestionsToAsk = 3;
+const brandCardQuestionsToAsk = 4;
 const brandCardOptionsUsed = ref<string[]>([]);
 
 function sendBrandCardAnswer(text: string) {
