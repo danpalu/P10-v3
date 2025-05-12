@@ -32,7 +32,8 @@ function start() {
 <template>
   <Introduction v-if="showIntroduction" @start="start" :typeIsSet="typeIsSet"></Introduction>
   <template v-else>
-    <NavigationBar :sections="data.questionnaire.sections"></NavigationBar>
+    <NavigationBar v-if="data.questionnaire.type == 'do-non-ai' || data.questionnaire.type == 'survey'" :sections="data.questionnaire.sections"></NavigationBar>
+    <AINavigationBar v-else :sections="data.questionnaire.sections"></AINavigationBar>
     <Questionnaire :questionnaire="data.questionnaire">
       <QuestionnaireSection v-for="section in data.questionnaire.sections" :section="section">
         <Question v-for="question in section.questions" :question="question"></Question>

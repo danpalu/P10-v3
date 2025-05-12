@@ -1,21 +1,22 @@
 <template>
   <nav class="center-content">
     <ul>
-      <li v-for="section in sections" class="section" :key="section.id">
+      <li v-for="section in sections" class="section">
         <a
           class="section-link"
           :href="`#section-${section.id}`"
-          @click="handleSectionClick(section.id)"
-          :class="[
-            selectedSectionIndex === section.id ? 'selected' : '',
-            selectedSectionIndex > section.id ? 'completed' : '',
-            data.questionnaire.type === 'chat' ? 'disable-link' : ''
-          ]"
-        >
+          @click="
+            data.questionnaire.type == 'survey' || data.questionnaire.type == 'do-non-ai'
+              ? sectionClick(section.id)
+              : null
+          "
+          :class="`${selectedSectionIndex === section.id ? 'selected' : ''} ${
+            selectedSectionIndex > section.id ? 'completed' : ''
+          }
+          ${data.questionnaire.type == 'chat' ? 'disable-link' : ''}`">
           {{ section.id }}. {{ section.title }}
         </a>
       </li>
-
       <div class="indicator">
         <div class="container">
           <div class="indicator-inner-track"></div>
@@ -32,57 +33,70 @@ const props = defineProps<{
 }>();
 
 const data = useDataStore();
+
 const selectedSectionIndex = ref<number>(1);
+
 const indicator = useTemplateRef("indicator");
 
-function handleSectionClick(id: number) {
-  if (data.questionnaire.type === "survey" || data.questionnaire.type === "do-non-ai") {
-    selectedSectionIndex.value = id;
-    const height = (id - 1) / (props.sections.length - 1);
-    indicator.value?.style.setProperty("height", `${height * 100}%`);
+let totalNumberOfQuestions = 0;
+props.sections.forEach((section) => {
+  section.questions.forEach(() => totalNumberOfQuestions++);
+});
+
+const progress: number[] = [];
+let height = ref(0);
+watch(
+  () => data.currentQuestion,
+  (newValue) => {
+    let currentQuestionFound = false;
+    data.questionnaire.sections.forEach((section, index) => {
+      if (currentQuestionFound) return;
+      let numberQuestionsCompleted = 0;
+      section.questions.forEach((question) => {
+        if (currentQuestionFound) return;
+        if (question == data.currentQuestion) {
+          currentQuestionFound = true;
+        } else {
+          numberQuestionsCompleted++;
+        }
+      });
+      progress[index] =
+        (numberQuestionsCompleted / section.questions.length) * (1 / (data.questionnaire.sections.length - 1));
+      if (progress[index] >= 0.2) {
+        selectedSectionIndex.value = section.id + 1;
+      }
+    });
+    height.value = 0;
+
+    progress.forEach((value) => (height.value += value));
+    indicator.value?.style.setProperty("height", `${height.value * 100}%`);
   }
+);
+
+function sectionClick(id: number) {
+  selectedSectionIndex.value = id;
+  const calculatedHeight = (selectedSectionIndex.value - 1) / (props.sections.length - 1);
+  indicator.value?.style.setProperty("height", `${calculatedHeight * 100}%`);
 }
 
 onMounted(() => {
   indicator.value?.style.setProperty("grid-row", `1 / span ${props.sections.length}`);
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = parseInt(entry.target.getAttribute("data-section-id") || "0");
-          if (!isNaN(id)) {
-            selectedSectionIndex.value = id;
-            const height = (id - 1) / (props.sections.length - 1);
-            indicator.value?.style.setProperty("height", `${height * 100}%`);
-          }
-        }
-      });
-    },
-    {
-      root: null,
-      threshold: 0.6,
-    }
-  );
-
-  props.sections.forEach((section) => {
-    const el = document.querySelector(`#section-${section.id}`);
-    if (el) {
-      el.setAttribute("data-section-id", section.id.toString());
-      observer.observe(el);
-    }
-  });
 });
 </script>
 
 <style scoped>
+.type-container {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
 nav {
   padding: 0 40px;
   justify-content: start;
   min-height: 100dvh;
   background-color: var(--color-black);
 }
-
 nav ul {
   display: grid;
   gap: 5rem;

@@ -12,7 +12,7 @@ export default defineWebSocketHandler({
     const question: Question = messageParsed.question;
     const previousAnswers: string = messageParsed.previousAnswers;
     let companyName: string = messageParsed.companyName;
-    if (companyName === undefined) companyName = "virksomhed/organisation"; // Default value if companyName is not provided
+    if (companyName === undefined) companyName = "organisation"; // Default value if companyName is not provided
     if (question.type !== "text" && question.type !== "link-question") question.type = "text";
     const messageHistory: ChatMessage[] = [];
     messages.forEach((msg) => {
@@ -34,9 +34,9 @@ export default defineWebSocketHandler({
           role: "system",
           content: `You are a helpful design assistant, tasked with preparing the user for the first talk with a brand / graphical designer. 
           
-          You help the user answer the question: "${question.title}" for their company ${companyName}. FOCUS ONLY ON THIS QUESTION. Instead of writing virksomhed/organisation, ALWAYS write ${companyName}.
+          You help the user answer the question: "${question.title}" for their company ${companyName}. FOCUS ONLY ON THIS QUESTION. Instead of writing organisation, ALWAYS write ${companyName}.
 
-          You don't have to phrase the question exactly as stated here. You may also add a bit of conversational text, max 10 words.
+          You don't have to phrase the question exactly as stated here. You may also add a bit of conversational text, max 30 words.
           
           The user has previously answered other questions. These answers can be seen in the following json formatted text: ${previousAnswers}.
           

@@ -31,20 +31,8 @@
               name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi drømmer om en verden, hvor.." />
           </label>
           <label
-            >Vi tror på, at det vigtigste er...<textarea
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi tror på, at det vigtigste er...?" />
-          </label>
-          <label
             >Vi arbejder for at...<textarea
               name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi arbejder for at...?" />
-          </label>
-          <label
-            >Vi vil være dem, der...<textarea
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi vil være dem, der...?" />
-          </label>
-          <label
-            >Vores mål er at gøre det muligt for...<textarea
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vores mål er at gøre det muligt for...?" />
           </label>
           <label
             >Vi ønsker at ændre måden, folk tænker om...<textarea
@@ -55,15 +43,7 @@
               name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi er drevet af en tro på, at...?" />
           </label>
           <label
-            >Vi står op om morgenen for at...<textarea
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi står op om morgenen for at.." />
-          </label>
-          <label
-            >Vi håber, at vores arbejde vil føre til...<textarea
-              name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi håber, at vores arbejde vil føre til...?" />
-          </label>
-          <label
-            >Vi prøver ikke at være de største - men de mest...<textarea
+            >Vi prøver ikke at være de største - men de...<textarea
               name="Hvordan vil du beskrive jeres vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter? Vi prøver ikke at være de største - men de mest...?" />
           </label>
         </div>
@@ -91,36 +71,6 @@
           </label>
 
           <label>
-            Er der en konkret oplevelse eller aha-øjeblik, der satte gang i det hele?
-            <textarea
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Er der en konkret oplevelse eller aha-øjeblik, der satte gang i det hele?" />
-          </label>
-
-          <label>
-            Hvad har været de største milepæle eller udfordringer undervejs?
-            <textarea
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad har været de største milepæle eller udfordringer undervejs?" />
-          </label>
-
-          <label>
-            Hvordan har virksomheden udviklet sig siden starten - og hvorfor?
-            <textarea
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvordan har virksomheden udviklet sig siden starten - og hvorfor?" />
-          </label>
-
-          <label>
-            Har der været vigtige samarbejder, kundetyper eller begivenheder, der har formet jer?
-            <textarea
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Har der været vigtige samarbejder, kundetyper eller begivenheder, der har formet jer?" />
-          </label>
-
-          <label>
-            Hvordan har jeres værdier eller mission været med til at styre jeres vej?
-            <textarea
-              name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvordan har jeres værdier eller mission været med til at styre jeres vej?" />
-          </label>
-
-          <label>
             Hvilke vendepunkter har ændret jeres retning eller selvforståelse?
             <textarea
               name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvilke vendepunkter har ændret jeres retning eller selvforståelse?" />
@@ -131,10 +81,6 @@
             <textarea
               name="Hvad er historien bag din virksomhed/organisation - hvorfor blev den startet og hvad har formet den undervejs? Hvad er I særligt stolte af, når I ser tilbage på jeres rejse?" />
           </label>
-        </div>
-        <div class="question">
-          <h3>Hvilke farver vil du associere med jer?</h3>
-          <ColorQuestion></ColorQuestion>
         </div>
         <div class="question">
           <h3>Hvad vil du gerne have, at folk siger om jer?</h3>
@@ -223,6 +169,9 @@
             <textarea name="Hvad vil du gerne have, at folk siger om Jer? review-other" />
           </label>
         </div>
+      </div>
+      <div class="center-content">
+        <a class="button next_button" href="#section-2"> Gå til næste sektion </a>
       </div>
     </section>
     <section id="section-2">
@@ -347,52 +296,6 @@
               </fieldset>
 
               <fieldset>
-                <legend>Foretrukne brands</legend>
-                <label
-                  ><input type="radio" name="Målgruppe foretrukne brands" value="apple_nike_tesla" />Apple, Nike,
-                  Tesla</label
-                >
-                <label
-                  ><input type="radio" name="Målgruppe foretrukne brands" value="patagonia_ikea" />Patagonia, IKEA,
-                  Whole Foods</label
-                >
-                <label
-                  ><input type="radio" name="Målgruppe foretrukne brands" value="fastfashion" />H&M, Zara, ASOS</label
-                >
-                <label
-                  ><input type="radio" name="Målgruppe foretrukne brands" value="luksusbrands" />Luksusbrands som
-                  Chanel, Louis Vuitton</label
-                >
-                <label
-                  ><input type="radio" name="Målgruppe foretrukne brands" value="socialevirksomheder" />Sociale
-                  virksomheder og non-profit organisationer</label
-                >
-                <label
-                  ><input type="radio" name="Målgruppe foretrukne brands" value="freelance" />Freelance- eller
-                  startup-virksomheder</label
-                >
-              </fieldset>
-
-              <fieldset>
-                <legend>Livsstil</legend>
-                <label><input type="radio" name="Målgruppe livsstil" value="aktiv" />Aktiv, sportsorienteret</label>
-                <label><input type="radio" name="Målgruppe livsstil" value="rejse" />Rejse- og eventyrlysten</label>
-                <label
-                  ><input type="radio" name="Målgruppe livsstil" value="familie" />Fokuseret på hjemmet og
-                  familie</label
-                >
-                <label><input type="radio" name="Målgruppe livsstil" value="karriere" />Karriereorienteret</label>
-                <label
-                  ><input type="radio" name="Målgruppe livsstil" value="socialtbevidst" />Socialt bevidst og
-                  engageret</label
-                >
-                <label
-                  ><input type="radio" name="Målgruppe livsstil" value="techinteresse" />Teknologiinteresseret og
-                  gadgetorienteret</label
-                >
-              </fieldset>
-
-              <fieldset>
                 <legend>Udfordringer</legend>
                 <label><input type="radio" name="Målgruppe udfordringer" value="tidspres" />Tidspres og stress</label>
                 <label><input type="radio" name="Målgruppe udfordringer" value="oekonomi" />Økonomisk usikkerhed</label>
@@ -437,6 +340,9 @@
           </div>
         </div>
       </div>
+      <div class="center-content">
+        <a class="button next_button" href="#section-3"> Gå til næste sektion </a>
+      </div>
     </section>
     <section id="section-3">
       <div class="section-wrapper">
@@ -450,214 +356,250 @@
               value="stærkere og mere genkendeligt brand" />
             At skabe et stærkere og mere genkendeligt brand
           </label>
+          <h2>Branding</h2>
+          <div class="question">
+            <h3>Hvad ønsker I at opnå med en ny visuel identitet eller design?</h3>
+            <label>
+              <input
+                type="checkbox"
+                name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+                value="stærkere og mere genkendeligt brand" />
+              At skabe et stærkere og mere genkendeligt brand
+            </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
-              value="tiltrække ny målgruppe eller marked" />
-            At tiltrække en ny målgruppe eller marked
-          </label>
+            <label>
+              <input
+                type="checkbox"
+                name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+                value="tiltrække ny målgruppe eller marked" />
+              At tiltrække en ny målgruppe eller marked
+            </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
-              value="opdatere image og signalere modernitet" />
-            At opdatere virksomhedens image og signalere modernitet
-          </label>
+            <label>
+              <input
+                type="checkbox"
+                name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+                value="opdatere image og signalere modernitet" />
+              At opdatere virksomhedens image og signalere modernitet
+            </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
-              value="styrke værdier og mission gennem design" />
-            At styrke virksomhedens værdier og mission gennem design
-          </label>
+            <label>
+              <input
+                type="checkbox"
+                name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+                value="styrke værdier og mission gennem design" />
+              At styrke virksomhedens værdier og mission gennem design
+            </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
-              value="sammenhængende og professionel oplevelse" />
-            At skabe en mere sammenhængende og professionel visuel oplevelse
-          </label>
+            <label>
+              <input
+                type="checkbox"
+                name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+                value="sammenhængende og professionel oplevelse" />
+              At skabe en mere sammenhængende og professionel visuel oplevelse
+            </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
-              value="differentiere os fra konkurrenterne" />
-            At differentiere os fra konkurrenterne i markedet
-          </label>
+            <label>
+              <input
+                type="checkbox"
+                name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+                value="differentiere os fra konkurrenterne" />
+              At differentiere os fra konkurrenterne i markedet
+            </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
-              value="lettere og mere effektiv kommunikation" />
-            At gøre vores kommunikation lettere at forstå og mere effektiv
-          </label>
+            <label>
+              <input
+                type="checkbox"
+                name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+                value="lettere og mere effektiv kommunikation" />
+              At gøre vores kommunikation lettere at forstå og mere effektiv
+            </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
-              value="formidle kultur og personlighed gennem design" />
-            At formidle vores kultur og personlighed gennem design
-          </label>
+            <label>
+              <input
+                type="checkbox"
+                name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+                value="formidle kultur og personlighed gennem design" />
+              At formidle vores kultur og personlighed gennem design
+            </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
-              value="genkendelse og hukommelse af brand" />
-            At gøre det lettere for kunder at genkende og huske vores brand
-          </label>
+            <label>
+              <input
+                type="checkbox"
+                name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+                value="genkendelse og hukommelse af brand" />
+              At gøre det lettere for kunder at genkende og huske vores brand
+            </label>
 
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
-              value="fremme tillid og troværdighed" />
-            At fremme tillid og troværdighed i vores målgrupper
-          </label>
-          <label
-            >Andet:
+            <label>
+              <input
+                type="checkbox"
+                name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
+                value="fremme tillid og troværdighed" />
+              At fremme tillid og troværdighed i vores målgrupper
+            </label>
+            <label
+              >Andet:
 
-            <textarea name="Hvad ønsker I at opnå med en ny visuel identitet eller design? Other" />
-          </label>
-        </div>
-        <div class="question">
-          <h3>Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem?</h3>
-          <label>
-            Vores primære konkurrenter er...
+              <textarea name="Hvad ønsker I at opnå med en ny visuel identitet eller design? Other" />
+            </label>
+          </div>
+          <div class="question">
+            <h3>Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem?</h3>
+            <label>
+              Vores primære konkurrenter er...
+              <textarea
+                name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vores primære konkurrenter er...?" />
+            </label>
+
+            <label>
+              Den største forskel mellem vores virksomhed og vores konkurrenter er...
+              <textarea
+                name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Den største forskel mellem vores virksomhed og vores konkurrenter er...?" />
+            </label>
+
+            <label>
+              Vi skiller os ud fra konkurrenterne ved at...
+              <textarea
+                name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi skiller os ud fra konkurrenterne ved at..." />
+            </label>
+
+            <label>
+              Kunder vælger os frem for vores konkurrenter, fordi...
+              <textarea
+                name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Kunder vælger os frem for vores konkurrenter, fordi..." />
+            </label>
+
+            <label>
+              Vi har en fordel i forhold til vores konkurrenter, fordi...
+              <textarea
+                name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi har en fordel i forhold til vores konkurrenter, fordi..." />
+            </label>
+          </div>
+          <div class="question brand-card-section">
+            <h3>Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?</h3>
+
+            <div class="brand-card-scroller" ref="brand-card-scroller">
+              <fieldset class="brand-card">
+                <label>Venlig<input type="radio" name="friendly or professional" value="venlig" /></label>
+                <label>Professionel<input type="radio" name="friendly or professional" value="professionel" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Modig<input type="radio" name="bold or safe" value="modig" /></label>
+                <label>Tryghedsskabende<input type="radio" name="bold or safe" value="tryghedsskabende" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Kreativ<input type="radio" name="creative or structured" value="kreativ" /></label>
+                <label>Struktureret<input type="radio" name="creative or structured" value="struktureret" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Legende<input type="radio" name="playful or serious" value="legende" /></label>
+                <label>Seriøs<input type="radio" name="playful or serious" value="seriøs" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Traditionel<input type="radio" name="traditional or innovative" value="traditionel" /></label>
+                <label>Innovativ<input type="radio" name="traditional or innovative" value="innovativ" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Personlig<input type="radio" name="personal or neutral" value="personlig" /></label>
+                <label>Neutral<input type="radio" name="personal or neutral" value="neutral" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Eksklusiv<input type="radio" name="exclusive or accessible" value="eksklusiv" /></label>
+                <label>Tilgængelig<input type="radio" name="exclusive or accessible" value="tilgængelig" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Stilren<input type="radio" name="sleek or colorful" value="stilren" /></label>
+                <label>Farverig<input type="radio" name="sleek or colorful" value="farverig" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Direkte<input type="radio" name="direct or embracing" value="direkte" /></label>
+                <label>Omfavnende<input type="radio" name="direct or embracing" value="omfavnende" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Varm<input type="radio" name="warm or cool" value="varm" /></label>
+                <label>Kølig<input type="radio" name="warm or cool" value="kølig" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Spontan<input type="radio" name="spontaneous or thoughtful" value="spontan" /></label>
+                <label>Gennemtænkt<input type="radio" name="spontaneous or thoughtful" value="gennemtænkt" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Empatisk<input type="radio" name="empathetic or efficient" value="empatisk" /></label>
+                <label>Effektiv<input type="radio" name="empathetic or efficient" value="effektiv" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Urban<input type="radio" name="urban or nature" value="urban" /></label>
+                <label>Naturnær<input type="radio" name="urban or nature" value="naturnær" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Nysgerrig<input type="radio" name="curious or targeted" value="nysgerrig" /></label>
+                <label>Målrettet<input type="radio" name="curious or targeted" value="målrettet" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Sjov<input type="radio" name="fun or sophisticated" value="sjov" /></label>
+                <label>Sofistikeret<input type="radio" name="fun or sophisticated" value="sofistikeret" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Praktisk<input type="radio" name="practical or inspiring" value="praktisk" /></label>
+                <label>Inspirerende<input type="radio" name="practical or inspiring" value="inspirerende" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Afslappet<input type="radio" name="relaxed or formal" value="afslappet" /></label>
+                <label>Formel<input type="radio" name="relaxed or formal" value="formel" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Analog<input type="radio" name="analog or digital" value="analog" /></label>
+                <label>Digital<input type="radio" name="analog or digital" value="digital" /></label>
+              </fieldset>
+
+              <fieldset class="brand-card">
+                <label>Minimalistisk<input type="radio" name="minimalistic or detailed" value="minimalistisk" /></label>
+                <label>Detaljeret<input type="radio" name="minimalistic or detailed" value="detaljeret" /></label>
+              </fieldset>
+            </div>
+            <button
+              ref="brand-previous"
+              class="previous"
+              title="Reset"
+              @click.prevent="
+                () => {
+                  selectedIndexBrandCard = 0;
+                  scrollToBrandCardSection(selectedIndexBrandCard);
+                }
+              ">
+              Start forfra
+            </button>
+          </div>
+          <div class="question">
+            <label for="symbols"
+              >Er der særlige symboler, ikoner, farver eller andet visuelt, der har en særlig betydning for din
+              virksomhed/organisation?
+            </label>
             <textarea
-              name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vores primære konkurrenter er...?" />
-          </label>
-
-          <label>
-            Den største forskel mellem vores virksomhed og vores konkurrenter er...
-            <textarea
-              name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Den største forskel mellem vores virksomhed og vores konkurrenter er...?" />
-          </label>
-
-          <label>
-            Vi skiller os ud fra konkurrenterne ved at...
-            <textarea
-              name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi skiller os ud fra konkurrenterne ved at..." />
-          </label>
-
-          <label>
-            Kunder vælger os frem for vores konkurrenter, fordi...
-            <textarea
-              name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Kunder vælger os frem for vores konkurrenter, fordi..." />
-          </label>
-
-          <label>
-            Vi har en fordel i forhold til vores konkurrenter, fordi...
-            <textarea
-              name="Hvem er jeres konkurrenter, og hvordan adskiller I jer fra dem? Vi har en fordel i forhold til vores konkurrenter, fordi..." />
-          </label>
-        </div>
-        <div class="question brand-card-section">
-          <h3>Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?</h3>
-
-          <div class="brand-card-scroller" ref="brand-card-scroller">
-            <fieldset class="brand-card">
-              <label>Venlig<input type="radio" name="friendly or professional" value="venlig" /></label>
-              <label>Professionel<input type="radio" name="friendly or professional" value="professionel" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Modig<input type="radio" name="bold or safe" value="modig" /></label>
-              <label>Tryghedsskabende<input type="radio" name="bold or safe" value="tryghedsskabende" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Kreativ<input type="radio" name="creative or structured" value="kreativ" /></label>
-              <label>Struktureret<input type="radio" name="creative or structured" value="struktureret" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Legende<input type="radio" name="playful or serious" value="legende" /></label>
-              <label>Seriøs<input type="radio" name="playful or serious" value="seriøs" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Traditionel<input type="radio" name="traditional or innovative" value="traditionel" /></label>
-              <label>Innovativ<input type="radio" name="traditional or innovative" value="innovativ" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Personlig<input type="radio" name="personal or neutral" value="personlig" /></label>
-              <label>Neutral<input type="radio" name="personal or neutral" value="neutral" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Eksklusiv<input type="radio" name="exclusive or accessible" value="eksklusiv" /></label>
-              <label>Tilgængelig<input type="radio" name="exclusive or accessible" value="tilgængelig" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Stilren<input type="radio" name="sleek or colorful" value="stilren" /></label>
-              <label>Farverig<input type="radio" name="sleek or colorful" value="farverig" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Direkte<input type="radio" name="direct or embracing" value="direkte" /></label>
-              <label>Omfavnende<input type="radio" name="direct or embracing" value="omfavnende" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Varm<input type="radio" name="warm or cool" value="varm" /></label>
-              <label>Kølig<input type="radio" name="warm or cool" value="kølig" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Spontan<input type="radio" name="spontaneous or thoughtful" value="spontan" /></label>
-              <label>Gennemtænkt<input type="radio" name="spontaneous or thoughtful" value="gennemtænkt" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Empatisk<input type="radio" name="empathetic or efficient" value="empatisk" /></label>
-              <label>Effektiv<input type="radio" name="empathetic or efficient" value="effektiv" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Urban<input type="radio" name="urban or nature" value="urban" /></label>
-              <label>Naturnær<input type="radio" name="urban or nature" value="naturnær" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Nysgerrig<input type="radio" name="curious or targeted" value="nysgerrig" /></label>
-              <label>Målrettet<input type="radio" name="curious or targeted" value="målrettet" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Sjov<input type="radio" name="fun or sophisticated" value="sjov" /></label>
-              <label>Sofistikeret<input type="radio" name="fun or sophisticated" value="sofistikeret" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Praktisk<input type="radio" name="practical or inspiring" value="praktisk" /></label>
-              <label>Inspirerende<input type="radio" name="practical or inspiring" value="inspirerende" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Afslappet<input type="radio" name="relaxed or formal" value="afslappet" /></label>
-              <label>Formel<input type="radio" name="relaxed or formal" value="formel" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Analog<input type="radio" name="analog or digital" value="analog" /></label>
-              <label>Digital<input type="radio" name="analog or digital" value="digital" /></label>
-            </fieldset>
-
-            <fieldset class="brand-card">
-              <label>Minimalistisk<input type="radio" name="minimalistic or detailed" value="minimalistisk" /></label>
-              <label>Detaljeret<input type="radio" name="minimalistic or detailed" value="detaljeret" /></label>
-            </fieldset>
+              name="Er der særlige symboler, ikoner, farver eller andet visuelt, der har en særlig betydning for din virksomhed/organisation?"
+              id="symbols" />
+          </div>
+          <div class="question">
+            <h3>Moodboard</h3>
+            <MoodboardQuestion></MoodboardQuestion>
           </div>
           <button
             ref="brand-previous"
@@ -682,8 +624,15 @@
             id="symbols" />
         </div>
         <div class="question">
+          <h3>Hvilke farver vil du associere med jer?</h3>
+          <ColorQuestion></ColorQuestion>
+        </div>
+        <div class="question">
           <h3>Moodboard</h3>
           <MoodboardQuestion></MoodboardQuestion>
+        </div>
+        <div class="center-content">
+          <a class="button next_button" href="#section-4"> Gå til næste sektion </a>
         </div>
       </div>
     </section>
@@ -882,6 +831,9 @@
           <textarea name="Hvad er virksomhedens/organisationens budget til projektet?" id="budget" />
         </div>
       </div>
+      <div class="center-content">
+        <a class="button next_button" href="#section-5"> Gå til næste sektion </a>
+      </div>
     </section>
     <section id="section-5">
       <div class="section-wrapper">
@@ -895,6 +847,9 @@
             name="Er der andet, du gerne vil tilføje? - Det kan fx være noget, du synes designeren bør vide, spørgsmål til designeren eller noter til dig selv."
             id="other" />
         </div>
+      </div>
+      <div class="center-content">
+        <a class="button next_button" href="#section-6"> Gå til næste sektion </a>
       </div>
     </section>
     <section id="section-6">
@@ -1242,5 +1197,9 @@ textarea {
   font-weight: 500;
   font-size: 1.2rem;
   margin-bottom: 1rem;
+}
+
+.next_button {
+  text-decoration: none;
 }
 </style>

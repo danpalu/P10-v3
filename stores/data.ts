@@ -4,18 +4,18 @@ export const useDataStore = defineStore("data", () => {
     sections: [
       {
         id: 1,
-        title: "Virksomhedsoplysninger",
+        title: "Stamdata",
         questions: [
-          newQuestion(1, "Hvad er navnet på din virksomhed/organisation?", "text"),
-          newQuestion(2, "Hvilke produkter eller tjenester udbyder din virksomhed/organisation?", "text"),
+          newQuestion(1, "Hvad er navnet på din organisation?", "text"),
+          newQuestion(2, "Hvilke produkter eller tjenester udbyder din organisation?", "text"),
           newQuestion(
             3,
-            "Hvad er historien bag din virksomhed/organisation - hvorfor blev det startet, og hvad har formet det undervejs?",
+            "Hvad er historien bag din organisation - hvorfor blev det startet, og hvad har formet det undervejs?",
             "text"
           ),
           newQuestion(
             4,
-            "Hvordan vil du beskrive din virksomheds vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter?",
+            "Hvordan vil du beskrive din organisations vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter?",
             "multiple-choice-question"
           ),
         ],
@@ -26,22 +26,22 @@ export const useDataStore = defineStore("data", () => {
         questions: [
           newQuestion(
             5,
-            "Hvilke aldersgrupper ønsker i, at virksomhedens/organisationen appellerer til?",
+            "Hvilke aldersgrupper skal organisationen appellere til?",
             "multiple-choice-question"
           ),
           newQuestion(
             6,
-            "Hvilke køn ønsker i, at virksomhedens/organisationen appelerer til?",
+            "Hvilke køn skal organisationen appelere til?",
             "multiple-choice-question"
           ),
           newQuestion(
             7,
-            "Hvilke geografiske områder ønsker i, at virksomhedens/organisationen appelerer til?",
+            "Hvilke geografiske områder skal organisationen appelere til?",
             "multiple-choice-question"
           ),
           newQuestion(
             8,
-            "Hvilke personligheder ønsker i, at virksomhedens/organisationen appelerer til?",
+            "Hvilke personligheder skal organisationen appelere til?",
             "multiple-choice-question"
           ),
         ],
@@ -52,34 +52,34 @@ export const useDataStore = defineStore("data", () => {
         questions: [
           newQuestion(
             9,
-            "Hvad ønsker din virksomhed/organisation at opnå med en ny visuel identitet eller design?",
+            "Hvad ønsker din organisation at opnå med en ny visuel identitet eller design?",
             "multiple-choice-question"
           ),
           newQuestion(
             10,
-            "Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?",
+            "Hvilke værdier eller følelser ønsker du, at din organisation udstråler?",
             "branding-card-question"
           ),
           newQuestion(
             11,
-            "Er der særlige symboler, ikoner eller andet visuelt, der har en særlig betydning for din virksomhed/organisation?",
+            "Er der særlige symboler, ikoner eller andet visuelt, der har en særlig betydning for din organisation?",
             "moodboard-question"
           ),
-          newQuestion(12, "Hvilken farve repræsenterer bedst virksomhedens/organisations værdier?", "color-question"),
+          newQuestion(12, "Hvilken farve repræsenterer bedst organisations værdier?", "color-question"),
           newQuestion(
             13,
-            "Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?",
+            "Hvor skal organisationens visuelle identitet bruges eller vises?",
             "multiple-choice-question"
           ),
         ],
       },
       {
         id: 4,
-        title: "Praktiske detaljer",
+        title: "Praktisk",
         questions: [
-          newQuestion(14, "Hvilke leverancer forventer du? (hvad skal designeren producere for virksomheden/organisationen?)", "multiple-choice-question"),
+          newQuestion(14, "Hvilke leverancer forventer du? (hvad skal designeren producere for organisationen?)", "multiple-choice-question"),
           newQuestion(15, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "multiple-choice-question"),
-          newQuestion(16, "Hvad er virksomhedens/organisationens budget til projektet?", "multiple-choice-question"),
+          newQuestion(16, "Hvad er organisationens budget til projektet?", "multiple-choice-question"),
         ],
       },
       {
