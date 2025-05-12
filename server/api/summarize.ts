@@ -11,6 +11,8 @@ export default defineEventHandler(async (event) => {
 
   let typeText = "";
 
+  console.log(questionnaireData);
+
   switch (summaryType) {
     case "raw":
       typeText = `You should output the form kinda like in raw format, meaning just put the question into the title and the answer to it into content. Do not change the answers at all. Do not interpret the answers. . 

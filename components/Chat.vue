@@ -13,7 +13,6 @@
         <template v-for="prevQuestion in getPreviousQuestions(props.questionnaire, data.currentQuestion)">
           <template v-for="(message, index) in prevQuestion.answer.answer">
             <li
-
               class="message"
               lang="dk"
               :class="`${index === prevQuestion.answer.answer.length - 1 ? 'last' : ''} ${
@@ -26,7 +25,7 @@
               </h1>
               <!-- Render normal text -->
               <div v-else>
-                {{ message.content.content.split('~')[0].trim() }}
+                {{ message.content.content.split("~")[0].trim() }}
               </div>
               <!-- Handle additional message types like color, moodboard, etc. -->
               <div v-if="message.content.type === 'color-question'" class="color-container">
@@ -106,32 +105,35 @@
                   </button>
                 </div>
               </div>
-              <div v-if="message.content.type === 'branding-card-question'" class="branding-card-container">
-                <button
-                  :disabled="
-                    message.content.id !== messageIdTracker.valueOf() ||
-                    data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content
-                  "
-                  @click.prevent="
-                    message.content.brandingCardOptions &&
-                      sendBrandCardAnswer(message.content.brandingCardOptions.option)
-                  "
-                  class="branding-option dark">
-                  {{ message.content.brandingCardOptions?.option }}
-                </button>
-                <button
-                  :disabled="
-                    message.content.id !== messageIdTracker.valueOf() ||
-                    data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content
-                  "
-                  @click.prevent="
-                    message.content.brandingCardOptions &&
-                      sendBrandCardAnswer(message.content.brandingCardOptions.oppositeOption)
-                  "
-                  class="branding-option light">
-                  {{ message.content.brandingCardOptions?.oppositeOption }}
-                </button>
-              </div>
+              <template v-if="message.content.type === 'branding-card-question'">
+                <div class="branding-card-container">
+                  <button
+                    :disabled="
+                      message.content.id !== messageIdTracker.valueOf() ||
+                      data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content
+                    "
+                    @click.prevent="
+                      message.content.brandingCardOptions &&
+                        sendBrandCardAnswer(message.content.brandingCardOptions.option ?? '')
+                    "
+                    class="branding-option dark">
+                    {{ message.content.brandingCardOptions?.option }}
+                  </button>
+                  <button
+                    :disabled="
+                      message.content.id !== messageIdTracker.valueOf() ||
+                      data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content
+                    "
+                    @click.prevent="
+                      message.content.brandingCardOptions &&
+                        sendBrandCardAnswer(message.content.brandingCardOptions.oppositeOption ?? '')
+                    "
+                    class="branding-option light">
+                    {{ message.content.brandingCardOptions?.oppositeOption }}
+                  </button>
+                </div>
+              </template>
+
               <div v-if="message.content.type === 'multiple-choice-question'" class="questionnaire-options">
                 <ul>
                   <li
@@ -217,7 +219,7 @@
             </h1>
             <!-- Render normal text -->
             <div v-else>
-                {{ message.content.content.split('~')[0].trim() }}
+              {{ message.content.content.split("~")[0].trim() }}
             </div>
             <!-- Handle additional message types like color, moodboard, etc. -->
             <div v-if="message.content.type === 'color-question'" class="color-container">
@@ -304,7 +306,8 @@
                   data.currentQuestion.answer.answer.at(-1)?.content.content !== message.content.content
                 "
                 @click.prevent="
-                  message.content.brandingCardOptions && sendBrandCardAnswer(message.content.brandingCardOptions.option)
+                  message.content.brandingCardOptions &&
+                    sendBrandCardAnswer(message.content.brandingCardOptions.option ?? '')
                 "
                 class="branding-option dark">
                 {{ message.content.brandingCardOptions?.option }}
@@ -316,7 +319,7 @@
                 "
                 @click.prevent="
                   message.content.brandingCardOptions &&
-                    sendBrandCardAnswer(message.content.brandingCardOptions.oppositeOption)
+                    sendBrandCardAnswer(message.content.brandingCardOptions.oppositeOption ?? '')
                 "
                 class="branding-option light">
                 {{ message.content.brandingCardOptions?.oppositeOption }}
@@ -398,14 +401,14 @@
           class="incoming message assistant">
           {{ cleanIncomingString(incomingString) }}
         </li>
-        <li
+        <!-- <li
           v-if="
             data.currentQuestion.answer.answer.length !== 0 &&
             data.currentQuestion.answer.answer.at(-1)?.content.type === 'summary'
           "
           class="button-container">
           <button v-if="data.currentQuestion === data.questionnaire.sections.at(-1)?.questions.at(-1)">Finish</button>
-        </li>
+        </li> -->
       </ul>
     </div>
 
@@ -538,107 +541,112 @@ onMounted(() => {
       });
     }
   };
-  
+
   ws.onmessage = (message) => {
     // Don't render reponse if the next question should be asked instead
-    if (shouldAskNextQuestion.value){
-        resetIncomingMessage();
-        if (message.data == "[DONE]"){
-            nextQuestion();
-            shouldAskNextQuestion.value = false;
-        }
-        return;
-    }
-    else {
-        if (message.data == "[START]") {
+    if (shouldAskNextQuestion.value) {
+      resetIncomingMessage();
+      if (message.data == "[DONE]") {
+        nextQuestion();
+        shouldAskNextQuestion.value = false;
+      }
+      return;
+    } else {
+      if (message.data == "[START]") {
         showIncomingMessage.value = true;
         return;
-        }
-        if (message.data == "[DONE]") {
+      }
+      if (message.data == "[DONE]") {
         if (!ready.value) {
-            ready.value = true;
+          ready.value = true;
         }
 
         loading.value = false;
         try {
-            const parsedContent = JSON.parse(incomingString.value.trim());
-    
-            const newMessage: ClientMessage = {
+          const parsedContent = JSON.parse(incomingString.value.trim());
+
+          const newMessage: ClientMessage = {
             role: "assistant",
             content: parsedContent,
             name: companyName,
-            };
-            messageIdTracker.value++;
-            newMessage.content.id = messageIdTracker.value;
+            hiddenContent: "",
+          };
+          messageIdTracker.value++;
+          newMessage.content.id = messageIdTracker.value;
 
-            if (newMessage.content.companyName !== null){
-                companyName = newMessage.content.companyName;
-            }
+          if (newMessage.content.companyName !== null) {
+            companyName = newMessage.content.companyName;
+          }
 
-            if (newMessage.content.type === "text" || forceText.value == true) {
-                newMessage.content.type = "text";
-                chatFieldDisabled.value = false;
-            } else {
-                chatFieldDisabled.value = true;
-                if (newMessage.content.type === "branding-card-question") {
-                if (
-                    newMessage.content.brandingCardOptions?.option &&
-                    newMessage.content.brandingCardOptions?.oppositeOption &&
-                    !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.option) &&
-                    !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.oppositeOption)
-                ) {
-                    // Do nothing
-                } else {
-                    newMessage.content.brandingCardOptions = data.brandCards[Math.ceil(brandCardOptionsUsed.value.length / 2)];
-                }
-                if (newMessage.content.brandingCardOptions.option && newMessage.content.brandingCardOptions.oppositeOption) {
-                    brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.option);
-                    brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.oppositeOption);
-                }
-                } else if (newMessage.content.type === "color-question") {
-                var colors = getColors(newMessage.content.colorOptions);
-                newMessage.content.colorOptions = colors;
-                colors.forEach((color) => {
-                    colorOptionsUsed.value.push(color);
-                });
-                } else if (newMessage.content.type === "moodboard-question") {
-                const search = newMessage.content.moodboardSearchString;
-                console.log(search);
-                if (search) {
-                    handleMoodboard(search);
-                }
-                } else if (newMessage.content.type === "link-question") {
-                    data.isFinished = true;
-                    chatFieldDisabled.value = true;
-                    ready.value = false;
-                }
+          if (newMessage.content.type === "text" || forceText.value == true) {
+            newMessage.content.type = "text";
+            chatFieldDisabled.value = false;
+          } else {
+            chatFieldDisabled.value = true;
+            if (newMessage.content.type === "branding-card-question") {
+              if (
+                newMessage.content.brandingCardOptions?.option &&
+                newMessage.content.brandingCardOptions?.oppositeOption &&
+                !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.option) &&
+                !brandCardOptionsUsed.value.includes(newMessage.content.brandingCardOptions.oppositeOption)
+              ) {
+                // Do nothing
+              } else {
+                newMessage.content.brandingCardOptions =
+                  data.brandCards[Math.ceil(brandCardOptionsUsed.value.length / 2)];
+              }
+              if (
+                newMessage.content.brandingCardOptions.option &&
+                newMessage.content.brandingCardOptions.oppositeOption
+              ) {
+                brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.option);
+                brandCardOptionsUsed.value.push(newMessage.content.brandingCardOptions.oppositeOption);
+              }
+            } else if (newMessage.content.type === "color-question") {
+              var colors = getColors(newMessage.content.colorOptions);
+              newMessage.content.colorOptions = colors;
+              colors.forEach((color) => {
+                colorOptionsUsed.value.push(color);
+              });
+            } else if (newMessage.content.type === "moodboard-question") {
+              const search = newMessage.content.moodboardSearchString;
+              console.log(search);
+              if (search) {
+                handleMoodboard(search);
+              }
+            } else if (newMessage.content.type === "link-question") {
+              data.isFinished = true;
+              chatFieldDisabled.value = true;
+              ready.value = false;
             }
+          }
 
-            if (data.currentId === 3 || data.currentId === 4 ) { // Sidste to punkter
-                characterLimit.value = 0;
-            }
+          if (data.currentId === 3 || data.currentId === 4) {
+            // Sidste to punkter
+            characterLimit.value = 0;
+          }
 
-            data.currentQuestion.answer.answer.push(newMessage);
-            resetIncomingMessage();
-            showIncomingMessage.value = false;
-            } catch (error) {
-                console.error("ERROR CAUGHT: Failed to parse JSON:", incomingString.value);
-                addUserMessage("Det forstod jeg ikke helt, kan du sige det på en anden måde?", true);
-                showIncomingMessage.value = false;
-                return;
-            }
-            waitAndScroll(false);
-            return;
-            }
-            if (message.data == "[ERROR]") {
-            addUserMessage("Det forstod jeg ikke helt, kan du sige det på en anden måde?", true);
-            showIncomingMessage.value = false;
-            return;
-            }
-            incomingString.value += `${message.data}`;
-            waitAndScroll(false);
-        };
+          data.currentQuestion.answer.answer.push(newMessage);
+          resetIncomingMessage();
+          showIncomingMessage.value = false;
+        } catch (error) {
+          console.error("ERROR CAUGHT: Failed to parse JSON:", incomingString.value);
+          addUserMessage("Det forstod jeg ikke helt, kan du sige det på en anden måde?", true);
+          showIncomingMessage.value = false;
+          return;
+        }
+        waitAndScroll(false);
+        return;
+      }
+      if (message.data == "[ERROR]") {
+        addUserMessage("Det forstod jeg ikke helt, kan du sige det på en anden måde?", true);
+        showIncomingMessage.value = false;
+        return;
+      }
+      incomingString.value += `${message.data}`;
+      waitAndScroll(false);
     }
+  };
 });
 
 function resetIncomingMessage() {
@@ -664,10 +672,10 @@ function sendMultipleChoiceAnswer() {
 
 function sendNoneOfAbove() {
   addUserMessage("Lad mig beskrive det selv", true, "Du SKAL gøre det som et tekst-spørgsmål", true);
-    selectedOptions.value = selectedOptions.value.slice(0, numberOfOptionsSelected.value);
-    selectedImages.value = selectedImages.value.slice(0, numberOfImagesSelected.value);
-    selectedColors.value = [];
-    forceText.value = true;
+  selectedOptions.value = selectedOptions.value.slice(0, numberOfOptionsSelected.value);
+  selectedImages.value = selectedImages.value.slice(0, numberOfImagesSelected.value);
+  selectedColors.value = [];
+  forceText.value = true;
 }
 
 watch(
@@ -680,7 +688,7 @@ watch(
 
 async function waitAndScroll(forceScroll: boolean) {
   await nextTick();
-  scrollToBottom();
+  // scrollToBottom();
   setTextField();
 }
 
@@ -695,7 +703,7 @@ let companyName = "virksomhed/organisation";
 
 async function handleMoodboard(search: string) {
   try {
-    const response = await $fetch("/api/unsplash", {
+    const response: any = await $fetch("/api/unsplash", {
       method: "POST",
       body: { query: search },
     });
@@ -733,7 +741,8 @@ function toggleImageSelection(imageAlt: string) {
 function getImages(imageList: any) {
   if (imageList != null) {
     const seen = new Set();
-    const newImageList = imageList.filter((img: any) => { // Remove duplicate images (same alt text)
+    const newImageList = imageList.filter((img: any) => {
+      // Remove duplicate images (same alt text)
       const key = img.alt;
       if (seen.has(key)) return false;
       seen.add(key);
@@ -779,7 +788,11 @@ function sendBrandCardAnswer(text: string) {
   wordsInAnswer.value = 0;
   if (brandCardQuestionsAsked.value < brandCardQuestionsToAsk) {
     addUserMessage(
-      "My idea is best represented by " + text, true, "Now ask a follow-up branding-card question with very little text. The options can be anything except: " + brandCardOptionsUsed.value.join(), true
+      "My idea is best represented by " + text,
+      true,
+      "Now ask a follow-up branding-card question with very little text. The options can be anything except: " +
+        brandCardOptionsUsed.value.join(),
+      true
     );
     brandCardQuestionsAsked.value++;
   } else {
@@ -796,7 +809,6 @@ let chatFieldDisabled = ref<boolean>(true);
 let wordsInAnswer = ref<number>(0);
 const lastQuestionType = ref<string>("");
 const currentPlaceholder = ref<string>("");
-
 
 watch(
   () => loading.value,
@@ -825,9 +837,15 @@ watch(
   }
 );
 
-let defaultHiddenString = "Bed mig om at uddybe mit svar. Gå ikke videre til næste spørgsmål. Du SKAL stille mig et tekst-spørgsmål.";
+let defaultHiddenString =
+  "Bed mig om at uddybe mit svar. Gå ikke videre til næste spørgsmål. Du SKAL stille mig et tekst-spørgsmål.";
 
-function addUserMessage(userInput: string, hiddenInChat: boolean = false, hiddenContent: string = defaultHiddenString, ignoreProceed: boolean = false) {
+function addUserMessage(
+  userInput: string,
+  hiddenInChat: boolean = false,
+  hiddenContent: string = defaultHiddenString,
+  ignoreProceed: boolean = false
+) {
   input.value = "";
   currentPlaceholder.value = "";
   var content = userInput.trim();
@@ -837,11 +855,11 @@ function addUserMessage(userInput: string, hiddenInChat: boolean = false, hidden
   if (!ignoreProceed && wordsInAnswer.value >= characterLimit.value) {
     shouldAskNextQuestion.value = true;
     wordsInAnswer.value = 0;
-    hiddenContent = "Svar kun med 'ok'" // Sørg for at svaret er kort, for at mindske ventetid
+    hiddenContent = "Svar kun med 'ok'"; // Sørg for at svaret er kort, for at mindske ventetid
   }
 
   content += "~" + hiddenContent;
-  
+
   data.currentQuestion.answer.answer.push({
     role: "user",
     content: {
@@ -854,7 +872,13 @@ function addUserMessage(userInput: string, hiddenInChat: boolean = false, hidden
       brandingCardOptions: null,
       hiddenInChat: hiddenInChat,
       isTitle: false,
+      id: 0,
+      multipleChoiceOptions: null,
+      link: null,
+      companyName: null,
     },
+    hiddenContent: "",
+    name: "",
   });
 
   loading.value = true;
@@ -874,7 +898,13 @@ function addTitleMessage(title: string) {
       brandingCardOptions: null,
       hiddenInChat: false,
       isTitle: true,
+      companyName: null,
+      id: 0,
+      multipleChoiceOptions: null,
+      link: null,
     },
+    hiddenContent: "",
+    name: "",
   });
 }
 
@@ -897,7 +927,12 @@ function sendColorAnswer() {
   setAsSelected();
   if (colorQuestionsAsked.value == 0) {
     addUserMessage(
-      "I think my idea is well represented by " + selectedColors.value.join(), true, "Now give me a new color question with 20 new hex codes, asking what variant of" + selectedColors.value[0] + " I prefer", true
+      "I think my idea is well represented by " + selectedColors.value.join(),
+      true,
+      "Now give me a new color question with 20 new hex codes, asking what variant of" +
+        selectedColors.value[0] +
+        " I prefer",
+      true
     );
     colorQuestionsAsked.value++;
   } else {
@@ -932,14 +967,17 @@ function startConversation() {
 
 function continueConversation() {
   var type = data.currentType;
-  if (data.questionnaire.type == 'chat') type = "text";
+  if (data.questionnaire.type == "chat") type = "text";
   ws.send(
     JSON.stringify({
       messages: [
         {
           role: "user",
           content: {
-            content: "We just started on the next question. Continue the conversation by asking it as a " + type + " Follow the guidelines for this question type closely.",
+            content:
+              "We just started on the next question. Continue the conversation by asking it as a " +
+              type +
+              " Follow the guidelines for this question type closely.",
             type: type,
           },
         },
@@ -958,18 +996,18 @@ function handleSubmit(text: string) {
 }
 
 const messageScroller = useTemplateRef("message-scroller");
-const chatContainer = useTemplateRef("chat-container");
+//const chatContainer = useTemplateRef("chat-container");
 
-function scrollToBottom() {
-  if (!chatContainer) return;
+// function scrollToBottom() {
+//   if (!chatContainer) return;
 
-  if (messageScroller.value) {
-      messageScroller.value?.scrollTo({
-        top: messageScroller.value.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-}
+//   if (messageScroller.value) {
+//       messageScroller.value?.scrollTo({
+//         top: messageScroller.value.scrollHeight,
+//         behavior: "smooth",
+//       });
+//     }
+// }
 
 function cleanIncomingString(input: string): string {
   return input
@@ -1492,14 +1530,12 @@ button.send {
   padding: 0 20px;
   overflow-y: scroll;
   height: 100%;
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
   margin-bottom: 4rem;
 }
 
 .summary-container::-webkit-scrollbar {
-  display: none;  /* Safari and Chrome */
+  display: none; /* Safari and Chrome */
 }
-
-
 </style>

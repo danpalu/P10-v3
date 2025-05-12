@@ -1,97 +1,78 @@
 <template>
   <div class="center-content summary-container" ref="summary">
     <main>
-        <p style="padding-top: 4rem;">
-      Du har nu oplyst forskellige informationer om din organisation. Vi har
-      lavet fire forslag til måder, du kan vælge at gemme disse oplysninger på,
-      så du kan medbringe dem til mødet med designeren eller bruge dem som
-      reference for dig selv. <br />
-      <br />
-      Du præsenteres nu for de forskellige forslag og bedes om lidt give
-      feedback på, hvad du synes om de forskellige versioner, efter du har
-      gennemgået dem.
-    </p>
-    <div v-if="summariesLoaded && !loading">
-      <div class="navigator">
-        <button
-          class="nav"
-          @click.prevent="scrollToSummary(--selectedSummaryIndex)"
-          :class="`${selectedSummaryIndex == 0 ? 'invisible' : ''}`"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15.75 19.5 8.25 12l7.5-7.5"
-            />
-          </svg>
-        </button>
-        <div>
-          <h2 class="current-summary-type">
-            {{ getSummaryTypeName(summaries, selectedSummaryIndex) }}
-          </h2>
-          <div class="explanation center-content">
-            <p>
-              {{ getSummaryTypeExplanation(summaries, selectedSummaryIndex) }}
-            </p>
-          </div>
-        </div>
-        <button
-          class="nav"
-          @click.prevent="scrollToSummary(++selectedSummaryIndex)"
-          :class="`${selectedSummaryIndex == 4 ? 'invisible' : ''}`"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="m8.25 4.5 7.5 7.5-7.5 7.5"
-            />
-          </svg>
-        </button>
-      </div>
-      <div class="summary-scroller" ref="summary-scroller">
-        <div
-          v-for="(summary, index) in summaries"
-          class="summary"
-          :id="`${summary}-${index}`"
-        >
-          <div v-for="section in summary.sections">
-            <h3>{{ section.title }}</h3>
-            <p>{{ section.content }}</p>
-          </div>
-        </div>
-        <div class="summary">
+      <p style="padding-top: 4rem">
+        Du har nu oplyst forskellige informationer om din organisation. Vi har lavet fire forslag til måder, du kan
+        vælge at gemme disse oplysninger på, så du kan medbringe dem til mødet med designeren eller bruge dem som
+        reference for dig selv. <br />
+        <br />
+        Du præsenteres nu for de forskellige forslag og bedes om lidt give feedback på, hvad du synes om de forskellige
+        versioner, efter du har gennemgået dem.
+      </p>
+      <div v-if="summariesLoaded && !loading">
+        <div class="navigator">
+          <button
+            class="nav"
+            @click.prevent="scrollToSummary(--selectedSummaryIndex)"
+            :class="`${selectedSummaryIndex == 0 ? 'invisible' : ''}`">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+            </svg>
+          </button>
           <div>
-            <div id="form-button-container" class="center-content">
-              <a
-                v-if="summariesLoaded"
-                class="button google-form-button"
-                :href="`https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=${data.questionnaire.type}`"
-                target="_blank"
-              >
-                Åbn spørgeskema
-              </a>
+            <h2 class="current-summary-type">
+              {{ getSummaryTypeName(summaries, selectedSummaryIndex) }}
+            </h2>
+            <div class="explanation center-content">
+              <p>
+                {{ getSummaryTypeExplanation(summaries, selectedSummaryIndex) }}
+              </p>
+            </div>
+          </div>
+          <button
+            class="nav"
+            @click.prevent="scrollToSummary(++selectedSummaryIndex)"
+            :class="`${selectedSummaryIndex == 4 ? 'invisible' : ''}`">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+        </div>
+        <div class="summary-scroller" ref="summary-scroller">
+          <div v-for="(summary, index) in summaries" class="summary" :id="`${summary}-${index}`">
+            <div v-for="section in summary.sections">
+              <h3>{{ section.title }}</h3>
+              <p>{{ section.content }}</p>
+            </div>
+          </div>
+          <div class="summary">
+            <div>
+              <div id="form-button-container" class="center-content">
+                <a
+                  v-if="summariesLoaded"
+                  class="button google-form-button"
+                  :href="`https://docs.google.com/forms/d/e/1FAIpQLSdJwOXDeLWrA0uwiUpbdRlsiivSLzyedtolIAmTt6eU0YOzXQ/viewform?usp=pp_url&entry.813770840=${data.questionnaire.type}`"
+                  target="_blank">
+                  Åbn spørgeskema
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
       <div class="spinner center-content" v-else>
         <LoadingSpinner></LoadingSpinner>
-        </div>
+      </div>
     </main>
   </div>
 </template>
@@ -150,10 +131,7 @@ function getSummaryTypeName(summaries: SummarySchemaType[], index: number) {
   }
 }
 
-function getSummaryTypeExplanation(
-  summaries: SummarySchemaType[],
-  index: number
-) {
+function getSummaryTypeExplanation(summaries: SummarySchemaType[], index: number) {
   if (index == summaries.length) {
     return "Du kan åbne spørgeskemaet her, så du kan give feedback på de forskellige versioner.";
   }
@@ -187,9 +165,7 @@ function scrollToSummary(index: number) {
     left: summaryScroller.value.clientWidth * index,
   });
   if (summaryScroller.value) {
-    summaryScroller.value.style.height = `${
-      summariesElements![index].clientHeight
-    }px`;
+    summaryScroller.value.style.height = `${summariesElements![index].clientHeight}px`;
   }
 }
 
@@ -219,17 +195,11 @@ async function getSummaries() {
     scrollToSummary(selectedSummaryIndex.value);
   });
   setTimeout(() => {
-    scrollElementIntoContainerTop(
-      document.querySelector("#section-5"),
-      document.querySelector("main")
-    );
+    scrollElementIntoContainerTop(document.querySelector("#section-5"), document.querySelector("main"));
   }, 200);
 }
 
-function scrollElementIntoContainerTop(
-  container: HTMLElement | null,
-  target: HTMLElement | null
-): void {
+function scrollElementIntoContainerTop(container: HTMLElement | null, target: HTMLElement | null): void {
   if (!container || !target) return;
 
   const containerRect = container.getBoundingClientRect();
@@ -261,6 +231,7 @@ async function getSummary(summaryType: string): Promise<SummarySchemaType> {
     default:
       break;
   }
+  console.log(dataToSend);
 
   const response = await $fetch("/api/summarize", {
     method: "POST",

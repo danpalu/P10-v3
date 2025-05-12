@@ -1005,9 +1005,6 @@ h2 {
   padding-top: 5rem;
 }
 
-.question.finish-section {
-}
-
 .google-form {
   flex-grow: 1;
   width: 100%;

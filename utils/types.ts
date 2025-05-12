@@ -14,7 +14,7 @@ export const MessageContent = z.object({
   sliderDetails: z.object({ xAxis: z.object({ minLabel: z.string(), maxLabel: z.string() }) }).nullable(),
   colorOptions: z.array(z.string()),
   moodboardSearchString: z.string().nullable(),
-  moodboardImages: z.array(z.object({alt: z.string(), url: z.string()})).nullable(),
+  moodboardImages: z.array(z.object({ alt: z.string(), url: z.string() })).nullable(),
   brandingCardOptions: z.object({ option: z.string().nullable(), oppositeOption: z.string().nullable() }).nullable(),
   multipleChoiceOptions: z.array(z.string()).nullable(),
   link: z.string().nullable(),
@@ -24,12 +24,12 @@ export const MessageContent = z.object({
   id: z.number(),
 });
 
+export type MessageContentType = z.infer<typeof MessageContent>;
+
 export type brandCard = {
   option: string;
   oppositeOption: string;
 };
-
-export type MessageContentType = z.infer<typeof MessageContent>;
 
 export type ClientMessage = {
   role: "system" | "user" | "assistant";
