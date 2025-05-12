@@ -290,7 +290,7 @@ button {
 
 .navigator {
   position: sticky;
-  top: -2rem;
+  top: -20px;
   background: var(--color-background);
   display: flex;
   flex-direction: row;
