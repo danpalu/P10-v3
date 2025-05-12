@@ -802,7 +802,6 @@ import { computed } from "vue";
 
 let chatFieldDisabled = ref<boolean>(true);
 let wordsInAnswer = ref<number>(0);
-const lastQuestionType = ref<string>("");
 const currentPlaceholder = ref<string>("");
 
 watch(
@@ -813,7 +812,10 @@ watch(
       currentPlaceholder.value = "";
     } else {
       // Set question type
-      if (data.currentType === "text") {
+      if (data.questionnaire.type == "chat"){
+        currentPlaceholder.value = "Skriv dit svar her...";
+      }
+      else if (data.currentType === "text") {
         currentPlaceholder.value = "Skriv dit svar her...";
       } else if (data.currentType === "multiple-choice-question") {
         currentPlaceholder.value = "Vælg en eller flere af ovenstående muligheder";
