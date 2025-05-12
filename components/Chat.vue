@@ -517,6 +517,7 @@ onMounted(() => {
   wsURL.protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
   wsURL.pathname = "/api/" + data.questionnaire.type;
   wsURL.hash = "";
+  wsURL.search = "";
   ws = new WebSocket(wsURL);
 
   ws.onopen = () => {
@@ -996,11 +997,11 @@ function scrollToBottom() {
   if (!chatContainer) return;
 
   if (messageScroller.value) {
-      messageScroller.value?.scrollTo({
-        top: messageScroller.value.scrollHeight,
-        behavior: "smooth",
-      });
-    }
+    messageScroller.value?.scrollTo({
+      top: messageScroller.value.scrollHeight,
+      behavior: "smooth",
+    });
+  }
 }
 
 function cleanIncomingString(input: string): string {
