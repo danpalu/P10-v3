@@ -7,9 +7,10 @@
         reference for dig selv. <br />
         <br />
         Du præsenteres nu for de forskellige forslag og bedes om lidt give feedback på, hvad du synes om de forskellige
-        versioner, efter du har gennemgået dem.
+        versioner, efter du har gennemgået dem. <br /><br />
+        Spørgeskemaet kan tilgås på sidste side nedenfor.
       </p>
-      <div v-if="summariesLoaded && !loading">
+      <div v-if="summariesLoaded && !loading" class="summary-contents">
         <div class="navigator">
           <button
             class="nav"
@@ -152,10 +153,10 @@ function getSummaryTypeExplanation(summaries: SummarySchemaType[], index: number
 const summaryScroller = useTemplateRef("summary-scroller");
 
 const summaries = ref<SummarySchemaType[]>([
+  { sections: [{ title: "", content: "" }], type: "raw" },
   { sections: [{ title: "", content: "" }], type: "basic" },
   { sections: [{ title: "", content: "" }], type: "interpretation" },
   { sections: [{ title: "", content: "" }], type: "questionSuggestions" },
-  { sections: [{ title: "", content: "" }], type: "raw" },
 ]);
 
 function scrollToSummary(index: number) {
@@ -195,7 +196,7 @@ async function getSummaries() {
     scrollToSummary(selectedSummaryIndex.value);
   });
   setTimeout(() => {
-    scrollElementIntoContainerTop(document.querySelector("#section-5"), document.querySelector("main"));
+    scrollElementIntoContainerTop(document.querySelector("#section-6"), document.querySelector(".summary-contents"));
   }, 200);
 }
 
@@ -248,7 +249,7 @@ async function getSummary(summaryType: string): Promise<SummarySchemaType> {
   flex-direction: column;
 }
 
-main {
+.summary-contents {
   min-height: 100dvh;
 }
 
