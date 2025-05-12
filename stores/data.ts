@@ -18,59 +18,80 @@ export const useDataStore = defineStore("data", () => {
             "Hvordan vil du beskrive din virksomheds vision med få ord - har I evt. et slogan eller tagline, der indkapsler, hvad I stræber efter?",
             "multiple-choice-question"
           ),
-          newQuestion(
-            5,
-            "Hvad vil du gerne have, at folk siger om din virksomhed/organisation?",
-            "multiple-choice-question"
-          ),
         ],
       },
       {
         id: 2,
-        title: "Mål og branding",
+        title: "Målgruppe",
         questions: [
           newQuestion(
+            5,
+            "Hvilke aldersgrupper ønsker i, at virksomhedens/organisationen appellerer til?",
+            "multiple-choice-question"
+          ),
+          newQuestion(
             6,
-            "Hvad ønsker din virksomhed/organisation at opnå med en ny visuel identitet eller design?",
+            "Hvilke køn ønsker i, at virksomhedens/organisationen appelerer til?",
             "multiple-choice-question"
           ),
           newQuestion(
             7,
-            "Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?",
-            "branding-card-question"
+            "Hvilke geografiske områder ønsker i, at virksomhedens/organisationen appelerer til?",
+            "multiple-choice-question"
           ),
           newQuestion(
             8,
-            "Er der særlige symboler, ikoner eller andet visuelt, der har en særlig betydning for din virksomhed/organisation?",
-            "moodboard-question"
-          ),
-          newQuestion(9, "Hvilken farve repræsenterer bedst virksomhedens/organisations værdier?", "color-question"),
-          newQuestion(
-            10,
-            "Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?",
+            "Hvilke personligheder ønsker i, at virksomhedens/organisationen appelerer til?",
             "multiple-choice-question"
           ),
         ],
       },
       {
         id: 3,
-        title: "Praktiske detaljer",
+        title: "Branding",
         questions: [
-          newQuestion(11, "Hvilke leverancer forventer du?", "multiple-choice-question"),
-          newQuestion(12, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "multiple-choice-question"),
-          newQuestion(13, "Hvad er virksomhedens/organisationens budget til projektet?", "multiple-choice-question"),
+          newQuestion(
+            9,
+            "Hvad ønsker din virksomhed/organisation at opnå med en ny visuel identitet eller design?",
+            "multiple-choice-question"
+          ),
+          newQuestion(
+            10,
+            "Hvilke værdier eller følelser ønsker du, at din virksomhed/organisation udstråler?",
+            "branding-card-question"
+          ),
+          newQuestion(
+            11,
+            "Er der særlige symboler, ikoner eller andet visuelt, der har en særlig betydning for din virksomhed/organisation?",
+            "moodboard-question"
+          ),
+          newQuestion(12, "Hvilken farve repræsenterer bedst virksomhedens/organisations værdier?", "color-question"),
+          newQuestion(
+            14,
+            "Hvor skal virksomhedens/organisationens visuelle identitet bruges eller vises?",
+            "multiple-choice-question"
+          ),
         ],
       },
       {
         id: 4,
-        title: "Andet",
-        questions: [newQuestion(14, "Er der andet, du gerne vil tilføje?", "text")],
+        title: "Praktiske detaljer",
+        questions: [
+          newQuestion(13, "Hvilke leverancer forventer du? (hvilke opgaver skal designeren hjælpe dig med?)", "multiple-choice-question"),
+          newQuestion(14, "Hvad er deadlinen for projektet - hvilken tidsramme arbejder vi med?", "text"),
+          newQuestion(15, "Hvad er virksomhedens/organisationens budget til projektet?", "multiple-choice-question"),
+        ],
       },
       {
         id: 5,
+        title: "Andet",
+        questions: [newQuestion(16, "Er der andet, du gerne vil tilføje?", "text")],
+      },
+      {
+        id: 6,
         title: "Færdig",
         questions: [
-          newQuestion(15, "Tak for at deltage. Nu vil vi gerne høre lidt om dine oplevelser:", "link-question"),
+          newQuestion(17, "Tak for at deltage. Nu vil vi gerne høre lidt om dine oplevelser:", "link-question"),
         ],
       },
     ],
@@ -177,19 +198,25 @@ export const useDataStore = defineStore("data", () => {
   ]);
 
   const brandCards = [
-    newBrandCard("Bæredygtighed og miljøvenlighed", "Komfort og luksus"),
-    newBrandCard("Innovation og teknologi", "Tradition og kvalitet"),
-    newBrandCard("Effektivitet og produktivitet", "Socialt ansvar og fællesskab"),
-    newBrandCard("Apple, Nike, Tesla", "Patagonia, IKEA, Whole Foods"),
-    newBrandCard("Luksusbrands som Chanel, Louis Vuitton", "H&M, Zara, ASOS"),
-    newBrandCard("Aktiv, sportsorienteret", "Fokuseret på hjemmet og familie"),
-    newBrandCard("Karriereorienteret", "Socialt bevidst og engageret"),
-    newBrandCard("Rejse- og eventyrlysten", "Teknologiinteresseret og gadgetorienteret"),
-    newBrandCard("Tidspres og stress", "Mangel på inspiration eller ideer"),
-    newBrandCard("Økonomisk usikkerhed", "Forbrugernes overvældelse af valg"),
-    newBrandCard("Manglende tid til familieliv og hobbyer", "Manglende viden om et bestemt område"),
-    newBrandCard("Pris og værdi", "Eksklusivitet og status"),
-    newBrandCard("Kvalitet og holdbarhed", "Kundeanmeldelser og anbefalinger")
+    newBrandCard("Venlig", "Professionel"),
+    newBrandCard("Modig", "Tryghedsskabende"),
+    newBrandCard("Kreativ", "Struktureret"),
+    newBrandCard("Legende", "Seriøs"),
+    newBrandCard("Traditionel", "Innovativ"),
+    newBrandCard("Personlig", "Neutral"),
+    newBrandCard("Eksklusiv", "Tilgængelig"),
+    newBrandCard("Stilren", "Farverig"),
+    newBrandCard("Direkte", "Omfavnende"),
+    newBrandCard("Varm", "Kølig"),
+    newBrandCard("Spontan", "Gennemtænkt"),
+    newBrandCard("Empatisk", "Effektiv"),
+    newBrandCard("Urban", "Naturnær"),
+    newBrandCard("Nysgerrig", "Målrettet"),
+    newBrandCard("Sjov", "Sofistikeret"),
+    newBrandCard("Praktisk", "Inspirerende"),
+    newBrandCard("Afslappet", "Formel"),
+    newBrandCard("Analog", "Digital"),
+    newBrandCard("Minimalistisk", "Detaljeret"),
   ];
 
 
