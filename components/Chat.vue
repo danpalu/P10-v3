@@ -1,7 +1,11 @@
 <template>
-  <div v-if="data.isFinished" class="summary-container">
-    <Summary></Summary>
+ <section v-if="data.isFinished" >
+  <div class="section-wrapper">
+    <div class="question finish-section">
+          <Summary></Summary>
+        </div>
   </div>
+  </section>
   <main v-else class="chat-container" id="chat-container" ref="chat-container">
     <div class="messages-container" id="message-scroller" ref="message-scroller">
       <ul class="messages">
@@ -1336,6 +1340,26 @@ button:hover:not(:disabled):not(.branding-option) {
   color: var(--color-black);
 }
 
+.navigator {
+  position: sticky;
+  top: -20px;
+  background: var(--color-background);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
+  gap: 2rem;
+  border-bottom: 1px solid var(--color-black);
+  border-top: 1px solid var(--color-black);
+  margin: 2rem 0;
+
+  padding: 2rem 0;
+
+  & span {
+    text-transform: capitalize;
+  }
+}
+
 button.next-question {
   padding: 5px 20px;
   width: fit-content;
@@ -1538,4 +1562,19 @@ button.send {
 .summary-container::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
+
+.section-wrapper {
+  width: 100%;
+  max-width: 80ch;
+}
+
+section {
+  height: 100%;
+  overflow: hidden scroll;
+  padding: 20px;
+  scroll-behavior: smooth;
+  display: flex;
+  justify-content: center;
+}
+
 </style>

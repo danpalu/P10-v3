@@ -169,9 +169,9 @@
             <textarea name="Hvad vil du gerne have, at folk siger om Jer? review-other" />
           </label>
         </div>
-      </div>
-      <div class="center-content">
-        <a class="button next_button" href="#section-2"> Gå til næste sektion </a>
+        <div class="center-content">
+            <a class="button next_button" href="#section-2"> Gå til næste sektion </a>
+        </div>
       </div>
     </section>
     <section id="section-2">
@@ -339,9 +339,9 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="center-content">
-        <a class="button next_button" href="#section-3"> Gå til næste sektion </a>
+        <div class="center-content">
+            <a class="button next_button" href="#section-3"> Gå til næste sektion </a>
+        </div>
       </div>
     </section>
     <section id="section-3">
@@ -615,21 +615,8 @@
           </button>
         </div>
         <div class="question">
-          <label for="symbols"
-            >Er der særlige symboler, ikoner, farver eller andet visuelt, der har en særlig betydning for din
-            virksomhed/organisation?
-          </label>
-          <textarea
-            name="Er der særlige symboler, ikoner, farver eller andet visuelt, der har en særlig betydning for din virksomhed/organisation?"
-            id="symbols" />
-        </div>
-        <div class="question">
           <h3>Hvilke farver vil du associere med jer?</h3>
           <ColorQuestion></ColorQuestion>
-        </div>
-        <div class="question">
-          <h3>Moodboard</h3>
-          <MoodboardQuestion></MoodboardQuestion>
         </div>
         <div class="center-content">
           <a class="button next_button" href="#section-4"> Gå til næste sektion </a>
@@ -830,9 +817,9 @@
           <label for="budget">Hvad er virksomhedens/organisationens budget til projektet? </label>
           <textarea name="Hvad er virksomhedens/organisationens budget til projektet?" id="budget" />
         </div>
-      </div>
-      <div class="center-content">
-        <a class="button next_button" href="#section-5"> Gå til næste sektion </a>
+        <div class="center-content">
+            <a class="button next_button" href="#section-5"> Gå til næste sektion </a>
+        </div>
       </div>
     </section>
     <section id="section-5">
@@ -847,9 +834,9 @@
             name="Er der andet, du gerne vil tilføje? - Det kan fx være noget, du synes designeren bør vide, spørgsmål til designeren eller noter til dig selv."
             id="other" />
         </div>
-      </div>
-      <div class="center-content">
-        <a class="button next_button" href="#section-6"> Gå til næste sektion </a>
+        <div class="center-content">
+            <a class="button next_button" href="#section-6"> Gå til næste sektion </a>
+        </div>
       </div>
     </section>
     <section id="section-6">
@@ -1201,5 +1188,6 @@ textarea {
 
 .next_button {
   text-decoration: none;
+  margin-bottom: 5rem;
 }
 </style>
