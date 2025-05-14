@@ -1,4 +1,11 @@
 <template>
+  <div class="mobile-popup center-content">
+    <h2>
+      Hop venligst på computeren i stedet<br /><br />
+      - det virker ikke så godt på mobilen <br /><br />
+      🥰
+    </h2>
+  </div>
   <div class="introduction">
     <div class="text-box">
       <h1>Hej!</h1>
@@ -76,6 +83,26 @@ const props = defineProps<{
 
   h1 {
     text-align: center;
+  }
+}
+
+.mobile-popup {
+  position: fixed;
+  inset: 0;
+  width: 100dvw;
+  height: 100dvh;
+  background: #111;
+  color: white;
+  display: none;
+
+  & h2 {
+    text-align: center;
+  }
+}
+
+@media (max-width: 800px) {
+  .mobile-popup {
+    display: flex;
   }
 }
 </style>
