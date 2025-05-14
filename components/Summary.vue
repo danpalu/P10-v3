@@ -242,8 +242,9 @@ async function getSummary(summaryType: string): Promise<SummarySchemaType> {
 </script>
 
 <style scoped>
-.summary-container {
+div.summary-container {
   flex-direction: column;
+  overflow-y: visible;
 }
 
 .summary-contents {
