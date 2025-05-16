@@ -6,6 +6,7 @@
         vælge at præsentere disse oplysninger på, så du kan medbringe dem til mødet med designeren eller bruge dem som
         reference for dig selv.
       </p>
+      <p>Til sidst er der et spørgeskema, som kan tilgås på sidste side nedenfor.</p>
       <div v-if="summariesLoaded && !loading" class="summary-contents">
         <div class="navigator">
           <button
@@ -32,7 +33,7 @@
             </div>
           </div>
           <button
-            class="nav"
+            class="nav next-button"
             @click.prevent="scrollToSummary(++selectedSummaryIndex)"
             :class="`${selectedSummaryIndex == 4 ? 'invisible' : ''}`">
             <svg
@@ -275,6 +276,23 @@ button {
   outline: 2px solid var(--color-black);
   outline-offset: 2px;
   animation: outline-highlight infinite 0.7s ease-in-out;
+}
+
+.next-button {
+  outline: 2px ridge var(--color-grey);
+  animation: outline-highlight-next infinite 0.7s ease-in-out;
+}
+
+@keyframes outline-highlight-next {
+  0% {
+    outline-offset: -10px;
+  }
+  50% {
+    outline-offset: -6px;
+  }
+  100% {
+    outline-offset: -10px;
+  }
 }
 
 @keyframes outline-highlight {
