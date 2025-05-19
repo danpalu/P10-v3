@@ -347,16 +347,7 @@
     <section id="section-3">
       <div class="section-wrapper">
         <h2>Mål og Branding</h2>
-        <div class="question">
-          <h3>Hvad ønsker I at opnå med en ny visuel identitet eller design?</h3>
-          <label>
-            <input
-              type="checkbox"
-              name="Hvad ønsker I at opnå med en ny visuel identitet eller design?"
-              value="stærkere og mere genkendeligt brand" />
-            At skabe et stærkere og mere genkendeligt brand
-          </label>
-          <h2>Branding</h2>
+        <div>
           <div class="question">
             <h3>Hvad ønsker I at opnå med en ny visuel identitet eller design?</h3>
             <label>
